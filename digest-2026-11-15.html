@@ -1,0 +1,2962 @@
+<title>Social Digest</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    /* cool blue-grey paper, slate ink, single signal-amber accent */
+    --bg: #E9ECF1;
+    --surface: #FBFCFE;
+    --ink: #191C23;
+    --ink-soft: #474E5B;
+    --ink-faint: #79818F;
+    --line: #D2D7E0;
+    --line-strong: #191C23;
+    --accent: #C98A00;
+    --accent-ink: #8A5A00;
+    --accent-wash: #FBF2DC;
+    --accent-wash-edge: #E9B84A;
+    --good: #2E7D57;
+    --shadow: 0 1px 2px rgba(24,28,35,.05), 0 12px 32px -18px rgba(24,28,35,.28);
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #101319;
+      --surface: #191D25;
+      --ink: #E9EBF0;
+      --ink-soft: #A9B1BE;
+      --ink-faint: #6E7684;
+      --line: #2A2F39;
+      --line-strong: #E9EBF0;
+      --accent: #F0B429;
+      --accent-ink: #F5C556;
+      --accent-wash: rgba(240,180,41,.08);
+      --accent-wash-edge: rgba(240,180,41,.55);
+      --good: #58C08C;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 44px -20px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #101319;
+    --surface: #191D25;
+    --ink: #E9EBF0;
+    --ink-soft: #A9B1BE;
+    --ink-faint: #6E7684;
+    --line: #2A2F39;
+    --line-strong: #E9EBF0;
+    --accent: #F0B429;
+    --accent-ink: #F5C556;
+    --accent-wash: rgba(240,180,41,.08);
+    --accent-wash-edge: rgba(240,180,41,.55);
+    --good: #58C08C;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 44px -20px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Serif SC", "Libre Franklin", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 88px; }
+
+  /* ---------- nameplate ---------- */
+  .plate { padding-top: 34px; }
+  .plate-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .signal { display: inline-flex; align-items: center; gap: 7px; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    animation: pulse 3.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    70%,100% { box-shadow: 0 0 0 7px transparent; }
+  }
+
+  .toggle {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft); background: transparent;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer; transition: border-color .18s, color .18s;
+  }
+  .toggle:hover { color: var(--ink); border-color: var(--line-strong); }
+  .toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .masthead {
+    border-top: 3px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    margin-top: 12px; padding: 18px 0 16px;
+  }
+  h1.title {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: clamp(2.9rem, 11vw, 4.4rem); line-height: .96;
+    letter-spacing: -.02em; margin: 0; text-wrap: balance;
+  }
+  .title em { font-style: italic; font-weight: 500; color: var(--accent-ink); }
+  .tagline {
+    font-family: "Noto Serif SC", "Newsreader", serif; font-size: 1.06rem;
+    color: var(--ink-soft); margin: 12px 0 0; letter-spacing: .01em;
+  }
+
+  .dateline {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); padding: 11px 0 0;
+  }
+  .dateline b { color: var(--ink-soft); font-weight: 600; }
+  .dateline .num { font-variant-numeric: tabular-nums; color: var(--accent-ink); font-weight: 600; }
+
+  /* ---------- today's signal (thesis lead) ---------- */
+  .lead {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; box-shadow: var(--shadow);
+    padding: 24px 24px 22px; margin: 28px 0 8px;
+  }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent-ink); display: flex; align-items: center; gap: 9px; margin: 0 0 12px;
+  }
+  .kicker::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--accent-wash-edge), transparent); }
+  .lead h2 {
+    font-family: "Noto Serif SC", "Newsreader", serif; font-weight: 500;
+    font-size: 1.42rem; line-height: 1.5; letter-spacing: 0; margin: 0; text-wrap: pretty;
+  }
+  .lead h2 .mark {
+    background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--accent) 42%, transparent) 62%);
+    padding: 0 1px;
+  }
+
+  /* ---------- section rule ---------- */
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 46px 0 6px; }
+  .sec-head .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink); white-space: nowrap;
+  }
+  .sec-head .lbl .zh-lbl { font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px; }
+  .sec-head .rule { flex: 1; height: 2px; background: var(--line-strong); }
+  .sec-head .count { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+  /* ---------- entry ---------- */
+  .entry { padding: 26px 0 4px; border-bottom: 1px solid var(--line); }
+  .entry:last-of-type { border-bottom: 0; }
+
+  .byline { margin-bottom: 12px; }
+  .tag {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 4px;
+  }
+  .tag .ch { color: var(--accent-ink); }
+  .name {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: 1.34rem; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance;
+  }
+  .name span { color: var(--ink-soft); font-weight: 400; font-style: italic; font-size: .96rem; }
+
+  /* zh body is PRIMARY */
+  .zh { margin: 0; }
+  .zh + .zh { margin-top: 12px; }
+
+  /* english-original channel — key quotes only */
+  .en-quote {
+    margin: 15px 0 4px; padding: 12px 16px;
+    background: var(--accent-wash); border-left: 2px solid var(--accent-wash-edge);
+    border-radius: 0 3px 3px 0;
+    font-family: "Newsreader", Georgia, serif; font-style: italic;
+    color: var(--ink-soft); font-size: 1.02rem; line-height: 1.6;
+  }
+  .en-quote p { margin: 0; }
+  .en-quote p + p { margin-top: 8px; }
+  .en-quote .q-lbl {
+    display: block; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-style: normal; font-size: 9.5px; font-weight: 600; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent-ink); margin-bottom: 6px;
+  }
+
+  .receipts { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 2px; }
+  .receipts a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; letter-spacing: .02em; color: var(--accent-ink);
+    text-decoration: none; padding: 3px 9px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+    transition: border-color .16s, background .16s, transform .16s;
+  }
+  .receipts a::before { content: "↗"; opacity: .7; }
+  .receipts a:hover { border-color: var(--accent-wash-edge); background: var(--accent-wash); transform: translateY(-1px); }
+  .receipts a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* podcast-specific */
+  .takeaway { display: flex; gap: 10px; margin: 4px 0 16px; font-size: 1.02rem; }
+  .takeaway .k {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent-ink); white-space: nowrap; padding-top: 6px;
+  }
+  .takeaway .v { margin: 0; font-weight: 600; }
+
+  blockquote {
+    margin: 18px 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--accent);
+    font-family: "Newsreader", Georgia, serif; font-style: italic;
+    font-size: 1.24rem; line-height: 1.42; color: var(--ink); text-wrap: pretty;
+  }
+  blockquote .src {
+    display: block; margin-top: 8px; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-style: normal; font-size: 11px; letter-spacing: .04em; color: var(--ink-faint);
+  }
+
+  footer {
+    margin-top: 54px; padding-top: 20px; border-top: 3px solid var(--line-strong);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .05em; color: var(--ink-faint); line-height: 1.9;
+  }
+  footer a { color: var(--accent-ink); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .88em; background: var(--accent-wash); padding: 1px 5px; border-radius: 3px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(10px); animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+</style>
+<!-- FB_RAIL_CSS -->
+
+<style>
+  /* left sidebar rail (index only) */
+  .rail {
+    position: fixed;
+    top: 34px;
+    left: max(20px, calc((100vw - 720px) / 2 - 232px));
+    width: 200px;
+    max-height: calc(100vh - 68px);
+    overflow-y: auto;
+    z-index: 10;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  .rail-inner {
+    border-left: 2px solid var(--line-strong);
+    padding: 6px 0 6px 14px;
+  }
+  .rail-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .rail-lbl {
+    font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .rail-lbl .rail-zh {
+    font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px;
+  }
+  .rail-count {
+    font-size: 10.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums;
+    letter-spacing: .06em;
+  }
+  .rail .a-list { list-style: none; padding: 0; margin: 0; }
+  .rail .a-list li { margin: 0; }
+  .rail .a-list a {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 8px 0; text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color .16s, border-color .16s, padding-left .16s;
+  }
+  .rail .a-list a:hover {
+    color: var(--accent-ink); border-color: var(--accent-wash-edge);
+    padding-left: 4px;
+  }
+  .rail .a-list .a-date {
+    font-size: 11.5px; letter-spacing: .06em; color: var(--ink);
+    font-variant-numeric: tabular-nums; font-weight: 600;
+  }
+  .rail .a-list .a-zh {
+    font-family: "Noto Serif SC", serif; font-size: 12px; color: var(--ink-faint);
+    letter-spacing: 0;
+  }
+  .rail .a-list .a-current > a {
+    color: var(--accent-ink); border-color: var(--accent-wash-edge);
+    padding-left: 4px;
+  }
+  .rail .a-list .a-current .a-date { color: var(--accent-ink); }
+  .rail .a-list a:hover .a-date,
+  .rail .a-list a:hover .a-zh { color: var(--accent-ink); }
+
+  /* rail scrollbar: subtle */
+  .rail::-webkit-scrollbar { width: 6px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .rail::-webkit-scrollbar-thumb:hover { background: var(--line-strong); }
+
+  /* narrow viewport: rail becomes a top strip that scrolls horizontally */
+  @media (max-width: 1179px) {
+    .rail {
+      position: sticky; top: 0; left: 0; width: 100%; max-height: none;
+      background: var(--bg);
+      padding: 10px 20px 8px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto; overflow-y: hidden;
+    }
+    .rail-inner {
+      border-left: 0; padding: 0;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .rail-head {
+      margin: 0; flex-shrink: 0; flex-direction: column;
+      align-items: flex-start; gap: 1px;
+    }
+    .rail .a-list {
+      display: flex; gap: 4px; flex-wrap: nowrap;
+    }
+    .rail .a-list li { flex-shrink: 0; }
+    .rail .a-list a {
+      flex-direction: row; align-items: baseline; gap: 6px;
+      padding: 6px 10px; border-bottom: 0;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: var(--surface); white-space: nowrap;
+    }
+    .rail .a-list a:hover { padding-left: 10px; }
+    .rail .a-list .a-current > a {
+      padding-left: 10px; background: var(--accent-wash);
+      border-color: var(--accent-wash-edge);
+    }
+    .rail .a-list .a-zh { font-size: 11px; }
+  }
+</style>
+
+<!-- FB_EXTRA --><style>
+  .masthead { margin-top: 8px; }
+  .dateline { font-size: 15px; letter-spacing: .02em; text-transform: none; gap: 8px 22px; }
+  .dateline b { font-size: 17px; color: var(--ink); }
+  .dateline .num { font-size: 17px; }
+  .lead .kicker { font-size: 13px; letter-spacing: .14em; }
+  .lead .lead-p { font-size: 17px; line-height: 1.75; margin: 0; color: var(--ink); text-wrap: pretty; }
+  .lead .lead-p .mark { background: linear-gradient(transparent 62%, var(--accent-wash) 62%); color: var(--accent-ink); font-weight: 600; }
+  .sec-head .lbl .zh-lbl { font-size: 1.7rem; font-weight: 700; letter-spacing: .04em; color: var(--ink); text-transform: none; margin: 0; }
+  .sec-sum { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 3px; padding: 14px 18px; margin: 14px 0 6px; font-size: 17px; }
+  .sec-sum p { margin: 0 0 6px; }
+  .sec-sum ol { margin: 4px 0 0; padding-left: 22px; }
+  .sec-sum .k { font-family: "Noto Serif SC", serif; font-size: 17px; font-weight: 700; color: var(--accent-ink); margin-right: 4px; }
+  .name .src { font-family: "IBM Plex Mono", "Noto Serif SC", monospace; font-style: normal; font-weight: 500; font-size: 12px; letter-spacing: .04em; color: var(--ink-faint); margin-left: 8px; white-space: nowrap; }
+  .time { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); margin: 4px 0 0; }
+  .receipts { justify-content: flex-end; }
+  .lst { list-style: none; padding: 0; margin: 6px 0 0; }
+  .lst li { padding: 9px 0; border-top: 1px dashed var(--line); }
+  .lst li:first-child { border-top: 0; }
+  .lst .t { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .lst .t:hover { color: var(--accent-ink); }
+  .lst .m { display: block; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); }
+  .grp { font-family: "Noto Serif SC", serif; font-size: 1.2rem; font-weight: 600; color: var(--accent-ink); letter-spacing: .04em; margin: 30px 0 0; padding-bottom: 4px; border-bottom: 1px solid var(--accent-wash-edge); }
+  .note { font-family: "IBM Plex Mono", "Noto Serif SC", monospace; font-size: 12px; color: var(--ink-faint); margin: 14px 0 0; line-height: 1.7; }
+  .sec-head, .grp, .entry { scroll-margin-top: 24px; }
+  .toc { position: fixed; top: 34px; right: max(20px, calc((100vw - 720px) / 2 - 252px)); width: 220px; max-height: calc(100vh - 68px); overflow-y: auto; z-index: 10; font-family: "Noto Serif SC", serif; }
+  .toc-inner { border-left: 2px solid var(--line-strong); padding: 6px 0 6px 14px; }
+  .toc-head { font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--ink); margin-bottom: 10px; }
+  .toc-head .rail-zh { font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px; }
+  .toc ul { list-style: none; padding: 0; margin: 0; }
+  .toc a { text-decoration: none; color: var(--ink-faint); display: block; }
+  .toc a:hover, .toc a.on { color: var(--accent-ink); }
+  .toc .t-sec { margin: 0 0 10px; }
+  .toc .t-sec > a { font-size: 14px; font-weight: 600; color: var(--ink); padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .toc .t-sec > a .n { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: var(--ink-faint); font-weight: 400; margin-left: 6px; }
+  .toc .t-grp > a { font-size: 12.5px; font-weight: 600; color: var(--accent-ink); padding: 6px 0 2px; }
+  .toc .t-it > a { font-size: 12px; line-height: 1.45; padding: 3px 0 3px 8px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .toc::-webkit-scrollbar { width: 6px; } .toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .toc-m { display: none; }
+  @media (max-width: 1179px) {
+    .toc { display: none; }
+    .toc-m { display: block; margin: 18px 0 0; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); padding: 10px 14px; font-family: "Noto Serif SC", serif; }
+    .toc-m summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--ink); }
+    .toc-m ul { list-style: none; padding: 0; margin: 8px 0 0; }
+    .toc-m a { text-decoration: none; color: var(--ink-faint); display: block; padding: 3px 0; }
+    .toc-m .t-sec > a { color: var(--ink); font-weight: 600; } .toc-m .t-grp > a { color: var(--accent-ink); padding-left: 8px; }
+    .toc-m .t-it { display: none; }
+    .sec-head, .grp, .entry { scroll-margin-top: 72px; }
+  }
+</style><!-- /FB_EXTRA -->
+<!-- YOHAKU --><style>
+:root{--bg:#f4f1ea;--surface:#f4f1ea;--ink:#23211d;--ink-soft:#23211d;--ink-faint:#8a8478;--line:transparent;--line-strong:transparent;--accent:#23211d;--accent-ink:#23211d;--accent-wash:transparent;--accent-wash-edge:transparent;--shadow:none}
+@media (prefers-color-scheme:dark){:root{--bg:#f4f1ea;--surface:#f4f1ea;--ink:#23211d;--ink-faint:#8a8478}}
+html,body{background:#f4f1ea!important}
+body,body *{font-family:"Noto Serif SC","Noto Serif CJK SC","Songti SC",serif!important;border-color:transparent!important;box-shadow:none!important}
+body{color:#23211d!important;font-size:16px!important;line-height:1.85!important;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px!important}
+/* title: one quiet line */
+.masthead{border:0!important;padding:0!important;margin:56px 0 0!important}
+h1.title{font-family:"Noto Serif SC","Noto Serif CJK SC",serif!important;font-size:30px!important;font-weight:600!important;letter-spacing:.01em!important;line-height:1.2!important}
+h1.title br{display:none}
+h1.title em{font-style:normal!important;color:#23211d!important;font-weight:600!important;margin-left:.25em;font-family:inherit!important}
+.dateline{font-size:13px!important;text-transform:none!important;letter-spacing:.02em!important;color:#8a8478!important;gap:4px 18px!important;padding-top:14px!important}
+.dateline b,.dateline .num{color:#8a8478!important;font-weight:400!important;font-size:13px!important}
+/* summary */
+.lead{background:none!important;border:0!important;padding:0!important;margin:72px 0 0!important}
+.kicker{display:none!important}
+.lead .lead-p,.lead p,.lead h2{font-size:19px!important;line-height:1.95!important;color:#23211d!important;font-weight:400!important}
+.lead .mark{background:none!important;color:#b03a2e!important;font-weight:500!important}
+.lead *{color:#23211d!important;opacity:1!important}.lead .mark{color:#b03a2e!important}
+/* sections */
+.sec-head{margin:120px 0 0!important;display:block!important}
+.sec-head .rule,.sec-head .count{display:none!important}
+.sec-head .lbl .zh-lbl,.sec-head .lbl{font-family:"Noto Serif SC","Noto Serif CJK SC",serif!important;font-size:34px!important;font-weight:600!important;letter-spacing:.12em!important;color:#23211d!important}
+.sec-sum{background:none!important;border:0!important;padding:0!important;margin:24px 0 64px!important;font-size:17px!important;color:#23211d!important}
+.sec-sum .k{display:none!important}
+.sec-sum ol{padding-left:1.2em!important}
+/* entries */
+.entry{padding:0 0 56px!important;border:0!important}
+.name{font-size:17px!important;font-weight:600!important;line-height:1.6!important}
+.name .src{font-size:13px!important;font-weight:400!important;color:#8a8478!important;margin-left:10px!important;letter-spacing:0!important}
+.time{font-size:12px!important;color:#a8a194!important;margin:2px 0 12px!important;font-variant-numeric:tabular-nums}
+.entry p{color:#33302a!important}
+.receipts{gap:14px!important;margin-top:8px!important}
+.receipts a{background:none!important;border:0!important;padding:0!important;color:#23211d!important;font-size:12px!important;text-decoration:none!important}
+.receipts a::before{content:""!important}
+/* rails: lighter, Chinese only */
+.rail-lbl,.toc-head{font-size:0!important}
+.rail-lbl .rail-zh,.toc-head .rail-zh{font-size:12px!important;color:#23211d!important;letter-spacing:.1em!important;font-weight:500!important}
+.rail-count{display:none!important}
+.rail,.toc{font-size:12px!important}
+.a-zh{display:none!important}
+.a-date{color:#8a8478!important;font-size:12px!important;font-weight:400!important;letter-spacing:.02em!important}
+.a-current .a-date{color:#23211d!important}
+.toc-inner{border:0!important;padding:0!important}
+.toc .t-sec>a{font-size:13px!important;font-weight:500!important;border:0!important;color:#23211d!important}
+.toc .t-sec>a .n{display:none!important}
+.toc .t-it>a{color:#8a8478!important;padding-left:0!important}
+.toc a.on{color:#23211d!important}
+a.kw,.zh a.kw{color:inherit!important;text-decoration:none!important;border:0!important;background-image:linear-gradient(rgba(35,33,29,.35),rgba(35,33,29,.35))!important;background-size:100% 1px!important;background-repeat:no-repeat!important;background-position:0 95%!important}a.kw:hover{color:#23211d!important}
+.receipts a:not(:first-child){display:none!important}
+.receipts a:first-child{font-size:0!important}.receipts a:first-child::after{content:"原文";font-size:12px}
+.lead .mark,a.kw:hover{font-weight:600!important}.a-current .a-date{font-weight:600!important}
+.name{font-size:20px!important;font-weight:700!important;color:#1a1814!important;letter-spacing:.02em!important;line-height:1.5!important}
+.name .src{font-size:13px!important;font-weight:400!important}
+.entry p:not(.name):not(.time){font-size:15.5px!important;color:#4a463e!important;font-weight:400!important;line-height:2!important}
+.time{margin:4px 0 16px!important}
+.sec-sum,.sec-sum *{color:#33302a!important}
+.sec-head .lbl .zh-lbl,.sec-head .lbl{font-size:38px!important;font-weight:700!important;color:#1a1814!important}
+h1.title{font-weight:700!important;color:#1a1814!important}
+.mark,.lead .mark{color:#b03a2e!important;background:none!important}
+</style><!-- /YOHAKU -->
+<!-- /FB_RAIL_CSS -->
+
+
+
+<aside class="rail" aria-label="往期归档">
+  <div class="rail-inner">
+    <div class="rail-head">
+      <span class="rail-lbl"><span class="rail-zh">往期</span>Archive</span>
+      <span class="rail-count">20 期</span>
+    </div>
+    <ul class="a-list">
+      <li class="a-current"><a href="digest-2026-11-15.html"><span class="a-date">2026-11-15</span><span class="a-zh">周日 · 2026年11月15日</span></a></li>
+      <li><a href="digest-2026-11-14.html"><span class="a-date">2026-11-14</span><span class="a-zh">周六 · 2026年11月14日</span></a></li>
+      <li><a href="digest-2026-11-13.html"><span class="a-date">2026-11-13</span><span class="a-zh">周五 · 2026年11月13日</span></a></li>
+      <li><a href="digest-2026-11-12.html"><span class="a-date">2026-11-12</span><span class="a-zh">周四 · 2026年11月12日</span></a></li>
+      <li><a href="digest-2026-11-11.html"><span class="a-date">2026-11-11</span><span class="a-zh">周三 · 2026年11月11日</span></a></li>
+      <li><a href="digest-2026-11-10.html"><span class="a-date">2026-11-10</span><span class="a-zh">周二 · 2026年11月10日</span></a></li>
+      <li><a href="digest-2026-11-09.html"><span class="a-date">2026-11-09</span><span class="a-zh">周一 · 2026年11月9日</span></a></li>
+      <li><a href="digest-2026-11-08.html"><span class="a-date">2026-11-08</span><span class="a-zh">周日 · 2026年11月8日</span></a></li>
+      <li><a href="digest-2026-11-07.html"><span class="a-date">2026-11-07</span><span class="a-zh">周六 · 2026年11月7日</span></a></li>
+      <li><a href="digest-2026-11-06.html"><span class="a-date">2026-11-06</span><span class="a-zh">周五 · 2026年11月6日</span></a></li>
+      <li><a href="digest-2026-11-05.html"><span class="a-date">2026-11-05</span><span class="a-zh">周四 · 2026年11月5日</span></a></li>
+      <li><a href="digest-2026-11-04.html"><span class="a-date">2026-11-04</span><span class="a-zh">周三 · 2026年11月4日</span></a></li>
+      <li><a href="digest-2026-11-03.html"><span class="a-date">2026-11-03</span><span class="a-zh">周二 · 2026年11月3日</span></a></li>
+      <li><a href="digest-2026-11-02.html"><span class="a-date">2026-11-02</span><span class="a-zh">周一 · 2026年11月2日</span></a></li>
+      <li><a href="digest-2026-11-01.html"><span class="a-date">2026-11-01</span><span class="a-zh">周日 · 2026年11月1日</span></a></li>
+      <li><a href="digest-2026-10-31.html"><span class="a-date">2026-10-31</span><span class="a-zh">周六 · 2026年10月31日</span></a></li>
+      <li><a href="digest-2026-10-30.html"><span class="a-date">2026-10-30</span><span class="a-zh">周五 · 2026年10月30日</span></a></li>
+      <li><a href="digest-2026-10-29.html"><span class="a-date">2026-10-29</span><span class="a-zh">周四 · 2026年10月29日</span></a></li>
+      <li><a href="digest-2026-10-28.html"><span class="a-date">2026-10-28</span><span class="a-zh">周三 · 2026年10月28日</span></a></li>
+      <li><a href="digest-2026-10-27.html"><span class="a-date">2026-10-27</span><span class="a-zh">周二 · 2026年10月27日</span></a></li>
+    </ul>
+  </div>
+</aside>
+<script src="archive.js"></script>
+<nav class="toc" aria-label="本期目录"><div class="toc-inner"><div class="toc-head"><span class="rail-zh">本期目录</span>Contents</div><ul><li class="t-sec"><a href="#s-1">关于美国的新闻<span class="n">5</span></a><ul><li class="t-it"><a href="#e-2">全美停飞余波：官方把故障归咎于铜线升级与路由器</a></li><li class="t-it"><a href="#e-3">英伟达丑闻余震：特朗普政府受冲击，公司或面临诉讼</a></li><li class="t-it"><a href="#e-4">SpaceX 首次用发射塔机械臂「捕获」星舰飞船</a></li><li class="t-it"><a href="#e-5">中期选举大胜后，民主党内部出现分歧</a></li><li class="t-it"><a href="#e-6">伊朗称霍尔木兹海峡油轮触雷起火</a></li></ul></li><li class="t-sec"><a href="#s-7">关于欧洲的新闻<span class="n">5</span></a><ul><li class="t-it"><a href="#e-8">泽连斯基：美方提出以乌克兰让出顿巴斯换取加入北约</a></li><li class="t-it"><a href="#e-9">俄罗斯借和谈争夺欧洲安全架构话语权</a></li><li class="t-it"><a href="#e-10">意大利因读取用户照片对 Meta 罚款约 8 亿欧元</a></li><li class="t-it"><a href="#e-11">英国央行首席经济学家：仍需继续加息</a></li><li class="t-it"><a href="#e-12">检方披露伊朗特工如何袭击欧洲目标</a></li></ul></li><li class="t-sec"><a href="#s-13">关于中国的新闻<span class="n">5</span></a><ul><li class="t-it"><a href="#e-14">白宫：特朗普、普京、习近平下周拟在中国举行三方会晤</a></li><li class="t-it"><a href="#e-15">APEC 深圳会议筹备就绪</a></li><li class="t-it"><a href="#e-16">中韩外长同意借 APEC 推进双边关系</a></li><li class="t-it"><a href="#e-17">上海一基因编辑研究人员在儿童死亡后被解雇</a></li><li class="t-it"><a href="#e-18">老挝、柬埔寨新设施引发对中国军事存在的担忧</a></li></ul></li><li class="t-sec"><a href="#s-19">关于日本的新闻<span class="n">4</span></a><ul><li class="t-it"><a href="#e-20">冲绳一名美军上尉涉嫌酒驾被捕</a></li><li class="t-it"><a href="#e-21">日本政府拟任宇山秀树为下任驻俄大使</a></li><li class="t-it"><a href="#e-22">在日外国人因无法参加日语考试担忧居留</a></li><li class="t-it"><a href="#e-23">日本足球队再胜巴西</a></li></ul></li></ul></div></nav>
+<div class="wrap">
+  <p class="disclaimer">以下内容均为 Grok AI 生成，不代表个人政治立场。</p>
+  <header class="plate">
+    <style>.site-switch{display:flex;gap:28px;justify-content:flex-end;margin:0 0 28px}.site-switch a{font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif!important;letter-spacing:.06em!important;text-decoration:none!important;padding:6px 0!important;color:#9a9a9a!important;border-bottom:1.5px solid transparent!important}.site-switch a.on{color:#111!important;border-bottom-color:#111!important}.site-switch a:hover{color:#111!important}.zh a.kw{color:inherit;text-decoration:underline;text-decoration-color:#c0392b;text-underline-offset:3px}p.disclaimer{margin:24px 0 0!important;font-size:13px!important;line-height:1.7!important;letter-spacing:.04em!important;font-weight:400!important;color:#6f695e!important;background:none!important;border:0!important;padding:0!important}</style><nav class="site-switch"><a href="../ai-builders-digest/">AI Digest</a><a href="../social-digest/" class="on">Social Digest</a><a href="https://summerxia.com/reading-digest/">Reading Digest</a><a href="../pm-digest/">PM Digest</a></nav>
+    <div class="masthead">
+      <h1 class="title">Social<br><em>Digest</em></h1>
+    </div>
+
+    <div class="dateline">
+      <span><b>周日 · 2026年11月15日</b></span>
+      <span>收录 2026年11月14日 内容</span>
+      <span><span class="num">19</span> 条新闻</span>
+      <span><span class="num">18</span> 家媒体</span>
+      <span><span class="num">12</span> 条多国对照</span>
+    </div>
+  </header>
+
+<section class="lead reveal">
+  <p class="kicker">Executive Summary</p>
+  <p class="lead-p">11 月 14 日最受关注的是 <span class="mark">泽连斯基称美方提出以让出顿巴斯换取加入北约</span>，美方未予证实；白宫宣布 <span class="mark">特朗普、普京、习近平拟下周在中国举行三方会晤</span>，时间正值深圳 APEC。美国国内，全美停飞余波未平，官方把故障归咎于铜线升级与路由器，航班预计周日恢复正常；<span class="mark">SpaceX 首次用发射塔机械臂捕获星舰飞船</span>。其他看点：英伟达丑闻冲击特朗普政府、伊朗称油轮在霍尔木兹海峡触雷、意大利重罚 Meta。</p>
+</section>
+<details class="toc-m"><summary>本期目录</summary><ul><li class="t-sec"><a href="#s-1">关于美国的新闻<span class="n">5</span></a><ul></ul></li><li class="t-sec"><a href="#s-7">关于欧洲的新闻<span class="n">5</span></a><ul></ul></li><li class="t-sec"><a href="#s-13">关于中国的新闻<span class="n">5</span></a><ul></ul></li><li class="t-sec"><a href="#s-19">关于日本的新闻<span class="n">4</span></a><ul></ul></li></ul></details>
+<div class="sec-head" id="s-1">
+  <span class="lbl"><span class="zh-lbl">关于美国的新闻</span></span>
+  <span class="rule"></span><span class="count">5 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 全美停飞余波与英伟达丑闻继续发酵；星舰首次被机械臂捕获，民主党在大胜后出现路线分歧，霍尔木兹海峡再起波澜。</p><ol><li>全美停飞余波：官方把故障归咎于铜线升级与路由器</li><li>英伟达丑闻余震：特朗普政府受冲击，公司或面临诉讼</li><li>SpaceX 首次用发射塔机械臂「捕获」星舰飞船</li></ol></div>
+
+<article class="entry" id="e-2">
+  <div class="byline">
+    <p class="name">全美停飞余波：官方把故障归咎于铜线升级与路由器<span class="src">Reuters · BBC · Guardian · AP · CNN · WSJ · 新华社 · 日经</span></p>
+    <p class="time">11-15 04:17</p>
+  </div>
+  <p class="zh">周</p>
+  <p class="zh">五</p>
+  <p class="zh">的</p>
+  <p class="zh">全</p>
+  <p class="zh">美</p>
+  <p class="zh">地</p>
+  <p class="zh">面</p>
+  <p class="zh">停</p>
+  <p class="zh">飞</p>
+  <p class="zh">继</p>
+  <p class="zh">续</p>
+  <p class="zh">发</p>
+  <p class="zh">酵</p>
+  <p class="zh">。</p>
+  <p class="zh">R</p>
+  <p class="zh">e</p>
+  <p class="zh">u</p>
+  <p class="zh">t</p>
+  <p class="zh">e</p>
+  <p class="zh">r</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">这</p>
+  <p class="zh">次</p>
+  <p class="zh">航</p>
+  <p class="zh">空</p>
+  <p class="zh">停</p>
+  <p class="zh">摆</p>
+  <p class="zh">被</p>
+  <p class="zh">归</p>
+  <p class="zh">咎</p>
+  <p class="zh">于</p>
+  <p class="zh"> </p>
+  <p class="zh">L</p>
+  <p class="zh">3</p>
+  <p class="zh"> </p>
+  <p class="zh">H</p>
+  <p class="zh">a</p>
+  <p class="zh">r</p>
+  <p class="zh">r</p>
+  <p class="zh">i</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">安</p>
+  <p class="zh">装</p>
+  <p class="zh">的</p>
+  <p class="zh">一</p>
+  <p class="zh">台</p>
+  <p class="zh">路</p>
+  <p class="zh">由</p>
+  <p class="zh">器</p>
+  <p class="zh">；</p>
+  <p class="zh">B</p>
+  <p class="zh">B</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">引</p>
+  <p class="zh">述</p>
+  <p class="zh">交</p>
+  <p class="zh">通</p>
+  <p class="zh">部</p>
+  <p class="zh">长</p>
+  <p class="zh">的</p>
+  <p class="zh">说</p>
+  <p class="zh">法</p>
+  <p class="zh">，</p>
+  <p class="zh">称</p>
+  <p class="zh">起</p>
+  <p class="zh">因</p>
+  <p class="zh">是</p>
+  <p class="zh">一</p>
+  <p class="zh">项</p>
+  <p class="zh">老</p>
+  <p class="zh">旧</p>
+  <p class="zh">铜</p>
+  <p class="zh">线</p>
+  <p class="zh">的</p>
+  <p class="zh">升</p>
+  <p class="zh">级</p>
+  <p class="zh">工</p>
+  <p class="zh">程</p>
+  <p class="zh">，</p>
+  <p class="zh">政</p>
+  <p class="zh">府</p>
+  <p class="zh">正</p>
+  <p class="zh">在</p>
+  <p class="zh">查</p>
+  <p class="zh">明</p>
+  <p class="zh">是</p>
+  <p class="zh">「</p>
+  <p class="zh">无</p>
+  <p class="zh">能</p>
+  <p class="zh">」</p>
+  <p class="zh">还</p>
+  <p class="zh">是</p>
+  <p class="zh">设</p>
+  <p class="zh">备</p>
+  <p class="zh">故</p>
+  <p class="zh">障</p>
+  <p class="zh">所</p>
+  <p class="zh">致</p>
+  <p class="zh">。</p>
+  <p class="zh">G</p>
+  <p class="zh">u</p>
+  <p class="zh">a</p>
+  <p class="zh">r</p>
+  <p class="zh">d</p>
+  <p class="zh">i</p>
+  <p class="zh">a</p>
+  <p class="zh">n</p>
+  <p class="zh"> </p>
+  <p class="zh">写</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">官</p>
+  <p class="zh">员</p>
+  <p class="zh">称</p>
+  <p class="zh">停</p>
+  <p class="zh">飞</p>
+  <p class="zh">源</p>
+  <p class="zh">于</p>
+  <p class="zh">「</p>
+  <p class="zh">例</p>
+  <p class="zh">行</p>
+  <p class="zh">维</p>
+  <p class="zh">护</p>
+  <p class="zh">」</p>
+  <p class="zh">，</p>
+  <p class="zh">并</p>
+  <p class="zh">把</p>
+  <p class="zh">矛</p>
+  <p class="zh">头</p>
+  <p class="zh">指</p>
+  <p class="zh">向</p>
+  <p class="zh">老</p>
+  <p class="zh">化</p>
+  <p class="zh">的</p>
+  <p class="zh">空</p>
+  <p class="zh">管</p>
+  <p class="zh">系</p>
+  <p class="zh">统</p>
+  <p class="zh">，</p>
+  <p class="zh">仍</p>
+  <p class="zh">有</p>
+  <p class="zh">数</p>
+  <p class="zh">千</p>
+  <p class="zh">个</p>
+  <p class="zh">航</p>
+  <p class="zh">班</p>
+  <p class="zh">被</p>
+  <p class="zh">取</p>
+  <p class="zh">消</p>
+  <p class="zh">。</p>
+  <p class="zh">A</p>
+  <p class="zh">P</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">美</p>
+  <p class="zh">国</p>
+  <p class="zh">航</p>
+  <p class="zh">空</p>
+  <p class="zh">出</p>
+  <p class="zh">行</p>
+  <p class="zh">预</p>
+  <p class="zh">计</p>
+  <p class="zh">在</p>
+  <p class="zh">周</p>
+  <p class="zh">日</p>
+  <p class="zh">恢</p>
+  <p class="zh">复</p>
+  <p class="zh">正</p>
+  <p class="zh">常</p>
+  <p class="zh">，</p>
+  <p class="zh">新</p>
+  <p class="zh">华</p>
+  <p class="zh">社</p>
+  <p class="zh"> </p>
+  <p class="zh">也</p>
+  <p class="zh">援</p>
+  <p class="zh">引</p>
+  <p class="zh"> </p>
+  <p class="zh">F</p>
+  <p class="zh">A</p>
+  <p class="zh">A</p>
+  <p class="zh"> </p>
+  <p class="zh">局</p>
+  <p class="zh">长</p>
+  <p class="zh">说</p>
+  <p class="zh">法</p>
+  <p class="zh">称</p>
+  <p class="zh">全</p>
+  <p class="zh">美</p>
+  <p class="zh">航</p>
+  <p class="zh">空</p>
+  <p class="zh">运</p>
+  <p class="zh">输</p>
+  <p class="zh">预</p>
+  <p class="zh">计</p>
+  <p class="zh"> </p>
+  <p class="zh">1</p>
+  <p class="zh">5</p>
+  <p class="zh"> </p>
+  <p class="zh">日</p>
+  <p class="zh">晚</p>
+  <p class="zh">恢</p>
+  <p class="zh">复</p>
+  <p class="zh">；</p>
+  <p class="zh">日</p>
+  <p class="zh">经</p>
+  <p class="zh"> </p>
+  <p class="zh">统</p>
+  <p class="zh">计</p>
+  <p class="zh">全</p>
+  <p class="zh">美</p>
+  <p class="zh">机</p>
+  <p class="zh">场</p>
+  <p class="zh">欠</p>
+  <p class="zh">航</p>
+  <p class="zh">、</p>
+  <p class="zh">延</p>
+  <p class="zh">误</p>
+  <p class="zh">约</p>
+  <p class="zh"> </p>
+  <p class="zh">9</p>
+  <p class="zh">,</p>
+  <p class="zh">0</p>
+  <p class="zh">0</p>
+  <p class="zh">0</p>
+  <p class="zh"> </p>
+  <p class="zh">班</p>
+  <p class="zh">。</p>
+  <p class="zh">C</p>
+  <p class="zh">N</p>
+  <p class="zh">N</p>
+  <p class="zh"> </p>
+  <p class="zh">和</p>
+  <p class="zh"> </p>
+  <p class="zh">W</p>
+  <p class="zh">S</p>
+  <p class="zh">J</p>
+  <p class="zh"> </p>
+  <p class="zh">则</p>
+  <p class="zh">分</p>
+  <p class="zh">别</p>
+  <p class="zh">梳</p>
+  <p class="zh">理</p>
+  <p class="zh">了</p>
+  <p class="zh">故</p>
+  <p class="zh">障</p>
+  <p class="zh">原</p>
+  <p class="zh">因</p>
+  <p class="zh">与</p>
+  <p class="zh">「</p>
+  <p class="zh">一</p>
+  <p class="zh">团</p>
+  <p class="zh">乱</p>
+  <p class="zh">麻</p>
+  <p class="zh">般</p>
+  <p class="zh">的</p>
+  <p class="zh">线</p>
+  <p class="zh">路</p>
+  <p class="zh">」</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxQWEQ1ckJVbXlQSHI5ZHU4VEppWVVZbXBYa0ZRWjdDdFNGWWxSdHF5bEtwR1Q2OHRxN2plYXctMm5lTU5TV0hzb2xQazg4U09MNDhyRnpOalhGYXJWN01mak9NR0dXWG0yR0k5WUtycmNhdkdZZkpYcXp5N2w0N2RQSUxEX1F5aEY1TGhDTzV5ZXl3dWR6QmdabDduOFBBWTNPdXBvVVY1VlAwVW1XYnIyQ2FwU2ZOeW5x?oc=5">原文 · Reuters</a><a href="https://www.bbc.co.uk/news/articles/c6wy9lynq4qno?at_medium=RSS&amp;at_campaign=rss">对照 · BBC</a><a href="https://www.theguardian.com/world/2026/nov/14/faa-ground-stop-flights-resume-airport-chaos">对照 · Guardian</a><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxPQzlDRHBLSTNHTHRtbnpudnNXdXZpYnpEQ1hhLVNrU3ZRM0xRNm9NcUx2NjRIVFVOQVJKWXZGZzZCZ0hTcEdjd1ppTkFIelBlc282aU05SS1YYU45WTNwRUx1RzBCX3hwNW9Ed20wQ1JmQ3hHVmFSUktDSjM1eklkYTFPN3FkWUR0V1pUSjRIMHk3MjJjX0VrSm8zaFJ6a2paSnRwNzVrQlZpZw?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5rZWdfank0eHF1WGZYVEtPVlF2ZVZIRDlicFBrdTVPblphdnJJOXQ1YWRicHdGZFpWT3ZmWkozelMtMXF3YXdBMkhMVzJCalhmMVBORWNCSG45dkNJWnhmWjUyWnVvZ1lRMVYwcmlHY3VXNG5JTjl3?oc=5">对照 · CNN</a><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxQT1c2OTZrYk1RQThoamRQWEVvS212ZFFOdzZfc21OaWYzNGM5WW1xZnlnU1JOVkV6Q1Z3R2NkX2lxVWhuOS14VVFMbmxCQlNFWkdveXllYU9ETUczY3NLblNRTW1ZTk1ZdERzMmEwOFJpRUdLbENYdFBtMEdacEx1TlJoYTEySGJKM0JscHAwbVVUY19tdE5NZkN2ZncwQTlIUDI0OERCU1pVM0NrOHhQNjdvTzZTdw?oc=5">对照 · WSJ</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE45OXBieUZnYkhYdUNyZE1NdTIwdVZnNVQ0WGxmd0c5MFlqX24ybl8xdFphV19kVGo2WWpVb2RtU2JaVGl2VE1ydHl2ZGhFcUVET3h0MFYzLXUxYV9uUUFvVnc4TjdRWVB2NFoxNzdoUUQwT2R5RElxZmxGYUhSOFk?oc=5">对照 · 新华社</a><a href="https://www.nikkei.com/article/DGXZQOGN143DB0U6A111C2000000/">对照 · 日经</a></div>
+</article>
+
+<article class="entry" id="e-3">
+  <div class="byline">
+    <p class="name">英伟达丑闻余震：特朗普政府受冲击，公司或面临诉讼<span class="src">Le Monde · FT · WSJ · 读卖新闻 · 财新</span></p>
+    <p class="time">11-15 02:24</p>
+  </div>
+  <p class="zh">L</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">o</p>
+  <p class="zh">n</p>
+  <p class="zh">d</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">认</p>
+  <p class="zh">为</p>
+  <p class="zh">，</p>
+  <p class="zh">黄</p>
+  <p class="zh">仁</p>
+  <p class="zh">勋</p>
+  <p class="zh">因</p>
+  <p class="zh">婚</p>
+  <p class="zh">外</p>
+  <p class="zh">关</p>
+  <p class="zh">系</p>
+  <p class="zh">曝</p>
+  <p class="zh">光</p>
+  <p class="zh">而</p>
+  <p class="zh">辞</p>
+  <p class="zh">职</p>
+  <p class="zh">，</p>
+  <p class="zh">削</p>
+  <p class="zh">弱</p>
+  <p class="zh">了</p>
+  <p class="zh"> </p>
+  <p class="zh">A</p>
+  <p class="zh">I</p>
+  <p class="zh"> </p>
+  <p class="zh">革</p>
+  <p class="zh">命</p>
+  <p class="zh">的</p>
+  <p class="zh">核</p>
+  <p class="zh">心</p>
+  <p class="zh">推</p>
+  <p class="zh">动</p>
+  <p class="zh">力</p>
+  <p class="zh">，</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">团</p>
+  <p class="zh">队</p>
+  <p class="zh">如</p>
+  <p class="zh">今</p>
+  <p class="zh">必</p>
+  <p class="zh">须</p>
+  <p class="zh">解</p>
+  <p class="zh">释</p>
+  <p class="zh">该</p>
+  <p class="zh">公</p>
+  <p class="zh">司</p>
+  <p class="zh">对</p>
+  <p class="zh">华</p>
+  <p class="zh">出</p>
+  <p class="zh">口</p>
+  <p class="zh">产</p>
+  <p class="zh">品</p>
+  <p class="zh">时</p>
+  <p class="zh">享</p>
+  <p class="zh">有</p>
+  <p class="zh">的</p>
+  <p class="zh">宽</p>
+  <p class="zh">松</p>
+  <p class="zh">空</p>
+  <p class="zh">间</p>
+  <p class="zh">。</p>
+  <p class="zh">F</p>
+  <p class="zh">T</p>
+  <p class="zh"> </p>
+  <p class="zh">指</p>
+  <p class="zh">出</p>
+  <p class="zh">，</p>
+  <p class="zh">英</p>
+  <p class="zh">伟</p>
+  <p class="zh">达</p>
+  <p class="zh">对</p>
+  <p class="zh">高</p>
+  <p class="zh">管</p>
+  <p class="zh">行</p>
+  <p class="zh">为</p>
+  <p class="zh">引</p>
+  <p class="zh">发</p>
+  <p class="zh">的</p>
+  <p class="zh">损</p>
+  <p class="zh">害</p>
+  <p class="zh">缺</p>
+  <p class="zh">乏</p>
+  <p class="zh">完</p>
+  <p class="zh">整</p>
+  <p class="zh">保</p>
+  <p class="zh">险</p>
+  <p class="zh">，</p>
+  <p class="zh">可</p>
+  <p class="zh">能</p>
+  <p class="zh">面</p>
+  <p class="zh">临</p>
+  <p class="zh">诉</p>
+  <p class="zh">讼</p>
+  <p class="zh">。</p>
+  <p class="zh">W</p>
+  <p class="zh">S</p>
+  <p class="zh">J</p>
+  <p class="zh"> </p>
+  <p class="zh">梳</p>
+  <p class="zh">理</p>
+  <p class="zh">了</p>
+  <p class="zh">英</p>
+  <p class="zh">伟</p>
+  <p class="zh">达</p>
+  <p class="zh">在</p>
+  <p class="zh"> </p>
+  <p class="zh">C</p>
+  <p class="zh">E</p>
+  <p class="zh">O</p>
+  <p class="zh"> </p>
+  <p class="zh">婚</p>
+  <p class="zh">外</p>
+  <p class="zh">情</p>
+  <p class="zh">事</p>
+  <p class="zh">件</p>
+  <p class="zh">后</p>
+  <p class="zh">的</p>
+  <p class="zh">内</p>
+  <p class="zh">部</p>
+  <p class="zh">调</p>
+  <p class="zh">查</p>
+  <p class="zh">，</p>
+  <p class="zh">读</p>
+  <p class="zh">卖</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">辞</p>
+  <p class="zh">职</p>
+  <p class="zh">震</p>
+  <p class="zh">动</p>
+  <p class="zh">整</p>
+  <p class="zh">个</p>
+  <p class="zh"> </p>
+  <p class="zh">A</p>
+  <p class="zh">I</p>
+  <p class="zh"> </p>
+  <p class="zh">行</p>
+  <p class="zh">业</p>
+  <p class="zh">。</p>
+  <p class="zh">财</p>
+  <p class="zh">新</p>
+  <p class="zh"> </p>
+  <p class="zh">在</p>
+  <p class="zh">下</p>
+  <p class="zh">周</p>
+  <p class="zh">看</p>
+  <p class="zh">点</p>
+  <p class="zh">中</p>
+  <p class="zh">提</p>
+  <p class="zh">到</p>
+  <p class="zh">黄</p>
+  <p class="zh">仁</p>
+  <p class="zh">勋</p>
+  <p class="zh">将</p>
+  <p class="zh">向</p>
+  <p class="zh">国</p>
+  <p class="zh">会</p>
+  <p class="zh">作</p>
+  <p class="zh">简</p>
+  <p class="zh">报</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.lemonde.fr/en/opinion/article/2026/11/14/trump-administration-rocked-by-nvidia-shockwave_6780919_23.html">原文 · Le Monde</a><a href="https://www.ft.com/content/4aba8386-35cc-463b-a79c-a0c85c362c89?syn-25a6b1a6=1">对照 · FT</a><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxNOXRtcTJ0d2pQR3BqR2p6V2pSUk1BYldyZ1FjaG5Hb004YktMaDV0T1JKVTZhdlVXQ09EZ0FvNFJsMldneEZOTVpFVkJid2JyMW9MTHZnek5iMVpyZk5XcjJoZWxRYm5XclNveVNZTDduMF9zMTR6Q2J1cVQ0N01lNGpTN1hPOEFGeC1tOTZ2Wi1SYVF2bXBOR3hsMA?oc=5">对照 · WSJ</a><a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxNRmw5dVdxdC1fSWx2VXRRNllHc2gwQ3RZRVd4QUlRMTdoaU54dmg0Zms2SzFUaGFDeXQyTHRXQlFoMEFpZ0x2ZWRuWDFsZWxoVzc2dU5oQ3ZaRGZ6Ny1uSUgyX0Zsc2dZS0xYUUtNNVc1YW1pSC10dS14UUYwQmhEazln?oc=5">对照 · 读卖新闻</a><a href="https://news.google.com/rss/articles/CBMizAFBVV95cUxNeGdqcWtTV2ozeG50Q3lwUlItVHdNMWFEc1ZadnFmTWM4d1lGbHdoOUFyTWxsc0paUUZ1R2R6bXpEMGNKMTBva01abEhaNkhiUWhvX2s5MWJMZE5HWjdpay1sM2VoeTZBeFp5YXJYTi1QUUpiSlljY3dnRWxYRUhlbWZOYU4tSjJXYTZ4VUUxMFBJYWNKTjJ5OW9PUFY1T28xLVVlVVJXZ2hJU3kxRGMtTE85bmNwcHNrbV9oa1lNZEliSnMtQ01Ndm01RFc?oc=5">对照 · 财新</a></div>
+</article>
+
+<article class="entry" id="e-4">
+  <div class="byline">
+    <p class="name">SpaceX 首次用发射塔机械臂「捕获」星舰飞船<span class="src">BBC · FT · AP · CNN · 新华社 · DW</span></p>
+    <p class="time">11-15 06:09</p>
+  </div>
+  <p class="zh">B</p>
+  <p class="zh">B</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">S</p>
+  <p class="zh">p</p>
+  <p class="zh">a</p>
+  <p class="zh">c</p>
+  <p class="zh">e</p>
+  <p class="zh">X</p>
+  <p class="zh"> </p>
+  <p class="zh">用</p>
+  <p class="zh">绰</p>
+  <p class="zh">号</p>
+  <p class="zh">「</p>
+  <p class="zh">筷</p>
+  <p class="zh">子</p>
+  <p class="zh">」</p>
+  <p class="zh">的</p>
+  <p class="zh">机</p>
+  <p class="zh">械</p>
+  <p class="zh">臂</p>
+  <p class="zh">完</p>
+  <p class="zh">成</p>
+  <p class="zh">了</p>
+  <p class="zh">历</p>
+  <p class="zh">史</p>
+  <p class="zh">性</p>
+  <p class="zh">的</p>
+  <p class="zh">捕</p>
+  <p class="zh">获</p>
+  <p class="zh">；</p>
+  <p class="zh">A</p>
+  <p class="zh">P</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">星</p>
+  <p class="zh">舰</p>
+  <p class="zh">从</p>
+  <p class="zh">轨</p>
+  <p class="zh">道</p>
+  <p class="zh">返</p>
+  <p class="zh">回</p>
+  <p class="zh">后</p>
+  <p class="zh">被</p>
+  <p class="zh">发</p>
+  <p class="zh">射</p>
+  <p class="zh">台</p>
+  <p class="zh">机</p>
+  <p class="zh">械</p>
+  <p class="zh">臂</p>
+  <p class="zh">接</p>
+  <p class="zh">住</p>
+  <p class="zh">。</p>
+  <p class="zh">F</p>
+  <p class="zh">T</p>
+  <p class="zh"> </p>
+  <p class="zh">认</p>
+  <p class="zh">为</p>
+  <p class="zh">上</p>
+  <p class="zh">面</p>
+  <p class="zh">级</p>
+  <p class="zh">成</p>
+  <p class="zh">功</p>
+  <p class="zh">回</p>
+  <p class="zh">收</p>
+  <p class="zh">是</p>
+  <p class="zh">马</p>
+  <p class="zh">斯</p>
+  <p class="zh">克</p>
+  <p class="zh">以</p>
+  <p class="zh">可</p>
+  <p class="zh">复</p>
+  <p class="zh">用</p>
+  <p class="zh">载</p>
+  <p class="zh">人</p>
+  <p class="zh">火</p>
+  <p class="zh">箭</p>
+  <p class="zh">登</p>
+  <p class="zh">陆</p>
+  <p class="zh">火</p>
+  <p class="zh">星</p>
+  <p class="zh">目</p>
+  <p class="zh">标</p>
+  <p class="zh">的</p>
+  <p class="zh">关</p>
+  <p class="zh">键</p>
+  <p class="zh">一</p>
+  <p class="zh">步</p>
+  <p class="zh">。</p>
+  <p class="zh">新</p>
+  <p class="zh">华</p>
+  <p class="zh">社</p>
+  <p class="zh"> </p>
+  <p class="zh">以</p>
+  <p class="zh">「</p>
+  <p class="zh">首</p>
+  <p class="zh">次</p>
+  <p class="zh">被</p>
+  <p class="zh">发</p>
+  <p class="zh">射</p>
+  <p class="zh">塔</p>
+  <p class="zh">机</p>
+  <p class="zh">械</p>
+  <p class="zh">臂</p>
+  <p class="zh">捕</p>
+  <p class="zh">获</p>
+  <p class="zh">回</p>
+  <p class="zh">收</p>
+  <p class="zh">」</p>
+  <p class="zh">为</p>
+  <p class="zh">题</p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">。</p>
+  <p class="zh">D</p>
+  <p class="zh">W</p>
+  <p class="zh"> </p>
+  <p class="zh">的</p>
+  <p class="zh">角</p>
+  <p class="zh">度</p>
+  <p class="zh">不</p>
+  <p class="zh">同</p>
+  <p class="zh">：</p>
+  <p class="zh">原</p>
+  <p class="zh">计</p>
+  <p class="zh">划</p>
+  <p class="zh">首</p>
+  <p class="zh">次</p>
+  <p class="zh">同</p>
+  <p class="zh">时</p>
+  <p class="zh">回</p>
+  <p class="zh">收</p>
+  <p class="zh">两</p>
+  <p class="zh">级</p>
+  <p class="zh">，</p>
+  <p class="zh">但</p>
+  <p class="zh">助</p>
+  <p class="zh">推</p>
+  <p class="zh">器</p>
+  <p class="zh">在</p>
+  <p class="zh">墨</p>
+  <p class="zh">西</p>
+  <p class="zh">哥</p>
+  <p class="zh">湾</p>
+  <p class="zh">上</p>
+  <p class="zh">空</p>
+  <p class="zh">爆</p>
+  <p class="zh">炸</p>
+  <p class="zh">，</p>
+  <p class="zh">只</p>
+  <p class="zh">有</p>
+  <p class="zh">飞</p>
+  <p class="zh">船</p>
+  <p class="zh">进</p>
+  <p class="zh">入</p>
+  <p class="zh">轨</p>
+  <p class="zh">道</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.bbc.co.uk/news/videos/cwlym2gy3y3eo?at_medium=RSS&amp;at_campaign=rss">原文 · BBC</a><a href="https://www.ft.com/content/ce7c8ab1-8337-4c32-8494-5142ec1697dd?syn-25a6b1a6=1">对照 · FT</a><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxNOERhUktkSjNrXzRTU1BmN20xXzk4WE9HT2V1ek5MeHZGYW1KU2tOMzdLbm8xc2J1NXBSWi03S0Rudld0amJUdHkwWVQ1YnZfRVhhMGhaV0FzSWJMR2Nfc3FWVXlZWUtieWRPaUlwSTUzUTBKZ3d4bF9VYThwR0RvQmlaQzJsTmowems1aHJSUGFpTEpsbjRn?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxPRm04T2xLXy12ZUpFb2RFT0E4ZmF2LVBCdVl2azZ5LXItdVd3Z2tyOVczdmJ3QkUwa3RQWEJTUUN5djJkd2tPRnN0akhlYktsQnVpbURrQnd2T2RWWm1GcXJBMUlpZUZldHRLQjhKZlpHdC1uY2EzckViWW54RjViZXNxN21xNWEydC1YWmp4YXN5bHFSQjFrbUZIejRvdVJiY1dkeTJB?oc=5">对照 · CNN</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE92cmdOZVdQanZVZktnNUJObHdUdlhOa21ITVlGWmV4SmxLX1kwWnJ5V0Q2eDhDODVBdlZqQzlkRC1mV2pCTXZYbmhEN0p1WjNCM2p4OFlPVlduSmVqVU8wVWgtNC1GZGMxUUduWWgyWlhCTVhxOERsM2FRM3FFY1k?oc=5">对照 · 新华社</a><a href="https://www.dw.com/en/spacex-launches-starship-rocket-fails-to-recover-booster/a-79946091?maca=en-rss-en-world-4025-rdf">对照 · DW</a></div>
+</article>
+
+<article class="entry" id="e-5">
+  <div class="byline">
+    <p class="name">中期选举大胜后，民主党内部出现分歧<span class="src">Reuters · Guardian · FT · Fox News</span></p>
+    <p class="time">11-15 05:18</p>
+  </div>
+  <p class="zh">R</p>
+  <p class="zh">e</p>
+  <p class="zh">u</p>
+  <p class="zh">t</p>
+  <p class="zh">e</p>
+  <p class="zh">r</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">民</p>
+  <p class="zh">主</p>
+  <p class="zh">党</p>
+  <p class="zh">在</p>
+  <p class="zh">中</p>
+  <p class="zh">期</p>
+  <p class="zh">选</p>
+  <p class="zh">举</p>
+  <p class="zh">横</p>
+  <p class="zh">扫</p>
+  <p class="zh">之</p>
+  <p class="zh">后</p>
+  <p class="zh">，</p>
+  <p class="zh">在</p>
+  <p class="zh">如</p>
+  <p class="zh">何</p>
+  <p class="zh">对</p>
+  <p class="zh">待</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">和</p>
+  <p class="zh">削</p>
+  <p class="zh">减</p>
+  <p class="zh">开</p>
+  <p class="zh">支</p>
+  <p class="zh">议</p>
+  <p class="zh">程</p>
+  <p class="zh">上</p>
+  <p class="zh">出</p>
+  <p class="zh">现</p>
+  <p class="zh">分</p>
+  <p class="zh">裂</p>
+  <p class="zh">。</p>
+  <p class="zh">G</p>
+  <p class="zh">u</p>
+  <p class="zh">a</p>
+  <p class="zh">r</p>
+  <p class="zh">d</p>
+  <p class="zh">i</p>
+  <p class="zh">a</p>
+  <p class="zh">n</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">民</p>
+  <p class="zh">主</p>
+  <p class="zh">党</p>
+  <p class="zh">人</p>
+  <p class="zh"> </p>
+  <p class="zh">J</p>
+  <p class="zh">o</p>
+  <p class="zh">n</p>
+  <p class="zh">a</p>
+  <p class="zh">t</p>
+  <p class="zh">h</p>
+  <p class="zh">a</p>
+  <p class="zh">n</p>
+  <p class="zh"> </p>
+  <p class="zh">K</p>
+  <p class="zh">r</p>
+  <p class="zh">e</p>
+  <p class="zh">i</p>
+  <p class="zh">s</p>
+  <p class="zh">s</p>
+  <p class="zh">-</p>
+  <p class="zh">T</p>
+  <p class="zh">o</p>
+  <p class="zh">m</p>
+  <p class="zh">k</p>
+  <p class="zh">i</p>
+  <p class="zh">n</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">拿</p>
+  <p class="zh">下</p>
+  <p class="zh">阿</p>
+  <p class="zh">拉</p>
+  <p class="zh">斯</p>
+  <p class="zh">加</p>
+  <p class="zh">州</p>
+  <p class="zh">长</p>
+  <p class="zh">席</p>
+  <p class="zh">位</p>
+  <p class="zh">，</p>
+  <p class="zh">这</p>
+  <p class="zh">是</p>
+  <p class="zh">该</p>
+  <p class="zh">党</p>
+  <p class="zh">近</p>
+  <p class="zh"> </p>
+  <p class="zh">3</p>
+  <p class="zh">0</p>
+  <p class="zh"> </p>
+  <p class="zh">年</p>
+  <p class="zh">来</p>
+  <p class="zh">首</p>
+  <p class="zh">次</p>
+  <p class="zh">，</p>
+  <p class="zh">民</p>
+  <p class="zh">主</p>
+  <p class="zh">党</p>
+  <p class="zh">州</p>
+  <p class="zh">长</p>
+  <p class="zh">总</p>
+  <p class="zh">数</p>
+  <p class="zh">将</p>
+  <p class="zh">达</p>
+  <p class="zh"> </p>
+  <p class="zh">3</p>
+  <p class="zh">0</p>
+  <p class="zh"> </p>
+  <p class="zh">位</p>
+  <p class="zh">。</p>
+  <p class="zh">F</p>
+  <p class="zh">T</p>
+  <p class="zh"> </p>
+  <p class="zh">分</p>
+  <p class="zh">析</p>
+  <p class="zh">，</p>
+  <p class="zh">共</p>
+  <p class="zh">和</p>
+  <p class="zh">党</p>
+  <p class="zh">史</p>
+  <p class="zh">无</p>
+  <p class="zh">前</p>
+  <p class="zh">例</p>
+  <p class="zh">的</p>
+  <p class="zh">重</p>
+  <p class="zh">划</p>
+  <p class="zh">选</p>
+  <p class="zh">区</p>
+  <p class="zh">攻</p>
+  <p class="zh">势</p>
+  <p class="zh">未</p>
+  <p class="zh">能</p>
+  <p class="zh">抵</p>
+  <p class="zh">挡</p>
+  <p class="zh">民</p>
+  <p class="zh">主</p>
+  <p class="zh">党</p>
+  <p class="zh">选</p>
+  <p class="zh">票</p>
+  <p class="zh">浪</p>
+  <p class="zh">潮</p>
+  <p class="zh">。</p>
+  <p class="zh">F</p>
+  <p class="zh">o</p>
+  <p class="zh">x</p>
+  <p class="zh"> </p>
+  <p class="zh">N</p>
+  <p class="zh">e</p>
+  <p class="zh">w</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">的</p>
+  <p class="zh">角</p>
+  <p class="zh">度</p>
+  <p class="zh">不</p>
+  <p class="zh">同</p>
+  <p class="zh">：</p>
+  <p class="zh">聚</p>
+  <p class="zh">焦</p>
+  <p class="zh">得</p>
+  <p class="zh">州</p>
+  <p class="zh">民</p>
+  <p class="zh">主</p>
+  <p class="zh">党</p>
+  <p class="zh">人</p>
+  <p class="zh">在</p>
+  <p class="zh">翻</p>
+  <p class="zh">转</p>
+  <p class="zh">共</p>
+  <p class="zh">和</p>
+  <p class="zh">党</p>
+  <p class="zh">倾</p>
+  <p class="zh">向</p>
+  <p class="zh">选</p>
+  <p class="zh">区</p>
+  <p class="zh">后</p>
+  <p class="zh">，</p>
+  <p class="zh">推</p>
+  <p class="zh">动</p>
+  <p class="zh"> </p>
+  <p class="zh">2</p>
+  <p class="zh">0</p>
+  <p class="zh">2</p>
+  <p class="zh">8</p>
+  <p class="zh"> </p>
+  <p class="zh">候</p>
+  <p class="zh">选</p>
+  <p class="zh">人</p>
+  <p class="zh">优</p>
+  <p class="zh">先</p>
+  <p class="zh">处</p>
+  <p class="zh">理</p>
+  <p class="zh">移</p>
+  <p class="zh">民</p>
+  <p class="zh">改</p>
+  <p class="zh">革</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxOVTdyR0NNX2ZWTnc5Z3d1VG94TVlaVXhLbzIxaGUydzU4bmpEdTg4bGJ4VWtPSE5rVDdPSDNRYlo0V2xUaFpyX2xJYThLY2lCT0pvSWprdXk0aXR4d3d3MjNfUHh5a2tWUS0zTUVpQV9jUmc4bTQ3b3Uzd1dJYV9uS2V3dElDV3BkeTNJbHEzX3ZnbEIwZmdiZmNaY2FXcURYU2FVUzkyajJJUWxvRlZkdw?oc=5">原文 · Reuters</a><a href="https://www.theguardian.com/us-news/2026/nov/14/alaska-governor-democrat-jonathan-kreiss-tomkins-wins">对照 · Guardian</a><a href="https://www.ft.com/content/d99f635f-6223-45fc-8429-2ac36b28d080?syn-25a6b1a6=1">对照 · FT</a><a href="https://www.foxnews.com/politics/dems-seize-midterm-rout-demand-ice-reform-polls-reveal-twist-prioritized-immigration">对照 · Fox News</a></div>
+</article>
+
+<article class="entry" id="e-6">
+  <div class="byline">
+    <p class="name">伊朗称霍尔木兹海峡油轮触雷起火<span class="src">Reuters · 央视新闻 · WSJ · Fox News</span></p>
+    <p class="time">11-15 06:54</p>
+  </div>
+  <p class="zh">R</p>
+  <p class="zh">e</p>
+  <p class="zh">u</p>
+  <p class="zh">t</p>
+  <p class="zh">e</p>
+  <p class="zh">r</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">伊</p>
+  <p class="zh">朗</p>
+  <p class="zh">海</p>
+  <p class="zh">军</p>
+  <p class="zh">称</p>
+  <p class="zh">三</p>
+  <p class="zh">艘</p>
+  <p class="zh">油</p>
+  <p class="zh">轮</p>
+  <p class="zh">在</p>
+  <p class="zh">霍</p>
+  <p class="zh">尔</p>
+  <p class="zh">木</p>
+  <p class="zh">兹</p>
+  <p class="zh">海</p>
+  <p class="zh">峡</p>
+  <p class="zh">触</p>
+  <p class="zh">雷</p>
+  <p class="zh">后</p>
+  <p class="zh">起</p>
+  <p class="zh">火</p>
+  <p class="zh">；</p>
+  <p class="zh">央</p>
+  <p class="zh">视</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">的</p>
+  <p class="zh">标</p>
+  <p class="zh">题</p>
+  <p class="zh">则</p>
+  <p class="zh">是</p>
+  <p class="zh">伊</p>
+  <p class="zh">朗</p>
+  <p class="zh">称</p>
+  <p class="zh">海</p>
+  <p class="zh">峡</p>
+  <p class="zh">以</p>
+  <p class="zh">南</p>
+  <p class="zh"> </p>
+  <p class="zh">2</p>
+  <p class="zh"> </p>
+  <p class="zh">艘</p>
+  <p class="zh">油</p>
+  <p class="zh">轮</p>
+  <p class="zh">触</p>
+  <p class="zh">雷</p>
+  <p class="zh">爆</p>
+  <p class="zh">炸</p>
+  <p class="zh">，</p>
+  <p class="zh">两</p>
+  <p class="zh">者</p>
+  <p class="zh">数</p>
+  <p class="zh">字</p>
+  <p class="zh">不</p>
+  <p class="zh">一</p>
+  <p class="zh">。</p>
+  <p class="zh">W</p>
+  <p class="zh">S</p>
+  <p class="zh">J</p>
+  <p class="zh"> </p>
+  <p class="zh">以</p>
+  <p class="zh">「</p>
+  <p class="zh">伊</p>
+  <p class="zh">朗</p>
+  <p class="zh">把</p>
+  <p class="zh">战</p>
+  <p class="zh">争</p>
+  <p class="zh">带</p>
+  <p class="zh">出</p>
+  <p class="zh">中</p>
+  <p class="zh">东</p>
+  <p class="zh">」</p>
+  <p class="zh">为</p>
+  <p class="zh">题</p>
+  <p class="zh">撰</p>
+  <p class="zh">文</p>
+  <p class="zh">。</p>
+  <p class="zh">F</p>
+  <p class="zh">o</p>
+  <p class="zh">x</p>
+  <p class="zh"> </p>
+  <p class="zh">N</p>
+  <p class="zh">e</p>
+  <p class="zh">w</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">提</p>
+  <p class="zh">到</p>
+  <p class="zh">，</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">在</p>
+  <p class="zh"> </p>
+  <p class="zh">T</p>
+  <p class="zh">r</p>
+  <p class="zh">u</p>
+  <p class="zh">t</p>
+  <p class="zh">h</p>
+  <p class="zh"> </p>
+  <p class="zh">S</p>
+  <p class="zh">o</p>
+  <p class="zh">c</p>
+  <p class="zh">i</p>
+  <p class="zh">a</p>
+  <p class="zh">l</p>
+  <p class="zh"> </p>
+  <p class="zh">上</p>
+  <p class="zh">宣</p>
+  <p class="zh">称</p>
+  <p class="zh">美</p>
+  <p class="zh">国</p>
+  <p class="zh">不</p>
+  <p class="zh">再</p>
+  <p class="zh">需</p>
+  <p class="zh">要</p>
+  <p class="zh">与</p>
+  <p class="zh">伊</p>
+  <p class="zh">朗</p>
+  <p class="zh">达</p>
+  <p class="zh">成</p>
+  <p class="zh">协</p>
+  <p class="zh">议</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPZWt1cHFualJEVktnTTVvd21uVnljc0FqR2dRaWpaRnYwZ3luZ2t1dUlJNVUtLTVlWHJFOS1ocDBlaVZsTFNZdjRMeldFVFE1Q0Jqem9FbU9fMmp1YTBUTUhqTmYzR3FJN1Z1Y1dHY2d0Yjlzb2lBR0JvNllyT3pScjI2SEpkbkhiYzZSWW9Tb3dwemdWaVVmMjBPbXZqd0hOZzdpRDVSZlVlbzBnV1BjMQ?oc=5">原文 · Reuters</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE55a0RXQkNESS03SlVtS2xTbHlaSGlYWnNfOXpWV000UGQzSlg0VS10RnBXbS1CMHltWTFTUDRCTUFJenpuZmJmSldWVmdIMm1YanZ0MXZPM1Q0enZMYTJ2ZmlGU3lrcHhJVkJHbE43M21SQnRYWGJLaw?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxQX2xKR0JTVzRwLUtDQTVuMFdYYm9NY3Bqek9iakIzdXBSN3VoQ3VibWZtcm5RbFJqaXRmWHhlei0ycUpkZkJmc05pTGdqWmIwTHNxdUMzZXVpVXM2dGxqUHlBTlNfZ3ZTRi0tWm51RHk5NHIzT2k5cDREYTlseDZPZmNGSmMtQmpzNUs2dkI4VmJ5SHF3b19WVTc0T3BCZW1LWll6d3V3YWh2RmRjVVBpeHQwRVN1TW9kUnJtdnZ5MWp6OVBheXo2Yk9TUTV1Umtqd0psS2RBZlFzbXBNWm5fbFgtQVY?oc=5">对照 · WSJ</a><a href="https://www.foxnews.com/politics/trump-keeps-signaling-end-iran-war-expert-warns-crucial-piece-his-strategy-missing">对照 · Fox News</a></div>
+</article>
+
+<p class="note">说明：伊朗称油轮在霍尔木兹海峡触雷一事，因与美伊战事和特朗普的伊朗表态牵涉最深，归入本章。</p>
+<div class="sec-head" id="s-7">
+  <span class="lbl"><span class="zh-lbl">关于欧洲的新闻</span></span>
+  <span class="rule"></span><span class="count">5 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 乌克兰和谈出现「顿巴斯换北约」设想，俄罗斯试图重塑欧洲安全架构；意大利重罚 Meta，英国加息讨论升温。</p><ol><li>泽连斯基：美方提出以乌克兰让出顿巴斯换取加入北约</li><li>俄罗斯借和谈争夺欧洲安全架构话语权</li><li>意大利因读取用户照片对 Meta 罚款约 8 亿欧元</li></ol></div>
+
+<article class="entry" id="e-8">
+  <div class="byline">
+    <p class="name">泽连斯基：美方提出以乌克兰让出顿巴斯换取加入北约<span class="src">Reuters · BBC · FT · Le Monde · DW · 南华早报 · CNN</span></p>
+    <p class="time">11-15 05:19</p>
+  </div>
+  <p class="zh">R</p>
+  <p class="zh">e</p>
+  <p class="zh">u</p>
+  <p class="zh">t</p>
+  <p class="zh">e</p>
+  <p class="zh">r</p>
+  <p class="zh">s</p>
+  <p class="zh">、</p>
+  <p class="zh">C</p>
+  <p class="zh">N</p>
+  <p class="zh">N</p>
+  <p class="zh"> </p>
+  <p class="zh">等</p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">泽</p>
+  <p class="zh">连</p>
+  <p class="zh">斯</p>
+  <p class="zh">基</p>
+  <p class="zh">称</p>
+  <p class="zh">美</p>
+  <p class="zh">方</p>
+  <p class="zh">提</p>
+  <p class="zh">出</p>
+  <p class="zh">由</p>
+  <p class="zh">乌</p>
+  <p class="zh">克</p>
+  <p class="zh">兰</p>
+  <p class="zh">让</p>
+  <p class="zh">出</p>
+  <p class="zh">顿</p>
+  <p class="zh">巴</p>
+  <p class="zh">斯</p>
+  <p class="zh">、</p>
+  <p class="zh">换</p>
+  <p class="zh">取</p>
+  <p class="zh">北</p>
+  <p class="zh">约</p>
+  <p class="zh">成</p>
+  <p class="zh">员</p>
+  <p class="zh">资</p>
+  <p class="zh">格</p>
+  <p class="zh">的</p>
+  <p class="zh">设</p>
+  <p class="zh">想</p>
+  <p class="zh">。</p>
+  <p class="zh">B</p>
+  <p class="zh">B</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">补</p>
+  <p class="zh">充</p>
+  <p class="zh">，</p>
+  <p class="zh">美</p>
+  <p class="zh">方</p>
+  <p class="zh">尚</p>
+  <p class="zh">未</p>
+  <p class="zh">证</p>
+  <p class="zh">实</p>
+  <p class="zh">，</p>
+  <p class="zh">一</p>
+  <p class="zh">名</p>
+  <p class="zh">美</p>
+  <p class="zh">国</p>
+  <p class="zh">官</p>
+  <p class="zh">员</p>
+  <p class="zh">只</p>
+  <p class="zh">说</p>
+  <p class="zh">「</p>
+  <p class="zh">仍</p>
+  <p class="zh">在</p>
+  <p class="zh">讨</p>
+  <p class="zh">论</p>
+  <p class="zh">许</p>
+  <p class="zh">多</p>
+  <p class="zh">想</p>
+  <p class="zh">法</p>
+  <p class="zh">」</p>
+  <p class="zh">。</p>
+  <p class="zh">F</p>
+  <p class="zh">T</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">泽</p>
+  <p class="zh">连</p>
+  <p class="zh">斯</p>
+  <p class="zh">基</p>
+  <p class="zh">表</p>
+  <p class="zh">示</p>
+  <p class="zh">会</p>
+  <p class="zh">把</p>
+  <p class="zh">这</p>
+  <p class="zh">一</p>
+  <p class="zh">方</p>
+  <p class="zh">案</p>
+  <p class="zh">交</p>
+  <p class="zh">由</p>
+  <p class="zh">乌</p>
+  <p class="zh">克</p>
+  <p class="zh">兰</p>
+  <p class="zh">人</p>
+  <p class="zh">民</p>
+  <p class="zh">决</p>
+  <p class="zh">定</p>
+  <p class="zh">，</p>
+  <p class="zh">D</p>
+  <p class="zh">W</p>
+  <p class="zh"> </p>
+  <p class="zh">也</p>
+  <p class="zh">提</p>
+  <p class="zh">到</p>
+  <p class="zh">安</p>
+  <p class="zh">全</p>
+  <p class="zh">协</p>
+  <p class="zh">议</p>
+  <p class="zh">可</p>
+  <p class="zh">能</p>
+  <p class="zh">付</p>
+  <p class="zh">诸</p>
+  <p class="zh">公</p>
+  <p class="zh">投</p>
+  <p class="zh">。</p>
+  <p class="zh">L</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">o</p>
+  <p class="zh">n</p>
+  <p class="zh">d</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">写</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">泽</p>
+  <p class="zh">连</p>
+  <p class="zh">斯</p>
+  <p class="zh">基</p>
+  <p class="zh">在</p>
+  <p class="zh">阿</p>
+  <p class="zh">布</p>
+  <p class="zh">扎</p>
+  <p class="zh">比</p>
+  <p class="zh">会</p>
+  <p class="zh">谈</p>
+  <p class="zh">后</p>
+  <p class="zh">会</p>
+  <p class="zh">见</p>
+  <p class="zh">欧</p>
+  <p class="zh">洲</p>
+  <p class="zh">领</p>
+  <p class="zh">导</p>
+  <p class="zh">人</p>
+  <p class="zh">，</p>
+  <p class="zh">并</p>
+  <p class="zh">称</p>
+  <p class="zh">俄</p>
+  <p class="zh">方</p>
+  <p class="zh">本</p>
+  <p class="zh">周</p>
+  <p class="zh">拒</p>
+  <p class="zh">绝</p>
+  <p class="zh">了</p>
+  <p class="zh">能</p>
+  <p class="zh">源</p>
+  <p class="zh">设</p>
+  <p class="zh">施</p>
+  <p class="zh">停</p>
+  <p class="zh">火</p>
+  <p class="zh">。</p>
+  <p class="zh">南</p>
+  <p class="zh">华</p>
+  <p class="zh">早</p>
+  <p class="zh">报</p>
+  <p class="zh"> </p>
+  <p class="zh">指</p>
+  <p class="zh">出</p>
+  <p class="zh">，</p>
+  <p class="zh">这</p>
+  <p class="zh">是</p>
+  <p class="zh">首</p>
+  <p class="zh">次</p>
+  <p class="zh">出</p>
+  <p class="zh">现</p>
+  <p class="zh">此</p>
+  <p class="zh">类</p>
+  <p class="zh">说</p>
+  <p class="zh">法</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxOUy1QYS1aemtYbV8xczk0cmRVeHl2ZGNLTlFwVE1SUUZ3OHctZGRnZlpTMi1DRTFkbWlXMWRaVGliVk8xU1N1MGZ6dVdNTTJHd1BMaTVnT2JQaTAwdm1QWWh4aElDM1JlMVJvcjJNQ2pIUWlHd09qUXNuc2Q1Qnd6ZVJGTlIta3dkaHlMcWRYZC1KX0tneTJKVkNSaVdZQXlFX2Y2Z0Vwa1VmNGRzZjZYVDRRdDBNLTNF?oc=5">原文 · Reuters</a><a href="https://www.bbc.co.uk/news/articles/cwvg2l312ylqo?at_medium=RSS&amp;at_campaign=rss">对照 · BBC</a><a href="https://www.ft.com/content/24319e2d-1a34-4a72-8c91-008d974234f9?syn-25a6b1a6=1">对照 · FT</a><a href="https://www.lemonde.fr/en/international/article/2026/11/14/us-proposes-ukraine-cede-territory-in-exchange-for-joining-nato-says-zelensky_6780721_4.html">对照 · Le Monde</a><a href="https://www.dw.com/en/ukraine-zelenskyy-says-security-deal-could-go-to-referendum/a-79947535?maca=en-rss-en-world-4025-rdf">对照 · DW</a><a href="https://www.scmp.com/news/world/europe/article/3374450/zelensky-says-us-floated-idea-ukraine-ceding-donbas-nato-membership">对照 · 南华早报</a><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxQcnBJSVdsRS1QWWJDQUdWZHN6SFhTcTg1TlNfSm8wTEQ2NGV4aHpqLS1lQVVCT29EdUZJMmNoSFZtbzRRZ2hYeFlvbndWMXFxTjBRZTRNbllTNXQ3TFJKWUxuQkEtSEw5ZnMteXdOS3V5WERSNklISXJKSGZSRmdCQVZPem43RThxcUphU3Nodk5aenRycmhV?oc=5">对照 · CNN</a></div>
+</article>
+
+<article class="entry" id="e-9">
+  <div class="byline">
+    <p class="name">俄罗斯借和谈争夺欧洲安全架构话语权<span class="src">Le Monde · 日经 · DW</span></p>
+    <p class="time">11-14 20:30</p>
+  </div>
+  <p class="zh">L</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">o</p>
+  <p class="zh">n</p>
+  <p class="zh">d</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">在</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">的</p>
+  <p class="zh">要</p>
+  <p class="zh">求</p>
+  <p class="zh">下</p>
+  <p class="zh">，</p>
+  <p class="zh">俄</p>
+  <p class="zh">罗</p>
+  <p class="zh">斯</p>
+  <p class="zh">乐</p>
+  <p class="zh">见</p>
+  <p class="zh">自</p>
+  <p class="zh">己</p>
+  <p class="zh">参</p>
+  <p class="zh">与</p>
+  <p class="zh">塑</p>
+  <p class="zh">造</p>
+  <p class="zh">欧</p>
+  <p class="zh">洲</p>
+  <p class="zh">安</p>
+  <p class="zh">全</p>
+  <p class="zh">架</p>
+  <p class="zh">构</p>
+  <p class="zh">，</p>
+  <p class="zh">克</p>
+  <p class="zh">里</p>
+  <p class="zh">姆</p>
+  <p class="zh">林</p>
+  <p class="zh">宫</p>
+  <p class="zh">提</p>
+  <p class="zh">出</p>
+  <p class="zh">包</p>
+  <p class="zh">括</p>
+  <p class="zh">类</p>
+  <p class="zh">似</p>
+  <p class="zh">与</p>
+  <p class="zh">白</p>
+  <p class="zh">俄</p>
+  <p class="zh">罗</p>
+  <p class="zh">斯</p>
+  <p class="zh">、</p>
+  <p class="zh">朝</p>
+  <p class="zh">鲜</p>
+  <p class="zh">所</p>
+  <p class="zh">签</p>
+  <p class="zh">的</p>
+  <p class="zh">双</p>
+  <p class="zh">边</p>
+  <p class="zh">互</p>
+  <p class="zh">助</p>
+  <p class="zh">协</p>
+  <p class="zh">定</p>
+  <p class="zh">在</p>
+  <p class="zh">内</p>
+  <p class="zh">的</p>
+  <p class="zh">方</p>
+  <p class="zh">案</p>
+  <p class="zh">。</p>
+  <p class="zh">日</p>
+  <p class="zh">经</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">俄</p>
+  <p class="zh">方</p>
+  <p class="zh">在</p>
+  <p class="zh">欧</p>
+  <p class="zh">洲</p>
+  <p class="zh">安</p>
+  <p class="zh">全</p>
+  <p class="zh">议</p>
+  <p class="zh">题</p>
+  <p class="zh">上</p>
+  <p class="zh">掌</p>
+  <p class="zh">握</p>
+  <p class="zh">了</p>
+  <p class="zh">和</p>
+  <p class="zh">谈</p>
+  <p class="zh">主</p>
+  <p class="zh">导</p>
+  <p class="zh">权</p>
+  <p class="zh">，</p>
+  <p class="zh">用</p>
+  <p class="zh">的</p>
+  <p class="zh">是</p>
+  <p class="zh">苏</p>
+  <p class="zh">联</p>
+  <p class="zh">式</p>
+  <p class="zh">「</p>
+  <p class="zh">拖</p>
+  <p class="zh">时</p>
+  <p class="zh">间</p>
+  <p class="zh">」</p>
+  <p class="zh">谈</p>
+  <p class="zh">判</p>
+  <p class="zh">术</p>
+  <p class="zh">。</p>
+  <p class="zh">D</p>
+  <p class="zh">W</p>
+  <p class="zh"> </p>
+  <p class="zh">引</p>
+  <p class="zh">述</p>
+  <p class="zh">专</p>
+  <p class="zh">家</p>
+  <p class="zh">警</p>
+  <p class="zh">告</p>
+  <p class="zh">，</p>
+  <p class="zh">修</p>
+  <p class="zh">改</p>
+  <p class="zh">欧</p>
+  <p class="zh">洲</p>
+  <p class="zh">安</p>
+  <p class="zh">全</p>
+  <p class="zh">框</p>
+  <p class="zh">架</p>
+  <p class="zh">等</p>
+  <p class="zh">于</p>
+  <p class="zh">满</p>
+  <p class="zh">足</p>
+  <p class="zh">莫</p>
+  <p class="zh">斯</p>
+  <p class="zh">科</p>
+  <p class="zh">重</p>
+  <p class="zh">新</p>
+  <p class="zh">谈</p>
+  <p class="zh">判</p>
+  <p class="zh">战</p>
+  <p class="zh">后</p>
+  <p class="zh">安</p>
+  <p class="zh">全</p>
+  <p class="zh">秩</p>
+  <p class="zh">序</p>
+  <p class="zh">的</p>
+  <p class="zh">夙</p>
+  <p class="zh">愿</p>
+  <p class="zh">。</p>
+  <p class="zh">另</p>
+  <p class="zh">据</p>
+  <p class="zh"> </p>
+  <p class="zh">L</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">o</p>
+  <p class="zh">n</p>
+  <p class="zh">d</p>
+  <p class="zh">e</p>
+  <p class="zh">，</p>
+  <p class="zh">马</p>
+  <p class="zh">克</p>
+  <p class="zh">龙</p>
+  <p class="zh">表</p>
+  <p class="zh">示</p>
+  <p class="zh">削</p>
+  <p class="zh">减</p>
+  <p class="zh">对</p>
+  <p class="zh">乌</p>
+  <p class="zh">援</p>
+  <p class="zh">助</p>
+  <p class="zh">只</p>
+  <p class="zh">会</p>
+  <p class="zh">为</p>
+  <p class="zh">更</p>
+  <p class="zh">多</p>
+  <p class="zh">战</p>
+  <p class="zh">争</p>
+  <p class="zh">铺</p>
+  <p class="zh">路</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.lemonde.fr/en/international/article/2026/11/14/at-trump-s-request-russia-relishes-the-prospect-of-shaping-europe-s-security-architecture_6780754_4.html">原文 · Le Monde</a><a href="https://www.nikkei.com/article/DGXZQOGR1500X0V11C26A1000000/">对照 · 日经</a><a href="https://www.dw.com/en/the-dangers-of-revising-europe-s-security-architecture/a-79943049?maca=en-rss-en-world-4025-rdf">对照 · DW</a><a href="https://www.lemonde.fr/en/international/article/2026/11/14/reducing-ukraine-aid-sets-scene-for-more-war-says-macron_6780985_4.html">对照 · Le Monde</a></div>
+</article>
+
+<article class="entry" id="e-10">
+  <div class="byline">
+    <p class="name">意大利因读取用户照片对 Meta 罚款约 8 亿欧元<span class="src">BBC · Le Monde · 央视新闻</span></p>
+    <p class="time">11-15 02:28</p>
+  </div>
+  <p class="zh">B</p>
+  <p class="zh">B</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">意</p>
+  <p class="zh">大</p>
+  <p class="zh">利</p>
+  <p class="zh">对</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">e</p>
+  <p class="zh">t</p>
+  <p class="zh">a</p>
+  <p class="zh"> </p>
+  <p class="zh">罚</p>
+  <p class="zh">款</p>
+  <p class="zh"> </p>
+  <p class="zh">8</p>
+  <p class="zh">.</p>
+  <p class="zh">0</p>
+  <p class="zh">5</p>
+  <p class="zh"> </p>
+  <p class="zh">亿</p>
+  <p class="zh">欧</p>
+  <p class="zh">元</p>
+  <p class="zh">，</p>
+  <p class="zh">指</p>
+  <p class="zh">其</p>
+  <p class="zh">未</p>
+  <p class="zh">告</p>
+  <p class="zh">知</p>
+  <p class="zh"> </p>
+  <p class="zh">2</p>
+  <p class="zh">,</p>
+  <p class="zh">0</p>
+  <p class="zh">0</p>
+  <p class="zh">0</p>
+  <p class="zh"> </p>
+  <p class="zh">万</p>
+  <p class="zh">用</p>
+  <p class="zh">户</p>
+  <p class="zh">便</p>
+  <p class="zh">获</p>
+  <p class="zh">取</p>
+  <p class="zh">了</p>
+  <p class="zh">他</p>
+  <p class="zh">们</p>
+  <p class="zh">的</p>
+  <p class="zh">照</p>
+  <p class="zh">片</p>
+  <p class="zh">。</p>
+  <p class="zh">L</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">o</p>
+  <p class="zh">n</p>
+  <p class="zh">d</p>
+  <p class="zh">e</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">意</p>
+  <p class="zh">大</p>
+  <p class="zh">利</p>
+  <p class="zh">数</p>
+  <p class="zh">据</p>
+  <p class="zh">保</p>
+  <p class="zh">护</p>
+  <p class="zh">机</p>
+  <p class="zh">构</p>
+  <p class="zh">指</p>
+  <p class="zh">控</p>
+  <p class="zh"> </p>
+  <p class="zh">M</p>
+  <p class="zh">e</p>
+  <p class="zh">t</p>
+  <p class="zh">a</p>
+  <p class="zh">「</p>
+  <p class="zh">未</p>
+  <p class="zh">取</p>
+  <p class="zh">得</p>
+  <p class="zh">明</p>
+  <p class="zh">确</p>
+  <p class="zh">同</p>
+  <p class="zh">意</p>
+  <p class="zh">、</p>
+  <p class="zh">未</p>
+  <p class="zh">充</p>
+  <p class="zh">分</p>
+  <p class="zh">告</p>
+  <p class="zh">知</p>
+  <p class="zh">」</p>
+  <p class="zh">。</p>
+  <p class="zh">央</p>
+  <p class="zh">视</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">以</p>
+  <p class="zh">「</p>
+  <p class="zh">未</p>
+  <p class="zh">经</p>
+  <p class="zh">同</p>
+  <p class="zh">意</p>
+  <p class="zh">读</p>
+  <p class="zh">取</p>
+  <p class="zh">用</p>
+  <p class="zh">户</p>
+  <p class="zh">手</p>
+  <p class="zh">机</p>
+  <p class="zh">相</p>
+  <p class="zh">册</p>
+  <p class="zh">」</p>
+  <p class="zh">为</p>
+  <p class="zh">题</p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">称</p>
+  <p class="zh">罚</p>
+  <p class="zh">款</p>
+  <p class="zh">超</p>
+  <p class="zh"> </p>
+  <p class="zh">8</p>
+  <p class="zh"> </p>
+  <p class="zh">亿</p>
+  <p class="zh">欧</p>
+  <p class="zh">元</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.bbc.co.uk/news/articles/cwn83gxemk35o?at_medium=RSS&amp;at_campaign=rss">原文 · BBC</a><a href="https://www.lemonde.fr/en/international/article/2026/11/14/italy-fines-meta-880mn-over-photo-privacy_6780820_4.html">对照 · Le Monde</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE4tTFlEV21yRlJWYWFpd2pIMVRjQVVRUzJodFI2MkQyajI2cU1fQzFFdGZOVmx3NVJKdk1OWWlOc1RucVdhSl9jVDdYM0JJaVczdW5oUzFGNHVZdE5JOVZHZWtocG9heGI4QUZoVTk2WndnTnAzejV2Wg?oc=5">对照 · 央视新闻</a></div>
+</article>
+
+<article class="entry" id="e-11">
+  <div class="byline">
+    <p class="name">英国央行首席经济学家：仍需继续加息<span class="src">FT · WSJ · Guardian</span></p>
+    <p class="time">11-14 13:00</p>
+  </div>
+  <p class="zh">F</p>
+  <p class="zh">T</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">英</p>
+  <p class="zh">国</p>
+  <p class="zh">央</p>
+  <p class="zh">行</p>
+  <p class="zh">首</p>
+  <p class="zh">席</p>
+  <p class="zh">经</p>
+  <p class="zh">济</p>
+  <p class="zh">学</p>
+  <p class="zh">家</p>
+  <p class="zh"> </p>
+  <p class="zh">H</p>
+  <p class="zh">u</p>
+  <p class="zh">w</p>
+  <p class="zh"> </p>
+  <p class="zh">P</p>
+  <p class="zh">i</p>
+  <p class="zh">l</p>
+  <p class="zh">l</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">上</p>
+  <p class="zh">周</p>
+  <p class="zh">加</p>
+  <p class="zh">息</p>
+  <p class="zh"> </p>
+  <p class="zh">2</p>
+  <p class="zh">5</p>
+  <p class="zh"> </p>
+  <p class="zh">个</p>
+  <p class="zh">基</p>
+  <p class="zh">点</p>
+  <p class="zh">至</p>
+  <p class="zh"> </p>
+  <p class="zh">4</p>
+  <p class="zh">%</p>
+  <p class="zh"> </p>
+  <p class="zh">是</p>
+  <p class="zh">「</p>
+  <p class="zh">重</p>
+  <p class="zh">要</p>
+  <p class="zh">一</p>
+  <p class="zh">步</p>
+  <p class="zh">」</p>
+  <p class="zh">，</p>
+  <p class="zh">但</p>
+  <p class="zh">利</p>
+  <p class="zh">率</p>
+  <p class="zh">「</p>
+  <p class="zh">还</p>
+  <p class="zh">有</p>
+  <p class="zh">路</p>
+  <p class="zh">要</p>
+  <p class="zh">走</p>
+  <p class="zh">」</p>
+  <p class="zh">。</p>
+  <p class="zh">W</p>
+  <p class="zh">S</p>
+  <p class="zh">J</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">一</p>
+  <p class="zh">家</p>
+  <p class="zh">英</p>
+  <p class="zh">国</p>
+  <p class="zh">经</p>
+  <p class="zh">济</p>
+  <p class="zh">智</p>
+  <p class="zh">库</p>
+  <p class="zh">主</p>
+  <p class="zh">张</p>
+  <p class="zh">把</p>
+  <p class="zh">基</p>
+  <p class="zh">准</p>
+  <p class="zh">利</p>
+  <p class="zh">率</p>
+  <p class="zh">提</p>
+  <p class="zh">高</p>
+  <p class="zh">到</p>
+  <p class="zh"> </p>
+  <p class="zh">5</p>
+  <p class="zh">%</p>
+  <p class="zh"> </p>
+  <p class="zh">左</p>
+  <p class="zh">右</p>
+  <p class="zh">。</p>
+  <p class="zh">G</p>
+  <p class="zh">u</p>
+  <p class="zh">a</p>
+  <p class="zh">r</p>
+  <p class="zh">d</p>
+  <p class="zh">i</p>
+  <p class="zh">a</p>
+  <p class="zh">n</p>
+  <p class="zh"> </p>
+  <p class="zh">的</p>
+  <p class="zh">角</p>
+  <p class="zh">度</p>
+  <p class="zh">不</p>
+  <p class="zh">同</p>
+  <p class="zh">：</p>
+  <p class="zh">评</p>
+  <p class="zh">论</p>
+  <p class="zh">认</p>
+  <p class="zh">为</p>
+  <p class="zh">加</p>
+  <p class="zh">息</p>
+  <p class="zh">过</p>
+  <p class="zh">猛</p>
+  <p class="zh">可</p>
+  <p class="zh">能</p>
+  <p class="zh">摧</p>
+  <p class="zh">毁</p>
+  <p class="zh">仅</p>
+  <p class="zh">存</p>
+  <p class="zh">的</p>
+  <p class="zh">经</p>
+  <p class="zh">济</p>
+  <p class="zh">增</p>
+  <p class="zh">长</p>
+  <p class="zh">，</p>
+  <p class="zh">而</p>
+  <p class="zh">央</p>
+  <p class="zh">行</p>
+  <p class="zh">预</p>
+  <p class="zh">测</p>
+  <p class="zh">通</p>
+  <p class="zh">胀</p>
+  <p class="zh">将</p>
+  <p class="zh">升</p>
+  <p class="zh">至</p>
+  <p class="zh"> </p>
+  <p class="zh">5</p>
+  <p class="zh">%</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.ft.com/content/806b0158-41c5-4db2-ac33-93621f72297b?syn-25a6b1a6=1">原文 · FT</a><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxQRXRSNC0yamptaWZaOGVDNjBrM3F2VWlBanF1WmVwNEVQeFh0blFHTGJQVG0zRHZtTndud01RQTlIMTR2QjlzdGpXSVl2VWVFQWZXTWtxSjhwbFBmQ0hYNXdNcEFucFFTS0RhU2o4S0I3ZEhCS0xVQnRrcEV6aEtveHNHNld6LTBIYjIzaVd2RWlJdmp4NFBEMW5LYzlhV081Skp3aEdMUURNVjJBWl93?oc=5">对照 · WSJ</a><a href="https://www.theguardian.com/business/2026/nov/14/interest-rate-rise-phillip-inman-inflation-economy">对照 · Guardian</a></div>
+</article>
+
+<article class="entry" id="e-12">
+  <div class="byline">
+    <p class="name">检方披露伊朗特工如何袭击欧洲目标<span class="src">NYT</span></p>
+    <p class="time">11-15 03:23</p>
+  </div>
+  <p class="zh">N</p>
+  <p class="zh">Y</p>
+  <p class="zh">T</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">今</p>
+  <p class="zh">年</p>
+  <p class="zh">春</p>
+  <p class="zh">季</p>
+  <p class="zh">英</p>
+  <p class="zh">国</p>
+  <p class="zh">等</p>
+  <p class="zh">地</p>
+  <p class="zh">发</p>
+  <p class="zh">生</p>
+  <p class="zh">的</p>
+  <p class="zh">一</p>
+  <p class="zh">波</p>
+  <p class="zh">袭</p>
+  <p class="zh">击</p>
+  <p class="zh">在</p>
+  <p class="zh">欧</p>
+  <p class="zh">洲</p>
+  <p class="zh">引</p>
+  <p class="zh">发</p>
+  <p class="zh">恐</p>
+  <p class="zh">慌</p>
+  <p class="zh">，</p>
+  <p class="zh">检</p>
+  <p class="zh">方</p>
+  <p class="zh">新</p>
+  <p class="zh">披</p>
+  <p class="zh">露</p>
+  <p class="zh">的</p>
+  <p class="zh">信</p>
+  <p class="zh">息</p>
+  <p class="zh">显</p>
+  <p class="zh">示</p>
+  <p class="zh">伊</p>
+  <p class="zh">朗</p>
+  <p class="zh">如</p>
+  <p class="zh">何</p>
+  <p class="zh">把</p>
+  <p class="zh">矛</p>
+  <p class="zh">头</p>
+  <p class="zh">对</p>
+  <p class="zh">准</p>
+  <p class="zh">美</p>
+  <p class="zh">国</p>
+  <p class="zh">盟</p>
+  <p class="zh">友</p>
+  <p class="zh">，</p>
+  <p class="zh">标</p>
+  <p class="zh">题</p>
+  <p class="zh">引</p>
+  <p class="zh">用</p>
+  <p class="zh">了</p>
+  <p class="zh">「</p>
+  <p class="zh">专</p>
+  <p class="zh">注</p>
+  <p class="zh">伦</p>
+  <p class="zh">敦</p>
+  <p class="zh">」</p>
+  <p class="zh">一</p>
+  <p class="zh">语</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.nytimes.com/2026/11/13/world/europe/iran-attacks-europe-britain.html">原文 · NYT</a></div>
+</article>
+
+<p class="note">说明：伊朗特工在欧洲的袭击按发生地归入本章。</p>
+<div class="sec-head" id="s-13">
+  <span class="lbl"><span class="zh-lbl">关于中国的新闻</span></span>
+  <span class="rule"></span><span class="count">5 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 焦点集中在下周深圳 APEC：特朗普、普京、习近平拟举行三方会晤，深圳安保升级，中韩借峰会推进关系。</p><ol><li>白宫：特朗普、普京、习近平下周拟在中国举行三方会晤</li><li>APEC 深圳会议筹备就绪</li><li>中韩外长同意借 APEC 推进双边关系</li></ol></div>
+
+<article class="entry" id="e-14">
+  <div class="byline">
+    <p class="name">白宫：特朗普、普京、习近平下周拟在中国举行三方会晤<span class="src">BBC · Reuters</span></p>
+    <p class="time">11-14 23:53</p>
+  </div>
+  <p class="zh">B</p>
+  <p class="zh">B</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">白</p>
+  <p class="zh">宫</p>
+  <p class="zh">称</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">、</p>
+  <p class="zh">普</p>
+  <p class="zh">京</p>
+  <p class="zh">和</p>
+  <p class="zh">习</p>
+  <p class="zh">近</p>
+  <p class="zh">平</p>
+  <p class="zh">计</p>
+  <p class="zh">划</p>
+  <p class="zh">下</p>
+  <p class="zh">周</p>
+  <p class="zh">在</p>
+  <p class="zh">中</p>
+  <p class="zh">国</p>
+  <p class="zh">举</p>
+  <p class="zh">行</p>
+  <p class="zh">历</p>
+  <p class="zh">史</p>
+  <p class="zh">性</p>
+  <p class="zh">联</p>
+  <p class="zh">合</p>
+  <p class="zh">会</p>
+  <p class="zh">晤</p>
+  <p class="zh">，</p>
+  <p class="zh">发</p>
+  <p class="zh">言</p>
+  <p class="zh">人</p>
+  <p class="zh">说</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">将</p>
+  <p class="zh">讨</p>
+  <p class="zh">论</p>
+  <p class="zh">「</p>
+  <p class="zh">削</p>
+  <p class="zh">减</p>
+  <p class="zh">核</p>
+  <p class="zh">武</p>
+  <p class="zh">器</p>
+  <p class="zh">」</p>
+  <p class="zh">。</p>
+  <p class="zh">R</p>
+  <p class="zh">e</p>
+  <p class="zh">u</p>
+  <p class="zh">t</p>
+  <p class="zh">e</p>
+  <p class="zh">r</p>
+  <p class="zh">s</p>
+  <p class="zh"> </p>
+  <p class="zh">的</p>
+  <p class="zh">角</p>
+  <p class="zh">度</p>
+  <p class="zh">不</p>
+  <p class="zh">同</p>
+  <p class="zh">：</p>
+  <p class="zh">以</p>
+  <p class="zh">「</p>
+  <p class="zh">新</p>
+  <p class="zh">的</p>
+  <p class="zh">雅</p>
+  <p class="zh">尔</p>
+  <p class="zh">塔</p>
+  <p class="zh">？</p>
+  <p class="zh">」</p>
+  <p class="zh">为</p>
+  <p class="zh">题</p>
+  <p class="zh">，</p>
+  <p class="zh">称</p>
+  <p class="zh">特</p>
+  <p class="zh">朗</p>
+  <p class="zh">普</p>
+  <p class="zh">和</p>
+  <p class="zh">普</p>
+  <p class="zh">京</p>
+  <p class="zh">推</p>
+  <p class="zh">动</p>
+  <p class="zh">这</p>
+  <p class="zh">次</p>
+  <p class="zh">会</p>
+  <p class="zh">面</p>
+  <p class="zh">，</p>
+  <p class="zh">而</p>
+  <p class="zh">习</p>
+  <p class="zh">近</p>
+  <p class="zh">平</p>
+  <p class="zh">对</p>
+  <p class="zh">主</p>
+  <p class="zh">办</p>
+  <p class="zh">持</p>
+  <p class="zh">谨</p>
+  <p class="zh">慎</p>
+  <p class="zh">态</p>
+  <p class="zh">度</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.bbc.co.uk/news/articles/ckz74jzpy18do?at_medium=RSS&amp;at_campaign=rss">原文 · BBC</a><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxPNHV6OEE3TG9DMmR2b2N2OEpUX2IxMlZLTHUyc3FwaTRZbDZ1RWtPaUl3Q2N6c1JOYl9FQ1k4OGxFeTM1czMzV3R2TE5ueXdQdThyZXhWTHJPUEJVLXh4aVhRVGI5Ri1VcEhMREJWbGdtdVcxNjlBYjRsVHhkYktoU2JERjBmRUctUTkzdm9JcTZLdEpwSFM2TXV5WU5LbV9hZlhNMS1ZdXY4QQ?oc=5">对照 · Reuters</a></div>
+</article>
+
+<article class="entry" id="e-15">
+  <div class="byline">
+    <p class="name">APEC 深圳会议筹备就绪<span class="src">人民日报 · 南华早报</span></p>
+    <p class="time">11-15 05:39</p>
+  </div>
+  <p class="zh">人</p>
+  <p class="zh">民</p>
+  <p class="zh">日</p>
+  <p class="zh">报</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">A</p>
+  <p class="zh">P</p>
+  <p class="zh">E</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">深</p>
+  <p class="zh">圳</p>
+  <p class="zh">会</p>
+  <p class="zh">议</p>
+  <p class="zh">各</p>
+  <p class="zh">项</p>
+  <p class="zh">筹</p>
+  <p class="zh">备</p>
+  <p class="zh">工</p>
+  <p class="zh">作</p>
+  <p class="zh">已</p>
+  <p class="zh">经</p>
+  <p class="zh">就</p>
+  <p class="zh">绪</p>
+  <p class="zh">，</p>
+  <p class="zh">何</p>
+  <p class="zh">立</p>
+  <p class="zh">峰</p>
+  <p class="zh">出</p>
+  <p class="zh">席</p>
+  <p class="zh">了</p>
+  <p class="zh">亚</p>
+  <p class="zh">太</p>
+  <p class="zh">经</p>
+  <p class="zh">合</p>
+  <p class="zh">组</p>
+  <p class="zh">织</p>
+  <p class="zh">工</p>
+  <p class="zh">商</p>
+  <p class="zh">咨</p>
+  <p class="zh">询</p>
+  <p class="zh">理</p>
+  <p class="zh">事</p>
+  <p class="zh">会</p>
+  <p class="zh">会</p>
+  <p class="zh">议</p>
+  <p class="zh">开</p>
+  <p class="zh">幕</p>
+  <p class="zh">式</p>
+  <p class="zh">并</p>
+  <p class="zh">致</p>
+  <p class="zh">辞</p>
+  <p class="zh">。</p>
+  <p class="zh">南</p>
+  <p class="zh">华</p>
+  <p class="zh">早</p>
+  <p class="zh">报</p>
+  <p class="zh"> </p>
+  <p class="zh">写</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">深</p>
+  <p class="zh">圳</p>
+  <p class="zh">禁</p>
+  <p class="zh">飞</p>
+  <p class="zh">无</p>
+  <p class="zh">人</p>
+  <p class="zh">机</p>
+  <p class="zh">、</p>
+  <p class="zh">路</p>
+  <p class="zh">口</p>
+  <p class="zh">密</p>
+  <p class="zh">布</p>
+  <p class="zh">监</p>
+  <p class="zh">控</p>
+  <p class="zh">，</p>
+  <p class="zh">部</p>
+  <p class="zh">分</p>
+  <p class="zh">居</p>
+  <p class="zh">民</p>
+  <p class="zh">被</p>
+  <p class="zh">要</p>
+  <p class="zh">求</p>
+  <p class="zh">腾</p>
+  <p class="zh">出</p>
+  <p class="zh">住</p>
+  <p class="zh">所</p>
+  <p class="zh">，</p>
+  <p class="zh">称</p>
+  <p class="zh">这</p>
+  <p class="zh">是</p>
+  <p class="zh">这</p>
+  <p class="zh">座</p>
+  <p class="zh">城</p>
+  <p class="zh">市</p>
+  <p class="zh">「</p>
+  <p class="zh">最</p>
+  <p class="zh">严</p>
+  <p class="zh">峻</p>
+  <p class="zh">的</p>
+  <p class="zh">压</p>
+  <p class="zh">力</p>
+  <p class="zh">测</p>
+  <p class="zh">试</p>
+  <p class="zh">」</p>
+  <p class="zh">；</p>
+  <p class="zh">另</p>
+  <p class="zh">一</p>
+  <p class="zh">篇</p>
+  <p class="zh">评</p>
+  <p class="zh">论</p>
+  <p class="zh">指</p>
+  <p class="zh">出</p>
+  <p class="zh">第</p>
+  <p class="zh"> </p>
+  <p class="zh">3</p>
+  <p class="zh">3</p>
+  <p class="zh"> </p>
+  <p class="zh">届</p>
+  <p class="zh">峰</p>
+  <p class="zh">会</p>
+  <p class="zh">定</p>
+  <p class="zh">于</p>
+  <p class="zh"> </p>
+  <p class="zh">1</p>
+  <p class="zh">1</p>
+  <p class="zh"> </p>
+  <p class="zh">月</p>
+  <p class="zh"> </p>
+  <p class="zh">1</p>
+  <p class="zh">8</p>
+  <p class="zh">–</p>
+  <p class="zh">1</p>
+  <p class="zh">9</p>
+  <p class="zh"> </p>
+  <p class="zh">日</p>
+  <p class="zh">举</p>
+  <p class="zh">行</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE1VdkxVMUt2N1EyUGpvaW13RGR5bkR6OVNUemxOeXdoYngybXdudmc5d0ljU3F5MHc3ZFRtUWZtMm5wYkdTaFI2M3ZFcHJDRzBzWjU4d3p2OV93LTJOMFBqcUhHOXdRdm9tOW1rSXZCY2NIdw?oc=5">原文 · 人民日报</a><a href="https://www.scmp.com/news/china/politics/article/3374445/apec-looms-chinas-shenzhen-wraps-preparations-its-toughest-stress-test-ever">对照 · 南华早报</a><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE91bzBmdUpiYnJMWkFHT2FZV3ZsQlZiMzk1OHhjMG5CX05MbmZhTXNudE44VFV5N2RBMm5BSXVIaVgzR1kxVm84ME1BdVNvaUhIeExFdms4YWotLWxhZTFORDFOUnkzdGw1S3ZmdFJycw?oc=5">对照 · 人民日报</a><a href="https://www.scmp.com/opinion/china-opinion/article/3374048/amid-xi-trump-clamour-can-apec-revive-business-cooperation">对照 · 南华早报</a></div>
+</article>
+
+<article class="entry" id="e-16">
+  <div class="byline">
+    <p class="name">中韩外长同意借 APEC 推进双边关系<span class="src">南华早报</span></p>
+    <p class="time">11-14 19:45</p>
+  </div>
+  <p class="zh">南</p>
+  <p class="zh">华</p>
+  <p class="zh">早</p>
+  <p class="zh">报</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">中</p>
+  <p class="zh">国</p>
+  <p class="zh">外</p>
+  <p class="zh">长</p>
+  <p class="zh">王</p>
+  <p class="zh">毅</p>
+  <p class="zh">与</p>
+  <p class="zh">韩</p>
+  <p class="zh">国</p>
+  <p class="zh">外</p>
+  <p class="zh">长</p>
+  <p class="zh">赵</p>
+  <p class="zh">显</p>
+  <p class="zh">同</p>
+  <p class="zh">意</p>
+  <p class="zh">利</p>
+  <p class="zh">用</p>
+  <p class="zh">下</p>
+  <p class="zh">周</p>
+  <p class="zh">深</p>
+  <p class="zh">圳</p>
+  <p class="zh"> </p>
+  <p class="zh">A</p>
+  <p class="zh">P</p>
+  <p class="zh">E</p>
+  <p class="zh">C</p>
+  <p class="zh"> </p>
+  <p class="zh">峰</p>
+  <p class="zh">会</p>
+  <p class="zh">推</p>
+  <p class="zh">进</p>
+  <p class="zh">双</p>
+  <p class="zh">边</p>
+  <p class="zh">关</p>
+  <p class="zh">系</p>
+  <p class="zh">，</p>
+  <p class="zh">首</p>
+  <p class="zh">尔</p>
+  <p class="zh">同</p>
+  <p class="zh">时</p>
+  <p class="zh">在</p>
+  <p class="zh">推</p>
+  <p class="zh">动</p>
+  <p class="zh">与</p>
+  <p class="zh">朝</p>
+  <p class="zh">鲜</p>
+  <p class="zh">对</p>
+  <p class="zh">话</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.scmp.com/news/china/diplomacy/article/3374442/china-south-korea-vow-deepen-ties-apec-summit-seoul-pushes-north-korea-talks">原文 · 南华早报</a></div>
+</article>
+
+<article class="entry" id="e-17">
+  <div class="byline">
+    <p class="name">上海一基因编辑研究人员在儿童死亡后被解雇<span class="src">财新</span></p>
+    <p class="time">11-14 02:40</p>
+  </div>
+  <p class="zh">财</p>
+  <p class="zh">新</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">上</p>
+  <p class="zh">海</p>
+  <p class="zh">一</p>
+  <p class="zh">名</p>
+  <p class="zh">基</p>
+  <p class="zh">因</p>
+  <p class="zh">编</p>
+  <p class="zh">辑</p>
+  <p class="zh">研</p>
+  <p class="zh">究</p>
+  <p class="zh">人</p>
+  <p class="zh">员</p>
+  <p class="zh">在</p>
+  <p class="zh">一</p>
+  <p class="zh">名</p>
+  <p class="zh">儿</p>
+  <p class="zh">童</p>
+  <p class="zh">死</p>
+  <p class="zh">亡</p>
+  <p class="zh">后</p>
+  <p class="zh">被</p>
+  <p class="zh">解</p>
+  <p class="zh">雇</p>
+  <p class="zh">（</p>
+  <p class="zh">仅</p>
+  <p class="zh">据</p>
+  <p class="zh">标</p>
+  <p class="zh">题</p>
+  <p class="zh">，</p>
+  <p class="zh">细</p>
+  <p class="zh">节</p>
+  <p class="zh">未</p>
+  <p class="zh">获</p>
+  <p class="zh">取</p>
+  <p class="zh">）</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxOeHBOVXhFQXhkOGV6My15RFo2WUZFTEdHcEhmUzltaVZuOUpvNF9OaTF3NVpNZ3hUWHZfTS04eURHTE1oX1FYUE14Nk5xbkRMVHVCczBmbW1mTFBVcDdZb2xsMUlhenNqQS16YmVjbXJ3XzVHSERnbTdGVjBWRHJHdVVSUmVaaXhBV0NxajlYNGVnV1BNdVF3ZXlyeGhrYklIeTRBVG9oMUxxWGxlelFzTUFR?oc=5">原文 · 财新</a></div>
+</article>
+
+<article class="entry" id="e-18">
+  <div class="byline">
+    <p class="name">老挝、柬埔寨新设施引发对中国军事存在的担忧<span class="src">DW</span></p>
+    <p class="time">11-14 19:24</p>
+  </div>
+  <p class="zh">D</p>
+  <p class="zh">W</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">中</p>
+  <p class="zh">国</p>
+  <p class="zh">在</p>
+  <p class="zh">东</p>
+  <p class="zh">南</p>
+  <p class="zh">亚</p>
+  <p class="zh">的</p>
+  <p class="zh">经</p>
+  <p class="zh">济</p>
+  <p class="zh">关</p>
+  <p class="zh">系</p>
+  <p class="zh">日</p>
+  <p class="zh">益</p>
+  <p class="zh">紧</p>
+  <p class="zh">密</p>
+  <p class="zh">，</p>
+  <p class="zh">老</p>
+  <p class="zh">挝</p>
+  <p class="zh">和</p>
+  <p class="zh">柬</p>
+  <p class="zh">埔</p>
+  <p class="zh">寨</p>
+  <p class="zh">的</p>
+  <p class="zh">新</p>
+  <p class="zh">军</p>
+  <p class="zh">事</p>
+  <p class="zh">设</p>
+  <p class="zh">施</p>
+  <p class="zh">让</p>
+  <p class="zh">周</p>
+  <p class="zh">边</p>
+  <p class="zh">小</p>
+  <p class="zh">国</p>
+  <p class="zh">担</p>
+  <p class="zh">心</p>
+  <p class="zh">中</p>
+  <p class="zh">国</p>
+  <p class="zh">的</p>
+  <p class="zh">军</p>
+  <p class="zh">事</p>
+  <p class="zh">网</p>
+  <p class="zh">络</p>
+  <p class="zh">也</p>
+  <p class="zh">在</p>
+  <p class="zh">扩</p>
+  <p class="zh">张</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://www.dw.com/en/new-facilities-in-laos-and-cambodia-is-china-expanding-its-military-presence-in-southeast-asia/a-79944798?maca=en-rss-en-world-4025-rdf">原文 · DW</a></div>
+</article>
+
+<p class="note">说明：DW 关于老挝、柬埔寨军事设施的报道涉及中国军事存在，归入本章。</p>
+<div class="sec-head" id="s-19">
+  <span class="lbl"><span class="zh-lbl">关于日本的新闻</span></span>
+  <span class="rule"></span><span class="count">4 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 日本相关硬新闻较少：冲绳美军酒驾、驻俄大使人选、外国人日语考试问题，以及足球队再胜巴西。</p><ol><li>冲绳一名美军上尉涉嫌酒驾被捕</li><li>日本政府拟任宇山秀树为下任驻俄大使</li><li>在日外国人因无法参加日语考试担忧居留</li></ol></div>
+
+<article class="entry" id="e-20">
+  <div class="byline">
+    <p class="name">冲绳一名美军上尉涉嫌酒驾被捕<span class="src">读卖新闻</span></p>
+    <p class="time">11-14 16:16</p>
+  </div>
+  <p class="zh">读</p>
+  <p class="zh">卖</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">一</p>
+  <p class="zh">名</p>
+  <p class="zh">美</p>
+  <p class="zh">军</p>
+  <p class="zh">上</p>
+  <p class="zh">尉</p>
+  <p class="zh">在</p>
+  <p class="zh">冲</p>
+  <p class="zh">绳</p>
+  <p class="zh">因</p>
+  <p class="zh">涉</p>
+  <p class="zh">嫌</p>
+  <p class="zh">酒</p>
+  <p class="zh">驾</p>
+  <p class="zh">被</p>
+  <p class="zh">捕</p>
+  <p class="zh">，</p>
+  <p class="zh">标</p>
+  <p class="zh">题</p>
+  <p class="zh">称</p>
+  <p class="zh">这</p>
+  <p class="zh">是</p>
+  <p class="zh">又</p>
+  <p class="zh">一</p>
+  <p class="zh">起</p>
+  <p class="zh">（</p>
+  <p class="zh">第</p>
+  <p class="zh">二</p>
+  <p class="zh">起</p>
+  <p class="zh">）</p>
+  <p class="zh">此</p>
+  <p class="zh">类</p>
+  <p class="zh">逮</p>
+  <p class="zh">捕</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE9BeGJ6QnNOYS1uYkhCTWRlN3BGRWdjMVBhbGg0b1htTHdTQmRDXzBTQU9Hb3NZdDZZLWc0LXM3T1B5MWlNUmdpRXpvNERSYVBxQ0U2WVZUSmI0N01QNUVISElNUWpzdXpRbUdRT0NDSkhOU2lFT05ncw?oc=5">原文 · 读卖新闻</a></div>
+</article>
+
+<article class="entry" id="e-21">
+  <div class="byline">
+    <p class="name">日本政府拟任宇山秀树为下任驻俄大使<span class="src">朝日新闻</span></p>
+    <p class="time">11-15 05:00</p>
+  </div>
+  <p class="zh">朝</p>
+  <p class="zh">日</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">日</p>
+  <p class="zh">本</p>
+  <p class="zh">政</p>
+  <p class="zh">府</p>
+  <p class="zh">正</p>
+  <p class="zh">协</p>
+  <p class="zh">调</p>
+  <p class="zh">任</p>
+  <p class="zh">命</p>
+  <p class="zh">曾</p>
+  <p class="zh">任</p>
+  <p class="zh">驻</p>
+  <p class="zh">丹</p>
+  <p class="zh">麦</p>
+  <p class="zh">大</p>
+  <p class="zh">使</p>
+  <p class="zh">等</p>
+  <p class="zh">职</p>
+  <p class="zh">的</p>
+  <p class="zh">宇</p>
+  <p class="zh">山</p>
+  <p class="zh">秀</p>
+  <p class="zh">树</p>
+  <p class="zh">为</p>
+  <p class="zh">下</p>
+  <p class="zh">任</p>
+  <p class="zh">驻</p>
+  <p class="zh">俄</p>
+  <p class="zh">罗</p>
+  <p class="zh">斯</p>
+  <p class="zh">大</p>
+  <p class="zh">使</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="http://www.asahi.com/articles/ASVCG539FVCGUTFK009M.html?ref=rss">原文 · 朝日新闻</a></div>
+</article>
+
+<article class="entry" id="e-22">
+  <div class="byline">
+    <p class="name">在日外国人因无法参加日语考试担忧居留<span class="src">朝日新闻</span></p>
+    <p class="time">11-15 05:00</p>
+  </div>
+  <p class="zh">朝</p>
+  <p class="zh">日</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">有</p>
+  <p class="zh">在</p>
+  <p class="zh">日</p>
+  <p class="zh">外</p>
+  <p class="zh">国</p>
+  <p class="zh">人</p>
+  <p class="zh">因</p>
+  <p class="zh">无</p>
+  <p class="zh">法</p>
+  <p class="zh">参</p>
+  <p class="zh">加</p>
+  <p class="zh">日</p>
+  <p class="zh">语</p>
+  <p class="zh">考</p>
+  <p class="zh">试</p>
+  <p class="zh">而</p>
+  <p class="zh">担</p>
+  <p class="zh">心</p>
+  <p class="zh">「</p>
+  <p class="zh">可</p>
+  <p class="zh">能</p>
+  <p class="zh">住</p>
+  <p class="zh">不</p>
+  <p class="zh">下</p>
+  <p class="zh">去</p>
+  <p class="zh">」</p>
+  <p class="zh">，</p>
+  <p class="zh">国</p>
+  <p class="zh">家</p>
+  <p class="zh">的</p>
+  <p class="zh">做</p>
+  <p class="zh">法</p>
+  <p class="zh">也</p>
+  <p class="zh">遭</p>
+  <p class="zh">到</p>
+  <p class="zh">批</p>
+  <p class="zh">评</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="http://www.asahi.com/articles/ASVCC0G2TVCCPTIL00VM.html?ref=rss">原文 · 朝日新闻</a></div>
+</article>
+
+<article class="entry" id="e-23">
+  <div class="byline">
+    <p class="name">日本足球队再胜巴西<span class="src">朝日新闻 · 共同社</span></p>
+    <p class="time">11-14 20:33</p>
+  </div>
+  <p class="zh">朝</p>
+  <p class="zh">日</p>
+  <p class="zh">新</p>
+  <p class="zh">闻</p>
+  <p class="zh"> </p>
+  <p class="zh">报</p>
+  <p class="zh">道</p>
+  <p class="zh">，</p>
+  <p class="zh">森</p>
+  <p class="zh">保</p>
+  <p class="zh">一</p>
+  <p class="zh">率</p>
+  <p class="zh">领</p>
+  <p class="zh">的</p>
+  <p class="zh">日</p>
+  <p class="zh">本</p>
+  <p class="zh">队</p>
+  <p class="zh">在</p>
+  <p class="zh">世</p>
+  <p class="zh">界</p>
+  <p class="zh">杯</p>
+  <p class="zh">后</p>
+  <p class="zh">再</p>
+  <p class="zh">战</p>
+  <p class="zh">巴</p>
+  <p class="zh">西</p>
+  <p class="zh">并</p>
+  <p class="zh">雪</p>
+  <p class="zh">耻</p>
+  <p class="zh">，</p>
+  <p class="zh">坂</p>
+  <p class="zh">元</p>
+  <p class="zh">达</p>
+  <p class="zh">裕</p>
+  <p class="zh">打</p>
+  <p class="zh">进</p>
+  <p class="zh">制</p>
+  <p class="zh">胜</p>
+  <p class="zh">球</p>
+  <p class="zh">；</p>
+  <p class="zh">共</p>
+  <p class="zh">同</p>
+  <p class="zh">社</p>
+  <p class="zh"> </p>
+  <p class="zh">称</p>
+  <p class="zh">这</p>
+  <p class="zh">是</p>
+  <p class="zh">日</p>
+  <p class="zh">本</p>
+  <p class="zh">连</p>
+  <p class="zh">续</p>
+  <p class="zh">第</p>
+  <p class="zh">二</p>
+  <p class="zh">次</p>
+  <p class="zh">在</p>
+  <p class="zh">友</p>
+  <p class="zh">谊</p>
+  <p class="zh">赛</p>
+  <p class="zh">中</p>
+  <p class="zh">战</p>
+  <p class="zh">胜</p>
+  <p class="zh">巴</p>
+  <p class="zh">西</p>
+  <p class="zh">。</p>
+  <div class="receipts"><a href="http://www.asahi.com/articles/ASVCG42RFVCGUTQP01NM.html?ref=rss">原文 · 朝日新闻</a><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE90TXRvY1Z1YkVIQmJaTWJXRHhSZUVjZS05RUFTOEtUdVY1MnZYajRjZnBDU3VHeFRoUXZyNHZRdVdpVGZlOEdyME8yQnZpNmNEQmk1UDBfcWtHZw?oc=5">对照 · 共同社</a></div>
+</article>
+
+<p class="note">说明：本期关于日本的新闻偏少（NHK 未抓到条目），未作填充。</p>
+  <footer>
+    <div>SOCIAL DIGEST · 2026-11-15 · 时间均为北京时间</div>
+    <div>来源为各媒体 RSS / 公开页面，部分经 Google News 检索回退 · 摘要为中文转述，以原文为准</div>
+  </footer>
+
+</div>
+<script>(function(){var ls=[].slice.call(document.querySelectorAll('.toc a[href^="#"]'));var ts=ls.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function f(){var k=-1;for(var j=0;j<ts.length;j++){if(ts[j]&&ts[j].getBoundingClientRect().top<120)k=j;}ls.forEach(function(a,j){a.classList.toggle('on',j===k);});
+if(k>=0){var a=ls[k],t=a.closest('.toc');var r=a.getBoundingClientRect(),q=t.getBoundingClientRect();if(r.top<q.top||r.bottom>q.bottom)t.scrollTop+=r.top-q.top-q.height/2;}}
+addEventListener('scroll',f,{passive:true});f();})();</script>
+</body>
+</html>
