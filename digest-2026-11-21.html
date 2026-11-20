@@ -1,0 +1,670 @@
+<title>Social Digest</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    /* cool blue-grey paper, slate ink, single signal-amber accent */
+    --bg: #E9ECF1;
+    --surface: #FBFCFE;
+    --ink: #191C23;
+    --ink-soft: #474E5B;
+    --ink-faint: #79818F;
+    --line: #D2D7E0;
+    --line-strong: #191C23;
+    --accent: #C98A00;
+    --accent-ink: #8A5A00;
+    --accent-wash: #FBF2DC;
+    --accent-wash-edge: #E9B84A;
+    --good: #2E7D57;
+    --shadow: 0 1px 2px rgba(24,28,35,.05), 0 12px 32px -18px rgba(24,28,35,.28);
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #101319;
+      --surface: #191D25;
+      --ink: #E9EBF0;
+      --ink-soft: #A9B1BE;
+      --ink-faint: #6E7684;
+      --line: #2A2F39;
+      --line-strong: #E9EBF0;
+      --accent: #F0B429;
+      --accent-ink: #F5C556;
+      --accent-wash: rgba(240,180,41,.08);
+      --accent-wash-edge: rgba(240,180,41,.55);
+      --good: #58C08C;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 44px -20px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #101319;
+    --surface: #191D25;
+    --ink: #E9EBF0;
+    --ink-soft: #A9B1BE;
+    --ink-faint: #6E7684;
+    --line: #2A2F39;
+    --line-strong: #E9EBF0;
+    --accent: #F0B429;
+    --accent-ink: #F5C556;
+    --accent-wash: rgba(240,180,41,.08);
+    --accent-wash-edge: rgba(240,180,41,.55);
+    --good: #58C08C;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 44px -20px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Serif SC", "Libre Franklin", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 88px; }
+
+  /* ---------- nameplate ---------- */
+  .plate { padding-top: 34px; }
+  .plate-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .signal { display: inline-flex; align-items: center; gap: 7px; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    animation: pulse 3.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    70%,100% { box-shadow: 0 0 0 7px transparent; }
+  }
+
+  .toggle {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft); background: transparent;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer; transition: border-color .18s, color .18s;
+  }
+  .toggle:hover { color: var(--ink); border-color: var(--line-strong); }
+  .toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .masthead {
+    border-top: 3px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    margin-top: 12px; padding: 18px 0 16px;
+  }
+  h1.title {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: clamp(2.9rem, 11vw, 4.4rem); line-height: .96;
+    letter-spacing: -.02em; margin: 0; text-wrap: balance;
+  }
+  .title em { font-style: italic; font-weight: 500; color: var(--accent-ink); }
+  .tagline {
+    font-family: "Noto Serif SC", "Newsreader", serif; font-size: 1.06rem;
+    color: var(--ink-soft); margin: 12px 0 0; letter-spacing: .01em;
+  }
+
+  .dateline {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); padding: 11px 0 0;
+  }
+  .dateline b { color: var(--ink-soft); font-weight: 600; }
+  .dateline .num { font-variant-numeric: tabular-nums; color: var(--accent-ink); font-weight: 600; }
+
+  /* ---------- today's signal (thesis lead) ---------- */
+  .lead {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; box-shadow: var(--shadow);
+    padding: 24px 24px 22px; margin: 28px 0 8px;
+  }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent-ink); display: flex; align-items: center; gap: 9px; margin: 0 0 12px;
+  }
+  .kicker::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--accent-wash-edge), transparent); }
+  .lead h2 {
+    font-family: "Noto Serif SC", "Newsreader", serif; font-weight: 500;
+    font-size: 1.42rem; line-height: 1.5; letter-spacing: 0; margin: 0; text-wrap: pretty;
+  }
+  .lead h2 .mark {
+    background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--accent) 42%, transparent) 62%);
+    padding: 0 1px;
+  }
+
+  /* ---------- section rule ---------- */
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 46px 0 6px; }
+  .sec-head .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink); white-space: nowrap;
+  }
+  .sec-head .lbl .zh-lbl { font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px; }
+  .sec-head .rule { flex: 1; height: 2px; background: var(--line-strong); }
+  .sec-head .count { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+  /* ---------- entry ---------- */
+  .entry { padding: 26px 0 4px; border-bottom: 1px solid var(--line); }
+  .entry:last-of-type { border-bottom: 0; }
+
+  .byline { margin-bottom: 12px; }
+  .tag {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 4px;
+  }
+  .tag .ch { color: var(--accent-ink); }
+  .name {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: 1.34rem; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance;
+  }
+  .name span { color: var(--ink-soft); font-weight: 400; font-style: italic; font-size: .96rem; }
+
+  /* zh body is PRIMARY */
+  .zh { margin: 0; }
+  .zh + .zh { margin-top: 12px; }
+
+  /* english-original channel — key quotes only */
+  .en-quote {
+    margin: 15px 0 4px; padding: 12px 16px;
+    background: var(--accent-wash); border-left: 2px solid var(--accent-wash-edge);
+    border-radius: 0 3px 3px 0;
+    font-family: "Newsreader", Georgia, serif; font-style: italic;
+    color: var(--ink-soft); font-size: 1.02rem; line-height: 1.6;
+  }
+  .en-quote p { margin: 0; }
+  .en-quote p + p { margin-top: 8px; }
+  .en-quote .q-lbl {
+    display: block; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-style: normal; font-size: 9.5px; font-weight: 600; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent-ink); margin-bottom: 6px;
+  }
+
+  .receipts { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 2px; }
+  .receipts a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; letter-spacing: .02em; color: var(--accent-ink);
+    text-decoration: none; padding: 3px 9px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+    transition: border-color .16s, background .16s, transform .16s;
+  }
+  .receipts a::before { content: "↗"; opacity: .7; }
+  .receipts a:hover { border-color: var(--accent-wash-edge); background: var(--accent-wash); transform: translateY(-1px); }
+  .receipts a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* podcast-specific */
+  .takeaway { display: flex; gap: 10px; margin: 4px 0 16px; font-size: 1.02rem; }
+  .takeaway .k {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent-ink); white-space: nowrap; padding-top: 6px;
+  }
+  .takeaway .v { margin: 0; font-weight: 600; }
+
+  blockquote {
+    margin: 18px 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--accent);
+    font-family: "Newsreader", Georgia, serif; font-style: italic;
+    font-size: 1.24rem; line-height: 1.42; color: var(--ink); text-wrap: pretty;
+  }
+  blockquote .src {
+    display: block; margin-top: 8px; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-style: normal; font-size: 11px; letter-spacing: .04em; color: var(--ink-faint);
+  }
+
+  footer {
+    margin-top: 54px; padding-top: 20px; border-top: 3px solid var(--line-strong);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .05em; color: var(--ink-faint); line-height: 1.9;
+  }
+  footer a { color: var(--accent-ink); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .88em; background: var(--accent-wash); padding: 1px 5px; border-radius: 3px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(10px); animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+</style>
+<!-- FB_RAIL_CSS -->
+
+<style>
+  /* left sidebar rail (index only) */
+  .rail {
+    position: fixed;
+    top: 34px;
+    left: max(20px, calc((100vw - 720px) / 2 - 232px));
+    width: 200px;
+    max-height: calc(100vh - 68px);
+    overflow-y: auto;
+    z-index: 10;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  .rail-inner {
+    border-left: 2px solid var(--line-strong);
+    padding: 6px 0 6px 14px;
+  }
+  .rail-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .rail-lbl {
+    font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .rail-lbl .rail-zh {
+    font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px;
+  }
+  .rail-count {
+    font-size: 10.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums;
+    letter-spacing: .06em;
+  }
+  .rail .a-list { list-style: none; padding: 0; margin: 0; }
+  .rail .a-list li { margin: 0; }
+  .rail .a-list a {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 8px 0; text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color .16s, border-color .16s, padding-left .16s;
+  }
+  .rail .a-list a:hover {
+    color: var(--accent-ink); border-color: var(--accent-wash-edge);
+    padding-left: 4px;
+  }
+  .rail .a-list .a-date {
+    font-size: 11.5px; letter-spacing: .06em; color: var(--ink);
+    font-variant-numeric: tabular-nums; font-weight: 600;
+  }
+  .rail .a-list .a-zh {
+    font-family: "Noto Serif SC", serif; font-size: 12px; color: var(--ink-faint);
+    letter-spacing: 0;
+  }
+  .rail .a-list .a-current > a {
+    color: var(--accent-ink); border-color: var(--accent-wash-edge);
+    padding-left: 4px;
+  }
+  .rail .a-list .a-current .a-date { color: var(--accent-ink); }
+  .rail .a-list a:hover .a-date,
+  .rail .a-list a:hover .a-zh { color: var(--accent-ink); }
+
+  /* rail scrollbar: subtle */
+  .rail::-webkit-scrollbar { width: 6px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .rail::-webkit-scrollbar-thumb:hover { background: var(--line-strong); }
+
+  /* narrow viewport: rail becomes a top strip that scrolls horizontally */
+  @media (max-width: 1179px) {
+    .rail {
+      position: sticky; top: 0; left: 0; width: 100%; max-height: none;
+      background: var(--bg);
+      padding: 10px 20px 8px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto; overflow-y: hidden;
+    }
+    .rail-inner {
+      border-left: 0; padding: 0;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .rail-head {
+      margin: 0; flex-shrink: 0; flex-direction: column;
+      align-items: flex-start; gap: 1px;
+    }
+    .rail .a-list {
+      display: flex; gap: 4px; flex-wrap: nowrap;
+    }
+    .rail .a-list li { flex-shrink: 0; }
+    .rail .a-list a {
+      flex-direction: row; align-items: baseline; gap: 6px;
+      padding: 6px 10px; border-bottom: 0;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: var(--surface); white-space: nowrap;
+    }
+    .rail .a-list a:hover { padding-left: 10px; }
+    .rail .a-list .a-current > a {
+      padding-left: 10px; background: var(--accent-wash);
+      border-color: var(--accent-wash-edge);
+    }
+    .rail .a-list .a-zh { font-size: 11px; }
+  }
+</style>
+
+<!-- FB_EXTRA --><style>
+  .masthead { margin-top: 8px; }
+  .dateline { font-size: 15px; letter-spacing: .02em; text-transform: none; gap: 8px 22px; }
+  .dateline b { font-size: 17px; color: var(--ink); }
+  .dateline .num { font-size: 17px; }
+  .lead .kicker { font-size: 13px; letter-spacing: .14em; }
+  .lead .lead-p { font-size: 17px; line-height: 1.75; margin: 0; color: var(--ink); text-wrap: pretty; }
+  .lead .lead-p .mark { background: linear-gradient(transparent 62%, var(--accent-wash) 62%); color: var(--accent-ink); font-weight: 600; }
+  .sec-head .lbl .zh-lbl { font-size: 1.7rem; font-weight: 700; letter-spacing: .04em; color: var(--ink); text-transform: none; margin: 0; }
+  .sec-sum { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 3px; padding: 14px 18px; margin: 14px 0 6px; font-size: 17px; }
+  .sec-sum p { margin: 0 0 6px; }
+  .sec-sum ol { margin: 4px 0 0; padding-left: 22px; }
+  .sec-sum .k { font-family: "Noto Serif SC", serif; font-size: 17px; font-weight: 700; color: var(--accent-ink); margin-right: 4px; }
+  .name .src { font-family: "IBM Plex Mono", "Noto Serif SC", monospace; font-style: normal; font-weight: 500; font-size: 12px; letter-spacing: .04em; color: var(--ink-faint); margin-left: 8px; white-space: nowrap; }
+  .time { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); margin: 4px 0 0; }
+  .receipts { justify-content: flex-end; }
+  .lst { list-style: none; padding: 0; margin: 6px 0 0; }
+  .lst li { padding: 9px 0; border-top: 1px dashed var(--line); }
+  .lst li:first-child { border-top: 0; }
+  .lst .t { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .lst .t:hover { color: var(--accent-ink); }
+  .lst .m { display: block; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); }
+  .grp { font-family: "Noto Serif SC", serif; font-size: 1.2rem; font-weight: 600; color: var(--accent-ink); letter-spacing: .04em; margin: 30px 0 0; padding-bottom: 4px; border-bottom: 1px solid var(--accent-wash-edge); }
+  .note { font-family: "IBM Plex Mono", "Noto Serif SC", monospace; font-size: 12px; color: var(--ink-faint); margin: 14px 0 0; line-height: 1.7; }
+  .sec-head, .grp, .entry { scroll-margin-top: 24px; }
+  .toc { position: fixed; top: 34px; right: max(20px, calc((100vw - 720px) / 2 - 252px)); width: 220px; max-height: calc(100vh - 68px); overflow-y: auto; z-index: 10; font-family: "Noto Serif SC", serif; }
+  .toc-inner { border-left: 2px solid var(--line-strong); padding: 6px 0 6px 14px; }
+  .toc-head { font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--ink); margin-bottom: 10px; }
+  .toc-head .rail-zh { font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px; }
+  .toc ul { list-style: none; padding: 0; margin: 0; }
+  .toc a { text-decoration: none; color: var(--ink-faint); display: block; }
+  .toc a:hover, .toc a.on { color: var(--accent-ink); }
+  .toc .t-sec { margin: 0 0 10px; }
+  .toc .t-sec > a { font-size: 14px; font-weight: 600; color: var(--ink); padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .toc .t-sec > a .n { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: var(--ink-faint); font-weight: 400; margin-left: 6px; }
+  .toc .t-grp > a { font-size: 12.5px; font-weight: 600; color: var(--accent-ink); padding: 6px 0 2px; }
+  .toc .t-it > a { font-size: 12px; line-height: 1.45; padding: 3px 0 3px 8px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .toc::-webkit-scrollbar { width: 6px; } .toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .toc-m { display: none; }
+  @media (max-width: 1179px) {
+    .toc { display: none; }
+    .toc-m { display: block; margin: 18px 0 0; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); padding: 10px 14px; font-family: "Noto Serif SC", serif; }
+    .toc-m summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--ink); }
+    .toc-m ul { list-style: none; padding: 0; margin: 8px 0 0; }
+    .toc-m a { text-decoration: none; color: var(--ink-faint); display: block; padding: 3px 0; }
+    .toc-m .t-sec > a { color: var(--ink); font-weight: 600; } .toc-m .t-grp > a { color: var(--accent-ink); padding-left: 8px; }
+    .toc-m .t-it { display: none; }
+    .sec-head, .grp, .entry { scroll-margin-top: 72px; }
+  }
+</style><!-- /FB_EXTRA -->
+<!-- YOHAKU --><style>
+:root{--bg:#f4f1ea;--surface:#f4f1ea;--ink:#23211d;--ink-soft:#23211d;--ink-faint:#8a8478;--line:transparent;--line-strong:transparent;--accent:#23211d;--accent-ink:#23211d;--accent-wash:transparent;--accent-wash-edge:transparent;--shadow:none}
+@media (prefers-color-scheme:dark){:root{--bg:#f4f1ea;--surface:#f4f1ea;--ink:#23211d;--ink-faint:#8a8478}}
+html,body{background:#f4f1ea!important}
+body,body *{font-family:"Noto Serif SC","Noto Serif CJK SC","Songti SC",serif!important;border-color:transparent!important;box-shadow:none!important}
+body{color:#23211d!important;font-size:16px!important;line-height:1.85!important;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px!important}
+/* title: one quiet line */
+.masthead{border:0!important;padding:0!important;margin:56px 0 0!important}
+h1.title{font-family:"Noto Serif SC","Noto Serif CJK SC",serif!important;font-size:30px!important;font-weight:600!important;letter-spacing:.01em!important;line-height:1.2!important}
+h1.title br{display:none}
+h1.title em{font-style:normal!important;color:#23211d!important;font-weight:600!important;margin-left:.25em;font-family:inherit!important}
+.dateline{font-size:13px!important;text-transform:none!important;letter-spacing:.02em!important;color:#8a8478!important;gap:4px 18px!important;padding-top:14px!important}
+.dateline b,.dateline .num{color:#8a8478!important;font-weight:400!important;font-size:13px!important}
+/* summary */
+.lead{background:none!important;border:0!important;padding:0!important;margin:72px 0 0!important}
+.kicker{display:none!important}
+.lead .lead-p,.lead p,.lead h2{font-size:19px!important;line-height:1.95!important;color:#23211d!important;font-weight:400!important}
+.lead .mark{background:none!important;color:#b03a2e!important;font-weight:500!important}
+.lead *{color:#23211d!important;opacity:1!important}.lead .mark{color:#b03a2e!important}
+/* sections */
+.sec-head{margin:120px 0 0!important;display:block!important}
+.sec-head .rule,.sec-head .count{display:none!important}
+.sec-head .lbl .zh-lbl,.sec-head .lbl{font-family:"Noto Serif SC","Noto Serif CJK SC",serif!important;font-size:34px!important;font-weight:600!important;letter-spacing:.12em!important;color:#23211d!important}
+.sec-sum{background:none!important;border:0!important;padding:0!important;margin:24px 0 64px!important;font-size:17px!important;color:#23211d!important}
+.sec-sum .k{display:none!important}
+.sec-sum ol{padding-left:1.2em!important}
+/* entries */
+.entry{padding:0 0 56px!important;border:0!important}
+.name{font-size:17px!important;font-weight:600!important;line-height:1.6!important}
+.name .src{font-size:13px!important;font-weight:400!important;color:#8a8478!important;margin-left:10px!important;letter-spacing:0!important}
+.time{font-size:12px!important;color:#a8a194!important;margin:2px 0 12px!important;font-variant-numeric:tabular-nums}
+.entry p{color:#33302a!important}
+.receipts{gap:14px!important;margin-top:8px!important}
+.receipts a{background:none!important;border:0!important;padding:0!important;color:#23211d!important;font-size:12px!important;text-decoration:none!important}
+.receipts a::before{content:""!important}
+/* rails: lighter, Chinese only */
+.rail-lbl,.toc-head{font-size:0!important}
+.rail-lbl .rail-zh,.toc-head .rail-zh{font-size:12px!important;color:#23211d!important;letter-spacing:.1em!important;font-weight:500!important}
+.rail-count{display:none!important}
+.rail,.toc{font-size:12px!important}
+.a-zh{display:none!important}
+.a-date{color:#8a8478!important;font-size:12px!important;font-weight:400!important;letter-spacing:.02em!important}
+.a-current .a-date{color:#23211d!important}
+.toc-inner{border:0!important;padding:0!important}
+.toc .t-sec>a{font-size:13px!important;font-weight:500!important;border:0!important;color:#23211d!important}
+.toc .t-sec>a .n{display:none!important}
+.toc .t-it>a{color:#8a8478!important;padding-left:0!important}
+.toc a.on{color:#23211d!important}
+a.kw,.zh a.kw{color:inherit!important;text-decoration:none!important;border:0!important;background-image:linear-gradient(rgba(35,33,29,.35),rgba(35,33,29,.35))!important;background-size:100% 1px!important;background-repeat:no-repeat!important;background-position:0 95%!important}a.kw:hover{color:#23211d!important}
+.receipts a:not(:first-child){display:none!important}
+.receipts a:first-child{font-size:0!important}.receipts a:first-child::after{content:"原文";font-size:12px}
+.lead .mark,a.kw:hover{font-weight:600!important}.a-current .a-date{font-weight:600!important}
+.name{font-size:20px!important;font-weight:700!important;color:#1a1814!important;letter-spacing:.02em!important;line-height:1.5!important}
+.name .src{font-size:13px!important;font-weight:400!important}
+.entry p:not(.name):not(.time){font-size:15.5px!important;color:#4a463e!important;font-weight:400!important;line-height:2!important}
+.time{margin:4px 0 16px!important}
+.sec-sum,.sec-sum *{color:#33302a!important}
+.sec-head .lbl .zh-lbl,.sec-head .lbl{font-size:38px!important;font-weight:700!important;color:#1a1814!important}
+h1.title{font-weight:700!important;color:#1a1814!important}
+.mark,.lead .mark{color:#b03a2e!important;background:none!important}
+</style><!-- /YOHAKU -->
+<!-- /FB_RAIL_CSS -->
+
+
+
+<aside class="rail" aria-label="往期归档">
+  <div class="rail-inner">
+    <div class="rail-head">
+      <span class="rail-lbl"><span class="rail-zh">往期</span>Archive</span>
+      <span class="rail-count">26 期</span>
+    </div>
+    <ul class="a-list">
+      <li class="a-current"><a href="digest-2026-11-21.html"><span class="a-date">2026-11-21</span><span class="a-zh">周六 · 2026年11月21日</span></a></li>
+      <li><a href="digest-2026-11-20.html"><span class="a-date">2026-11-20</span><span class="a-zh">周五 · 2026年11月20日</span></a></li>
+      <li><a href="digest-2026-11-19.html"><span class="a-date">2026-11-19</span><span class="a-zh">周四 · 2026年11月19日</span></a></li>
+      <li><a href="digest-2026-11-18.html"><span class="a-date">2026-11-18</span><span class="a-zh">周三 · 2026年11月18日</span></a></li>
+      <li><a href="digest-2026-11-17.html"><span class="a-date">2026-11-17</span><span class="a-zh">周二 · 2026年11月17日</span></a></li>
+      <li><a href="digest-2026-11-16.html"><span class="a-date">2026-11-16</span><span class="a-zh">周一 · 2026年11月16日</span></a></li>
+      <li><a href="digest-2026-11-15.html"><span class="a-date">2026-11-15</span><span class="a-zh">周日 · 2026年11月15日</span></a></li>
+      <li><a href="digest-2026-11-14.html"><span class="a-date">2026-11-14</span><span class="a-zh">周六 · 2026年11月14日</span></a></li>
+      <li><a href="digest-2026-11-13.html"><span class="a-date">2026-11-13</span><span class="a-zh">周五 · 2026年11月13日</span></a></li>
+      <li><a href="digest-2026-11-12.html"><span class="a-date">2026-11-12</span><span class="a-zh">周四 · 2026年11月12日</span></a></li>
+      <li><a href="digest-2026-11-11.html"><span class="a-date">2026-11-11</span><span class="a-zh">周三 · 2026年11月11日</span></a></li>
+      <li><a href="digest-2026-11-10.html"><span class="a-date">2026-11-10</span><span class="a-zh">周二 · 2026年11月10日</span></a></li>
+      <li><a href="digest-2026-11-09.html"><span class="a-date">2026-11-09</span><span class="a-zh">周一 · 2026年11月9日</span></a></li>
+      <li><a href="digest-2026-11-08.html"><span class="a-date">2026-11-08</span><span class="a-zh">周日 · 2026年11月8日</span></a></li>
+      <li><a href="digest-2026-11-07.html"><span class="a-date">2026-11-07</span><span class="a-zh">周六 · 2026年11月7日</span></a></li>
+      <li><a href="digest-2026-11-06.html"><span class="a-date">2026-11-06</span><span class="a-zh">周五 · 2026年11月6日</span></a></li>
+      <li><a href="digest-2026-11-05.html"><span class="a-date">2026-11-05</span><span class="a-zh">周四 · 2026年11月5日</span></a></li>
+      <li><a href="digest-2026-11-04.html"><span class="a-date">2026-11-04</span><span class="a-zh">周三 · 2026年11月4日</span></a></li>
+      <li><a href="digest-2026-11-03.html"><span class="a-date">2026-11-03</span><span class="a-zh">周二 · 2026年11月3日</span></a></li>
+      <li><a href="digest-2026-11-02.html"><span class="a-date">2026-11-02</span><span class="a-zh">周一 · 2026年11月2日</span></a></li>
+      <li><a href="digest-2026-11-01.html"><span class="a-date">2026-11-01</span><span class="a-zh">周日 · 2026年11月1日</span></a></li>
+      <li><a href="digest-2026-10-31.html"><span class="a-date">2026-10-31</span><span class="a-zh">周六 · 2026年10月31日</span></a></li>
+      <li><a href="digest-2026-10-30.html"><span class="a-date">2026-10-30</span><span class="a-zh">周五 · 2026年10月30日</span></a></li>
+      <li><a href="digest-2026-10-29.html"><span class="a-date">2026-10-29</span><span class="a-zh">周四 · 2026年10月29日</span></a></li>
+      <li><a href="digest-2026-10-28.html"><span class="a-date">2026-10-28</span><span class="a-zh">周三 · 2026年10月28日</span></a></li>
+      <li><a href="digest-2026-10-27.html"><span class="a-date">2026-10-27</span><span class="a-zh">周二 · 2026年10月27日</span></a></li>
+    </ul>
+  </div>
+</aside>
+<script src="archive.js"></script>
+<nav class="toc" aria-label="本期目录"><div class="toc-inner"><div class="toc-head"><span class="rail-zh">本期目录</span>Contents</div><ul><li class="t-sec"><a href="#s-1">关于美国的新闻<span class="n">4</span></a><ul><li class="t-it"><a href="#e-2">万斯将中期选举失利归咎于伊朗战争，特朗普称仍会再打；霍尔木兹附近油轮起火</a></li><li class="t-it"><a href="#e-3">特朗普称幕僚长米勒「全世界最有权力」；威胁惩罚赴海外建人工智能数据中心的美企，并为称普京是朋友辩护</a></li><li class="t-it"><a href="#e-4">参议院通过加速许可审查法案，并要求数据中心承担能源成本</a></li><li class="t-it"><a href="#e-5">财新：美国已放行近 88 万枚人工智能芯片对华出售</a></li></ul></li><li class="t-sec"><a href="#s-6">关于欧洲的新闻<span class="n">2</span></a><ul><li class="t-it"><a href="#e-7">俄大规模袭击乌克兰致八人死亡，导弹落入波兰，北约称为侵犯</a></li><li class="t-it"><a href="#e-8">第二次英欧峰会达成食品贸易与青年流动协议，学费问题仍未谈拢</a></li></ul></li><li class="t-sec"><a href="#s-9">关于中国的新闻<span class="n">4</span></a><ul><li class="t-it"><a href="#e-10">习近平分别会见澳大利亚、印尼、马来西亚、新加坡和泰国领导人</a></li><li class="t-it"><a href="#e-11">外交部：日方应在台湾问题上尽快纠正错误言行</a></li><li class="t-it"><a href="#e-12">中美两军举行海上军事安全磋商机制年度会晤</a></li><li class="t-it"><a href="#e-13">丁薛祥将访问新加坡并主持中新双边合作机制会议；董军会见英国国防大臣</a></li></ul></li><li class="t-sec"><a href="#s-14">关于日本的新闻<span class="n">2</span></a><ul><li class="t-it"><a href="#e-15">日本安保政策草案寻求尽早决定是否引进核潜艇，并研究为「无核三原则」设例外</a></li><li class="t-it"><a href="#e-16">高市与秘鲁、智利谈关键矿物，日沙同意将共同原油储备扩至三倍</a></li></ul></li></ul></div></nav>
+<div class="wrap">
+  <p class="disclaimer">以下内容均为 Grok AI 生成，不代表个人政治立场。</p>
+  <header class="plate">
+    <style>.site-switch{display:flex;gap:28px;justify-content:flex-end;margin:0 0 28px}.site-switch a{font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif!important;letter-spacing:.06em!important;text-decoration:none!important;padding:6px 0!important;color:#9a9a9a!important;border-bottom:1.5px solid transparent!important}.site-switch a.on{color:#111!important;border-bottom-color:#111!important}.site-switch a:hover{color:#111!important}.zh a.kw{color:inherit;text-decoration:underline;text-decoration-color:#c0392b;text-underline-offset:3px}p.disclaimer{margin:24px 0 0!important;font-size:13px!important;line-height:1.7!important;letter-spacing:.04em!important;font-weight:400!important;color:#6f695e!important;background:none!important;border:0!important;padding:0!important}</style><nav class="site-switch"><a href="../ai-builders-digest/">AI Digest</a><a href="../social-digest/" class="on">Social Digest</a><a href="https://summerxia.com/reading-digest/">Reading Digest</a><a href="../pm-digest/">PM Digest</a><a href="../fde-digest/">FDE Digest</a></nav>
+    <div class="masthead">
+      <h1 class="title">Social<br><em>Digest</em></h1>
+    </div>
+
+    <div class="dateline">
+      <span><b>周六 · 2026年11月21日</b></span>
+      <span>收录 2026年11月20日 内容</span>
+      <span><span class="num">12</span> 条新闻</span>
+      <span><span class="num">11</span> 家媒体</span>
+      <span><span class="num">12</span> 条多国对照</span>
+    </div>
+  </header>
+
+<section class="lead reveal">
+  <p class="kicker">Executive Summary</p>
+  <p class="lead-p">11 月 20 日，美国副总统万斯将<span class="mark">中期选举失利归咎于伊朗战争和油价</span>，特朗普在白宫表示<span class="mark">若再选一次仍会发动这场战争</span>；霍尔木兹附近有油轮起火。俄罗斯对乌克兰发动大规模袭击并造成至少八人死亡，<span class="mark">俄导弹落入波兰</span>，北约称之为侵犯。第二次英欧峰会达成<span class="mark">食品贸易与青年流动等重置协议</span>。日本安保政策草案寻求<span class="mark">尽早决定是否引进核潜艇</span>，并研究为「无核三原则」设例外。</p>
+</section>
+<details class="toc-m"><summary>本期目录</summary><ul><li class="t-sec"><a href="#s-1">关于美国的新闻<span class="n">4</span></a><ul></ul></li><li class="t-sec"><a href="#s-6">关于欧洲的新闻<span class="n">2</span></a><ul></ul></li><li class="t-sec"><a href="#s-9">关于中国的新闻<span class="n">4</span></a><ul></ul></li><li class="t-sec"><a href="#s-14">关于日本的新闻<span class="n">2</span></a><ul></ul></li></ul></details>
+<div class="sec-head" id="s-1">
+  <span class="lbl"><span class="zh-lbl">关于美国的新闻</span></span>
+  <span class="rule"></span><span class="count">4 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 万斯将中期选举失利归咎于伊朗战争和油价，特朗普称若再选一次仍会发动这场战争，同时考虑新的对伊打击；五角大楼官员称美方已花费超 480 亿美元，霍尔木兹附近有油轮起火。特朗普在白宫记者会上称新任幕僚长米勒「全世界最有权力」，威胁惩罚赴海外建设人工智能数据中心的美企，并为称普京是朋友辩护。参议院通过加速许可审查、要求数据中心承担能源成本的法案。财新称美国已放行近 88 万枚人工智能芯片对华出售。</p><ol><li>万斯将中期选举失利归咎于伊朗战争，特朗普称仍会再打；霍尔木兹附近油轮起火</li><li>特朗普称幕僚长米勒「全世界最有权力」；威胁惩罚赴海外建人工智能数据中心的美企，并为称普京是朋友辩护</li><li>参议院通过加速许可审查法案，并要求数据中心承担能源成本</li></ol></div>
+
+<article class="entry" id="e-2">
+  <div class="byline">
+    <p class="name">万斯将中期选举失利归咎于伊朗战争，特朗普称仍会再打；霍尔木兹附近油轮起火<span class="src">Fox News · CNN · WSJ · FT · 新华社 · 央视新闻 · Reuters</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://www.foxnews.com/politics/trump-responds-vance-blames-iran-war-midterm-losses-vp-says-job-support-president">Fox News</a> 报道，副总统万斯将中期选举失利归咎于选民对伊朗战争和油价的不满，并称自己的职责是支持总统；特朗普则表示，若再做一次选择，仍会发动这场对伊战争。<a class="kw" href="https://news.google.com/rss/articles/CBMinwFBVV95cUxQU1daYi11bU1PbGN3Uno0blJJSTktdExvZWhNWVNWWTZzUGVhZG1HZDE5TFdud1pDWDZURDNCamdtd2M1TFNsc2M4V0ZBb2hndkZPQkU5cHNjOTJwU0QzVTNxUjlvNmFOeUFlc05zY3VnODVaWU9sTGVINGVsWF91blB0Z1JWWjlSTUwwMHpoX1JQdDhnZHNQQTNnR1dNT1E?oc=5">CNN</a> 称，特朗普为万斯有关伊朗战争的表态作了辩护。<a class="kw" href="https://news.google.com/rss/articles/CBMisgFBVV95cUxQc0NmdkhadXNvNGNvbzV0VTZ3cGx0cVoyTmczVHpyeDh6ZzB3U1ZkYTZfelRYLUFCeTE0SzlCZXhmNzcyWTFhMVZQcE93YjhfeUNwMlRQbTU4Skk4dnBucVNNczU5N1JZTF94OHVSSTFSRVozLThIUHFoYmtPVjdDc2NxT05aTXdnWUN0X0YzdUZRRjUyRk95WFowT1RZSlpSb29kb2FJdlQ5ME9kRTVOY29n?oc=5">WSJ</a> 的标题写，特朗普称万斯对伊朗战争的批评有误，同时围绕副总统的疑问增多。</p>
+  <p class="zh"><a class="kw" href="https://www.ft.com/content/2daf570c-189a-4362-a128-828c520b902e">FT</a> 的标题写，特朗普正考虑对伊朗实施新的打击，同时美国军方警告部队已现紧张；其导语称，官员表示，若冲突延续到新年，无限期部署和潜在预算削减可能削弱战备。<a class="kw" href="https://news.google.com/rss/articles/CBMid0FVX3lxTE0yMFJWSjRwdFM5a29aWDBGb2N3RGhVOHp2Rk9uZVRDNGlUeDlWWnp6bVRiM25LX1BmaC13ODlSUzhJandIOXVNM1hRRmswUGFTOXhGcVNnNDRScW1zMmxsYm5kVm04T0lPc0dmTmFyWUkzZnNDYzBN?oc=5">新华社</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBVVUtVS2syYmV1RXdWeWtWSzBDS1NYcllxeWNRay1rSHRpSUJYNTU3RzlZMmV3VHBSTEdHMXdES1docjBPX3RiT3oyOVg4LW01am81bDhkdTJKcHhPX2cxcnJnTWdLajBrbnNURXAzc015Z3AzSWoxdA?oc=5">央视新闻</a> 均报道，五角大楼官员称美国已为伊朗战事花费超 480 亿美元。新华社 另引述特朗普的话说，伊朗「不想达成我能接受的协议」。</p>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMiugFBVV95cUxPUFlEbXRhcG1QdzdPMU5DZTludFpwQllURVktV0I4cC1pX2g4V1k1dEhTWFVibXk4Wm9IUWFNYjZLRTlCZHBnM044cGo3amFOdTQ2SWdZWkVBUG9LaERYQ3pUQTdvd1loNVlxN0VPTUJTS29tcWsxWlIydFcxRGp4N2xlTUUyMDk1Y1VfLTVfXzYxZGZnVVFEUWpxaW05bS1MTlNQRGZpYUMwQ2xMY3MyMDRFUm1PM1JjaXc?oc=5">Reuters</a> 报道，英国海事贸易行动办公室（UKMTO）称，一艘油轮在霍尔木兹海峡附近遭弹体击中后起火。<a class="kw" href="https://news.google.com/rss/articles/CBMid0FVX3lxTE0yMFJWSjRwdFM5a29aWDBGb2N3RGhVOHp2Rk9uZVRDNGlUeDlWWnp6bVRiM25LX1BmaC13ODlSUzhJandIOXVNM1hRRmswUGFTOXhGcVNnNDRScW1zMmxsYm5kVm04T0lPc0dmTmFyWUkzZnNDYzBN?oc=5">新华社</a> 的角度不同：它写伊朗称一艘油轮在霍尔木兹海峡触雷爆炸。</p>
+  <div class="receipts"><a href="https://www.foxnews.com/politics/trump-responds-vance-blames-iran-war-midterm-losses-vp-says-job-support-president">原文 · Fox News</a><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxQU1daYi11bU1PbGN3Uno0blJJSTktdExvZWhNWVNWWTZzUGVhZG1HZDE5TFdud1pDWDZURDNCamdtd2M1TFNsc2M4V0ZBb2hndkZPQkU5cHNjOTJwU0QzVTNxUjlvNmFOeUFlc05zY3VnODVaWU9sTGVINGVsWF91blB0Z1JWWjlSTUwwMHpoX1JQdDhnZHNQQTNnR1dNT1E?oc=5">对照 · CNN</a><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxQc0NmdkhadXNvNGNvbzV0VTZ3cGx0cVoyTmczVHpyeDh6ZzB3U1ZkYTZfelRYLUFCeTE0SzlCZXhmNzcyWTFhMVZQcE93YjhfeUNwMlRQbTU4Skk4dnBucVNNczU5N1JZTF94OHVSSTFSRVozLThIUHFoYmtPVjdDc2NxT05aTXdnWUN0X0YzdUZRRjUyRk95WFowT1RZSlpSb29kb2FJdlQ5ME9kRTVOY29n?oc=5">对照 · WSJ</a><a href="https://www.ft.com/content/2daf570c-189a-4362-a128-828c520b902e">对照 · FT</a><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE0yMFJWSjRwdFM5a29aWDBGb2N3RGhVOHp2Rk9uZVRDNGlUeDlWWnp6bVRiM25LX1BmaC13ODlSUzhJandIOXVNM1hRRmswUGFTOXhGcVNnNDRScW1zMmxsYm5kVm04T0lPc0dmTmFyWUkzZnNDYzBN?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBVVUtVS2syYmV1RXdWeWtWSzBDS1NYcllxeWNRay1rSHRpSUJYNTU3RzlZMmV3VHBSTEdHMXdES1docjBPX3RiT3oyOVg4LW01am81bDhkdTJKcHhPX2cxcnJnTWdLajBrbnNURXAzc015Z3AzSWoxdA?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE13ZTBkNFgxa29iNXFqNFE5MXhWdXlDMFViRWRjT0NXY2xybXBlVmFFTVFrb18wS0JDOHIwVER6eTUzU0tnTzdDdm9jdzU5NkNuOUViTGcwZEpFWEJqQkRTajFSZEdXRkROSFkzYWdEcGx1NTRrdnBKMUl0ZTE5eG8?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMiugFBVV95cUxPUFlEbXRhcG1QdzdPMU5DZTludFpwQllURVktV0I4cC1pX2g4V1k1dEhTWFVibXk4Wm9IUWFNYjZLRTlCZHBnM044cGo3amFOdTQ2SWdZWkVBUG9LaERYQ3pUQTdvd1loNVlxN0VPTUJTS29tcWsxWlIydFcxRGp4N2xlTUUyMDk1Y1VfLTVfXzYxZGZnVVFEUWpxaW05bS1MTlNQRGZpYUMwQ2xMY3MyMDRFUm1PM1JjaXc?oc=5">对照 · Reuters</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1PU1RtQ2l6eFpjaUZlbUZWMUdpUEdvZHhfZzItTkVxMUtUaVVYbVl3QlZ4UU9CVmpKRlNWLURnY0dkZDNvUk80NG9iR1pXTWZCNVNhSVdBN25TS3JsVGdUdUFpdzZCUGJhLUp3aDlCVWM2LWk5elZWQlU4T3hZS0E?oc=5">对照 · 新华社</a></div>
+</article>
+
+<article class="entry" id="e-3">
+  <div class="byline">
+    <p class="name">特朗普称幕僚长米勒「全世界最有权力」；威胁惩罚赴海外建人工智能数据中心的美企，并为称普京是朋友辩护<span class="src">CNN · Fox News · AP · Guardian · 日经 · Reuters · FT</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMihAFBVV95cUxQdTJudUwzVHZtRFQ2M3k1RjEzMmdTeFR1bEREb2x5OFBKZnZabDExZmpkRXFxRHlHZ1MxenZERWNOX3RMT2FiRnhrRnhZMlpkVkdhaVZXczB0dmVZX3VpSkZ4OVVna3RUTjBodlNrdkRabW52a3B3djRvZERmRkdxaTYyaVk?oc=5">CNN</a> 报道，特朗普称新任白宫幕僚长斯蒂芬·米勒是「全世界最有权力的人」。<a class="kw" href="https://www.foxnews.com/politics/trump-floats-unexpected-name-successor-powerhouses-rubio-vance-stand">Fox News</a> 写，他在万斯和鲁比奥在场的白宫简报会上，问米勒是否想竞选总统。<a class="kw" href="https://news.google.com/rss/articles/CBMipgFBVV95cUxNaTU4R2xyVnVLVmlyd0djZGdkVWhrM1ZiOUxkSllPaHFDREpPRy12V3d5T3NpUjN0RXVfRlpfSFlWalVFbldqNm0xZGYxTFJ3WUtKMUNJWV8zZ21Zb2pQaW1JYm84UF9tamRmdmlHQVBDeGl5YWJqUk5CRG5PRU9XX1FXMU5PeG9rX3JOM3Z3VTFEUTNfZEx4SGdrVkNwNU01dTh1Y01R?oc=5">AP</a> 称，这是一场有潜在继任者出席的「试镜」式简报。</p>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMipgFBVV95cUxNaTU4R2xyVnVLVmlyd0djZGdkVWhrM1ZiOUxkSllPaHFDREpPRy12V3d5T3NpUjN0RXVfRlpfSFlWalVFbldqNm0xZGYxTFJ3WUtKMUNJWV8zZ21Zb2pQaW1JYm84UF9tamRmdmlHQVBDeGl5YWJqUk5CRG5PRU9XX1FXMU5PeG9rX3JOM3Z3VTFEUTNfZEx4SGdrVkNwNU01dTh1Y01R?oc=5">AP</a> 报道，特朗普寻求惩罚在海外建设人工智能数据中心的美国公司。<a class="kw" href="https://www.theguardian.com/us-news/2026/nov/20/trump-datacenters-white-house">Guardian</a> 写，他在这场内容广泛的白宫记者会上威胁将施加「巨大惩罚」。<a class="kw" href="https://www.nikkei.com/article/DGXZQOGN20CXV0Q6A121C2000000/">日经</a> 的标题写，特朗普表示不允许数据中心赴国外建设，并称美中正讨论人工智能安全措施。<a class="kw" href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQSnJIY2MzcUJjNVY3MzNYaGxKYUIySGw3TzNnVjltNDBIS2JPOHV4Y1BTaDRTRTRxSWp3R0M4Z3VSeU1IWmdoTGl6SU15bHh6UkZobTZ3aWpxUmU5c2dsODBPTjI3V0NQTEhjMWZBWE1fZnNQVHdYcjdONk43LVhleEdaUEs2d0hsV3dqMURGRUcyQzZnTFduVGZuTmJMU0taYzNreTJ4c2ZqeWV6b0l2X1FCQm5SQllFa09PZFRIcGJ5aGs?oc=5">Reuters</a> 引述财政部长贝森特的话说，特朗普与习近平已同意，军事人工智能的决策应有人类参与。</p>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMipgFBVV95cUxNaTU4R2xyVnVLVmlyd0djZGdkVWhrM1ZiOUxkSllPaHFDREpPRy12V3d5T3NpUjN0RXVfRlpfSFlWalVFbldqNm0xZGYxTFJ3WUtKMUNJWV8zZ21Zb2pQaW1JYm84UF9tamRmdmlHQVBDeGl5YWJqUk5CRG5PRU9XX1FXMU5PeG9rX3JOM3Z3VTFEUTNfZEx4SGdrVkNwNU01dTh1Y01R?oc=5">AP</a> 报道，特朗普为自己称普京是朋友作辩护，但说他「无法判断」普京是否也是美国的朋友。<a class="kw" href="https://news.google.com/rss/articles/CBMihAFBVV95cUxQdTJudUwzVHZtRFQ2M3k1RjEzMmdTeFR1bEREb2x5OFBKZnZabDExZmpkRXFxRHlHZ1MxenZERWNOX3RMT2FiRnhrRnhZMlpkVkdhaVZXczB0dmVZX3VpSkZ4OVVna3RUTjBodlNrdkRabW52a3B3djRvZERmRkdxaTYyaVk?oc=5">CNN</a> 引述泽连斯基的回应：「对我们来说，他是杀手。」<a class="kw" href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQSnJIY2MzcUJjNVY3MzNYaGxKYUIySGw3TzNnVjltNDBIS2JPOHV4Y1BTaDRTRTRxSWp3R0M4Z3VSeU1IWmdoTGl6SU15bHh6UkZobTZ3aWpxUmU5c2dsODBPTjI3V0NQTEhjMWZBWE1fZnNQVHdYcjdONk43LVhleEdaUEs2d0hsV3dqMURGRUcyQzZnTFduVGZuTmJMU0taYzNreTJ4c2ZqeWV6b0l2X1FCQm5SQllFa09PZFRIcGJ5aGs?oc=5">Reuters</a> 称，特朗普表示与普京就乌克兰问题谈得不错，但在安全保证问题上暂未表态。<a class="kw" href="https://www.ft.com/content/6c1b8a64-35f9-4aba-8605-45a4abdce6b8?syn-25a6b1a6=1">FT</a> 的标题写，特朗普希望在 1 月前达成乌克兰和平协议；其导语称，美方希望在民主党接手国会前促成协议。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxQdTJudUwzVHZtRFQ2M3k1RjEzMmdTeFR1bEREb2x5OFBKZnZabDExZmpkRXFxRHlHZ1MxenZERWNOX3RMT2FiRnhrRnhZMlpkVkdhaVZXczB0dmVZX3VpSkZ4OVVna3RUTjBodlNrdkRabW52a3B3djRvZERmRkdxaTYyaVk?oc=5">原文 · CNN</a><a href="https://www.foxnews.com/politics/trump-floats-unexpected-name-successor-powerhouses-rubio-vance-stand">对照 · Fox News</a><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxNaTU4R2xyVnVLVmlyd0djZGdkVWhrM1ZiOUxkSllPaHFDREpPRy12V3d5T3NpUjN0RXVfRlpfSFlWalVFbldqNm0xZGYxTFJ3WUtKMUNJWV8zZ21Zb2pQaW1JYm84UF9tamRmdmlHQVBDeGl5YWJqUk5CRG5PRU9XX1FXMU5PeG9rX3JOM3Z3VTFEUTNfZEx4SGdrVkNwNU01dTh1Y01R?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxPWEtzQUtZSkNqOE9ReXZEMTlIRVNjOEdzRVp0b1E1UkFiYncyMGpadjRFV1ZSeDJqSnJuRnhhZ3JvRkt3ZG9BNlN3Z0VESFpTbHFTREp6bzVFWnBKZVNweW5wUUVpMzFaZk14UzA3RFVveWdDUW9rVjI1dTZOeEVVeGl5Ql9QYVFpdWl3cm15VHg4SlZNVXR3dWVuTm0xVk1HZkZZdg?oc=5">对照 · AP</a><a href="https://www.theguardian.com/us-news/2026/nov/20/trump-datacenters-white-house">对照 · Guardian</a><a href="https://www.nikkei.com/article/DGXZQOGN20CXV0Q6A121C2000000/">对照 · 日经</a><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQSnJIY2MzcUJjNVY3MzNYaGxKYUIySGw3TzNnVjltNDBIS2JPOHV4Y1BTaDRTRTRxSWp3R0M4Z3VSeU1IWmdoTGl6SU15bHh6UkZobTZ3aWpxUmU5c2dsODBPTjI3V0NQTEhjMWZBWE1fZnNQVHdYcjdONk43LVhleEdaUEs2d0hsV3dqMURGRUcyQzZnTFduVGZuTmJMU0taYzNreTJ4c2ZqeWV6b0l2X1FCQm5SQllFa09PZFRIcGJ5aGs?oc=5">对照 · Reuters</a><a href="https://news.google.com/rss/articles/CBMikgFBVV95cUxOQkhfc2NSR2FxMldlZzg4WHVHdUdTR0Q4eExlN3dTZUFydXRVeFM4Z2hwcENYU3VNcGtqeEhOZFpjbmZmVVRzY2hVLS1iMTVIUkdyZ0lyTHBHM25CSjBJQzhRc0Uxbmk2Zy0zQmpZbVVrM3pOaUVpX2MwTHB0Q0lFdlVsQkIxRHRMUDFCTS04OUlSZw?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxNcnF2QlAwR0FqSlQ1dGdSdlEtVDVsUDZ6SGRVNGN5TUk0QldBOEhzU09ZRTVGSk1RTURGS3JDWFdHUGNxUmdVRjZNNEcxd1NUbTdkbkR4U2J3dVg4dDJsbS15UVNwTUpCTlNxMnFWSEFBb1VYcjdZdzh4WS1iSDFaNjFoNDBOMzRtR2NlVjlIcjRDZEtkMnNlUWVR?oc=5">对照 · CNN</a><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxQX3JPLTZVMmozZDY5c0piSTJBajFkeXRoMVc0UWVRRVVtZTdHb3BNcU8temVfeW1TNWRzZzBGVVVTUEs4TGl3eFpuSGNCNFpsLUpPRE1PSjdQYzZDbl9LM2NkMlo3TmpFVEV5QkNhODJyZy1qTUc3U0VNSFhUZHhqWWowLUxSamJlUlIxYjgyVV81ZjFOYmM0ZjdDUQ?oc=5">对照 · Reuters</a><a href="https://www.ft.com/content/6c1b8a64-35f9-4aba-8605-45a4abdce6b8?syn-25a6b1a6=1">对照 · FT</a></div>
+</article>
+
+<article class="entry" id="e-4">
+  <div class="byline">
+    <p class="name">参议院通过加速许可审查法案，并要求数据中心承担能源成本<span class="src">AP · Fox News</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxQc3dDMDVjOXN5QkQ0VVZpVGtxaUNjN2RDMHJ6UElZTWdEajdXZ2V4Z0hwajh3dXI2azA0Tmxhd25VajEwbWI5Zm5TQjkzRzhoV2lSaklZMlc5NHJ3ZHNHd2tYN1dlVW5XYm9hNmtzWTFZd3ZPeER0Q0RRRkJmSVZVNU8zV1lOSXMybmVvLWg2NjJyWlJFSUxzb3dzRmR0MUtVb2RsNDJ4aU1BZw?oc=5">AP</a> 报道，美国参议院通过一项法案，以加快许可审查，并强制数据中心支付能源成本。<a class="kw" href="https://www.foxnews.com/politics/senate-republicans-break-through-washington-gridlock-massive-american-energy-data-center-overhaul">Fox News</a> 的角度不同：它写共和党推动这项大规模能源与数据中心改革，以加快环境审查、扩展电网，并限制针对项目的法律挑战。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxQc3dDMDVjOXN5QkQ0VVZpVGtxaUNjN2RDMHJ6UElZTWdEajdXZ2V4Z0hwajh3dXI2azA0Tmxhd25VajEwbWI5Zm5TQjkzRzhoV2lSaklZMlc5NHJ3ZHNHd2tYN1dlVW5XYm9hNmtzWTFZd3ZPeER0Q0RRRkJmSVZVNU8zV1lOSXMybmVvLWg2NjJyWlJFSUxzb3dzRmR0MUtVb2RsNDJ4aU1BZw?oc=5">原文 · AP</a><a href="https://www.foxnews.com/politics/senate-republicans-break-through-washington-gridlock-massive-american-energy-data-center-overhaul">对照 · Fox News</a></div>
+</article>
+
+<article class="entry" id="e-5">
+  <div class="byline">
+    <p class="name">财新：美国已放行近 88 万枚人工智能芯片对华出售<span class="src">财新 · WSJ</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPMTZrNG5pSmpHalZ0SWVMYTY3R2RWS25LeHA2ZWV3RGhIamY0dG9iRkR0MG1tam1ubWp1YnJFaGh5bUl6ZDUtM0lQSjFNVkkzVDBUR0NOb1BxeEV5WFVSUWJKQXRJNk1qSkdvSnJ2RnBHRHlqT2hmbkdZeUJuOGlNUW5PZzdBWmFTM1BCanByVDJFVzdjai1nX0ZlOE9ITUEtclRDcTdJYWROSTQ?oc=5">财新</a> 的标题写，美国已放行近 88 万枚人工智能芯片，供中国买家采购。财新 另文标题写，阿里巴巴在美国芯片限制后下调了云业务增长预期。<a class="kw" href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxNZE1FLUpGTW9zeVJKbndTVUV6MTF3dmVQTE4zd2h4SVlCdzI4Qm1xNmtPWW0xTGR0TjRHRnVVZjg0RERoZXB2MEpMazY5akdSU0phSEc2WEU3NURBdWMwVEtBd2ZmamNRRXF5LVZnMms5QnlYNldTQ1NCVWNMVkpSZjRzc283dlY0eWkxVEVLWTQ1ekJrRGY5Zk5yM2NqcXhtSGoxdFlmcGx1X0tjYkRUaU5nZnRNNS1BZW5tRGlZRmM?oc=5">WSJ</a> 的标题写，一名共和党资深参议员称，商务部长拉特尼克无视了他提出的对华芯片警告。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPMTZrNG5pSmpHalZ0SWVMYTY3R2RWS25LeHA2ZWV3RGhIamY0dG9iRkR0MG1tam1ubWp1YnJFaGh5bUl6ZDUtM0lQSjFNVkkzVDBUR0NOb1BxeEV5WFVSUWJKQXRJNk1qSkdvSnJ2RnBHRHlqT2hmbkdZeUJuOGlNUW5PZzdBWmFTM1BCanByVDJFVzdjai1nX0ZlOE9ITUEtclRDcTdJYWROSTQ?oc=5">原文 · 财新</a><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxQeHVzU3lQLVhNdE0tV1R0Mmx4d1RXbFpwcDl0NXdMLVJRZ2ZRSm9KZmZVdXRYN2hDVWJzcnBiYXNvU0FtcnhDbjdMakZRZkF5RlpfaGdfWERWZ3FTYWRnQ01mbzBYcjVUT0tCanM4WG1EZVRTQ3RybnhBLWRRb2c4ampIT0JmVTZVYTd5dVZDQW5OVXNPT0Q5UFVwRzRVOXRhRlpWNTE5aGZja2NHLVg0?oc=5">对照 · 财新</a><a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxNZE1FLUpGTW9zeVJKbndTVUV6MTF3dmVQTE4zd2h4SVlCdzI4Qm1xNmtPWW0xTGR0TjRHRnVVZjg0RERoZXB2MEpMazY5akdSU0phSEc2WEU3NURBdWMwVEtBd2ZmamNRRXF5LVZnMms5QnlYNldTQ1NCVWNMVkpSZjRzc283dlY0eWkxVEVLWTQ1ekJrRGY5Zk5yM2NqcXhtSGoxdFlmcGx1X0tjYkRUaU5nZnRNNS1BZW5tRGlZRmM?oc=5">对照 · WSJ</a></div>
+</article>
+
+<p class="note">说明：霍尔木兹海峡油轮起火因直接关系美国对伊军事行动与航运安全，附于万斯与伊朗战争一条。中东其他胡塞袭击系既有战事外溢，昨日已报道利雅得地标遇袭，本期不再单列。美国放行对华人工智能芯片属美方出口管制，归入本章。</p>
+<div class="sec-head" id="s-6">
+  <span class="lbl"><span class="zh-lbl">关于欧洲的新闻</span></span>
+  <span class="rule"></span><span class="count">2 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 俄罗斯对乌克兰发动大规模袭击并造成至少八人死亡，导弹落入正在举行欧洲演习的波兰，北约称之为侵犯。第二次英欧峰会达成食品贸易、排放交易与青年流动等协议，学费问题仍未谈拢。</p><ol><li>俄大规模袭击乌克兰致八人死亡，导弹落入波兰，北约称为侵犯</li><li>第二次英欧峰会达成食品贸易与青年流动协议，学费问题仍未谈拢</li></ol></div>
+
+<article class="entry" id="e-7">
+  <div class="byline">
+    <p class="name">俄大规模袭击乌克兰致八人死亡，导弹落入波兰，北约称为侵犯<span class="src">Reuters · 南华早报 · Le Monde · AP · BBC · 新华社</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh">俄罗斯对乌克兰发动大规模袭击，<a class="kw" href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOaW5ZVDlLVDZMeWxSUU5VRnVsbVZja1A5bmhtTVd4OFBZWEZFSzFENVFIQUdaLV9JOHZVQjhGcGhqUHJtZ2JrTk5NX3FEV0NScmVwUWtrUmRqbkhGcThkMmp1bWw1SkRneVkzb2pVNzZqTmU0VnA2T1pCVlA3aGoyUEExU2xOSU1TcnpfaFRUa3hBRzNDZzlWOWxFR0RyeTZkeGRyMmtsbEJId3lMRUE?oc=5">Reuters</a> 和 <a class="kw" href="https://www.scmp.com/news/world/europe/article/3375281/8-killed-ukraine-russia-hits-back-after-crimea-bridge-attacks">南华早报</a> 称八人死亡，<a class="kw" href="https://www.lemonde.fr/en/international/article/2026/11/20/russian-strikes-on-kyiv-kill-at-least-six_6785275_4.html">Le Monde</a> 写其中基辅六人、利沃夫两人；南华早报 还写，两枚俄导弹和一架疑似无人机在十一国欧洲部队于波兰演习期间落入波兰。<a class="kw" href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQNXhFLWVHeVA2TTIyRTRBRklRM29NQlpLTkNSbkdUYlNWVTNLek1BNG52cDFJRjNNVGNxNW04V3RDTEJPNGtDZ1R6WXE5TVV3SDJhQkFDRVFEMXZaTF92aWhZdS1xS1A0QnR2dE9selFRNGJYclZkRmdKUlJrWjB3VGxzTFE3aVBjYWJCUXhsM0Q1Sk5qR1U3TFlIekxkUE43MUNNenk2bw?oc=5">AP</a> 称北约视之为侵犯，图斯克指其很可能是挑衅，<a class="kw" href="https://www.bbc.co.uk/news/articles/cqx2x9dklxnro?at_medium=RSS&amp;at_campaign=rss">BBC</a> 称无人受伤、没有报告损失，<a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5tS3RULXRhNFhCN1RZRnNlcjFFTzd5WDhiYThpaUNhRUZIRFNZMmFyYVlKNXJySkJFY1M2YVYwZjN3QkhGZ3JkeDBYb24waE95TUhOa3dJdVZPUlRiTVRsUjMweVJNTVVsamVYNEp3MkJ5b2FxT2hDYUVTcDdKYTg?oc=5">新华社</a> 则写波兰军方称疑遭不明飞行物侵犯领空。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOaW5ZVDlLVDZMeWxSUU5VRnVsbVZja1A5bmhtTVd4OFBZWEZFSzFENVFIQUdaLV9JOHZVQjhGcGhqUHJtZ2JrTk5NX3FEV0NScmVwUWtrUmRqbkhGcThkMmp1bWw1SkRneVkzb2pVNzZqTmU0VnA2T1pCVlA3aGoyUEExU2xOSU1TcnpfaFRUa3hBRzNDZzlWOWxFR0RyeTZkeGRyMmtsbEJId3lMRUE?oc=5">原文 · Reuters</a><a href="https://www.scmp.com/news/world/europe/article/3375281/8-killed-ukraine-russia-hits-back-after-crimea-bridge-attacks">对照 · 南华早报</a><a href="https://www.lemonde.fr/en/international/article/2026/11/20/russian-strikes-on-kyiv-kill-at-least-six_6785275_4.html">对照 · Le Monde</a><a href="https://www.scmp.com/news/world/russia-central-asia/article/3375302/russian-missiles-land-poland-europe-holds-military-drills-nearby">对照 · 南华早报</a><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQNXhFLWVHeVA2TTIyRTRBRklRM29NQlpLTkNSbkdUYlNWVTNLek1BNG52cDFJRjNNVGNxNW04V3RDTEJPNGtDZ1R6WXE5TVV3SDJhQkFDRVFEMXZaTF92aWhZdS1xS1A0QnR2dE9selFRNGJYclZkRmdKUlJrWjB3VGxzTFE3aVBjYWJCUXhsM0Q1Sk5qR1U3TFlIekxkUE43MUNNenk2bw?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxPb2dKNkEyLW5VNkNqNmI3U2lRMGcwUzZxUEUzb2FqTmVPYmFSZVhWYXM3Z0VfN3JfVi1FbkZydE5UWkRmNlhSZTFOa1pBLUpMaG5lRzZKbmJRYjdkcHZRYXlwWVlSQ3hoSUxwSzdtZDRld1FCSzVUUThhR1dicE5XbjNiSnc5VThLSGdpUkhrM2xueDRmR19DYg?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxQVGl6dU85bExfQlhuODY0Rkh6a3M2UVhRTlV1QmRsclI5ZHpRbWo5M3JIbUdydkRzOFNrZkZ6RDBIMHJVNGhqeklnRl9UVVAzRFpFUUk0OTVDVnU3RVh2VjdWZ2ktMUhMNmZZMUZkVDE5RFAtTjJ4UEZjUDlKZWd4YlhSaFBoYXdnYVI1ajFaRkdnTkpyMExkU0U4YjBHMTNSblZkRWt6aUVtTGJ5UWU1RVdrNA?oc=5">对照 · AP</a><a href="https://www.bbc.co.uk/news/articles/cqx2x9dklxnro?at_medium=RSS&amp;at_campaign=rss">对照 · BBC</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5tS3RULXRhNFhCN1RZRnNlcjFFTzd5WDhiYThpaUNhRUZIRFNZMmFyYVlKNXJySkJFY1M2YVYwZjN3QkhGZ3JkeDBYb24waE95TUhOa3dJdVZPUlRiTVRsUjMweVJNTVVsamVYNEp3MkJ5b2FxT2hDYUVTcDdKYTg?oc=5">对照 · 新华社</a></div>
+</article>
+
+<article class="entry" id="e-8">
+  <div class="byline">
+    <p class="name">第二次英欧峰会达成食品贸易与青年流动协议，学费问题仍未谈拢<span class="src">新华社 · 央视新闻 · Reuters · AP · BBC · 日经 · Le Monde · 南华早报</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh">第二次英欧峰会召开，<a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1MdV96b2dnR2o3WlpWSE9LOVVzcUd0ckdOMlllWFRSVEcwTElFaVh6Y1lhb0g5U2RwNHFYZjNTVnpDYjBmZExUZWtlQnkwenkwZlY4YXFSNGVCWlNRZnR1aUNhTjhKSXA5ZlV0Zjl0ODFKSUk5aGdWc0lGOVc2alU?oc=5">新华社</a> 称双方达成 72 项共识，<a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1SS3VmNUdhTGVpSkxERXRKanpiVXBsYWs4RmZTNWJaSkdobDFVMUZkbjNodzhZbFpSSmdEdHpCUmYyeDVpeXdOcl9ocG9YWUFXb3kzUkdpSzhPZWlIYmZabU9kYXI5TGQ5cHRFV1lJbzZHYVRGNlZuag?oc=5">央视新闻</a> 写联合声明宣布深化贸易、能源和安全合作。<a class="kw" href="https://news.google.com/rss/articles/CBMitAFBVV95cUxOdHA4czl2OVhoMVN6dURzVWJSVFBpRlhNOS1kYllMMm54RkNKTFBpM1ZVaG5jUE1yYzBlT0Q0Nk1YYlBFVFBQWC1MQW15WERjMWpZWEJ5QU1xaVFjbXRodUxuclNHVFNsWnE5WF9uY1pzcEMyRGk2MEVvRnhBUzMxRXpSeHlQV3Z4ZjlQSENjd0MySnFXbkVrZWVpY19XNjZZSklEYjJVOEgxTmZRM0NzbDdXU3A?oc=5">Reuters</a>、<a class="kw" href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQaW9ETGFMaFhwLXBycnlkTXVlQmlReW5NSGdqVmNhbkVoeGZ3aEJ3cWlwdWZTb19QVVFGMTRJYkVUTHdrRHFtQjh0T05fRTVIUlE4RTdlUm03LVZGWEhBay1uU256NlUyRzZuLTZERExLb01lMHlSY1FDTHJETXVULVp1d0pnN3pvRmRpRTUxN3hNUW5peHlFM1Q4R3p6ekYyUF8tQUZhcw?oc=5">AP</a> 和 <a class="kw" href="https://www.bbc.co.uk/news/articles/c6jreyqgw4e9o?at_medium=RSS&amp;at_campaign=rss">BBC</a> 报道，协议涵盖食品贸易、排放交易与青年流动，英国首相伯纳姆称将探索更紧密关系；<a class="kw" href="https://www.nikkei.com/article/DGXZQOUC16A3Q0W6A111C2000000/">日经</a> 的标题写，青年交流规模约为 20 万人；<a class="kw" href="https://www.lemonde.fr/en/international/article/2026/11/20/uk-and-eu-agree-to-landmark-deal-to-ease-trade-and-youth-mobility_6785473_4.html">Le Monde</a> 引述冯德莱恩的话说，这是关系的「转折点」，<a class="kw" href="https://www.scmp.com/news/world/europe/article/3375289/uk-eu-seal-food-and-youth-deals-are-stuck-tuition-fees">南华早报</a> 则指出双方仍卡在大学学费问题上。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1MdV96b2dnR2o3WlpWSE9LOVVzcUd0ckdOMlllWFRSVEcwTElFaVh6Y1lhb0g5U2RwNHFYZjNTVnpDYjBmZExUZWtlQnkwenkwZlY4YXFSNGVCWlNRZnR1aUNhTjhKSXA5ZlV0Zjl0ODFKSUk5aGdWc0lGOVc2alU?oc=5">原文 · 新华社</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1SS3VmNUdhTGVpSkxERXRKanpiVXBsYWs4RmZTNWJaSkdobDFVMUZkbjNodzhZbFpSSmdEdHpCUmYyeDVpeXdOcl9ocG9YWUFXb3kzUkdpSzhPZWlIYmZabU9kYXI5TGQ5cHRFV1lJbzZHYVRGNlZuag?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxOdHA4czl2OVhoMVN6dURzVWJSVFBpRlhNOS1kYllMMm54RkNKTFBpM1ZVaG5jUE1yYzBlT0Q0Nk1YYlBFVFBQWC1MQW15WERjMWpZWEJ5QU1xaVFjbXRodUxuclNHVFNsWnE5WF9uY1pzcEMyRGk2MEVvRnhBUzMxRXpSeHlQV3Z4ZjlQSENjd0MySnFXbkVrZWVpY19XNjZZSklEYjJVOEgxTmZRM0NzbDdXU3A?oc=5">对照 · Reuters</a><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxQaW9ETGFMaFhwLXBycnlkTXVlQmlReW5NSGdqVmNhbkVoeGZ3aEJ3cWlwdWZTb19QVVFGMTRJYkVUTHdrRHFtQjh0T05fRTVIUlE4RTdlUm03LVZGWEhBay1uU256NlUyRzZuLTZERExLb01lMHlSY1FDTHJETXVULVp1d0pnN3pvRmRpRTUxN3hNUW5peHlFM1Q4R3p6ekYyUF8tQUZhcw?oc=5">对照 · AP</a><a href="https://www.bbc.co.uk/news/articles/c6jreyqgw4e9o?at_medium=RSS&amp;at_campaign=rss">对照 · BBC</a><a href="https://www.nikkei.com/article/DGXZQOUC16A3Q0W6A111C2000000/">对照 · 日经</a><a href="https://www.lemonde.fr/en/international/article/2026/11/20/uk-and-eu-agree-to-landmark-deal-to-ease-trade-and-youth-mobility_6785473_4.html">对照 · Le Monde</a><a href="https://www.scmp.com/news/world/europe/article/3375289/uk-eu-seal-food-and-youth-deals-are-stuck-tuition-fees">对照 · 南华早报</a></div>
+</article>
+
+<p class="note">说明：俄导弹落入波兰发生在欧洲十一国于波兰举行演习期间，事关北约领土与欧洲安全，与对乌大规模袭击一并归入本章。未把意大利总罢工、德维尔潘参选等次要事件补入凑数。</p>
+<div class="sec-head" id="s-9">
+  <span class="lbl"><span class="zh-lbl">关于中国的新闻</span></span>
+  <span class="rule"></span><span class="count">4 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 习近平分别会见澳大利亚、印尼、马来西亚、新加坡和泰国领导人，赵乐际会见阿尔巴尼斯，王毅称亚太经合组织「中国年」创造了纪录。外交部要求日方在台湾问题上尽快纠正错误言行。中美两军举行海上军事安全磋商机制年度会晤。丁薛祥将访问新加坡并主持中新双边合作机制会议，董军会见英国国防大臣。</p><ol><li>习近平分别会见澳大利亚、印尼、马来西亚、新加坡和泰国领导人</li><li>外交部：日方应在台湾问题上尽快纠正错误言行</li><li>中美两军举行海上军事安全磋商机制年度会晤</li></ol></div>
+
+<article class="entry" id="e-10">
+  <div class="byline">
+    <p class="name">习近平分别会见澳大利亚、印尼、马来西亚、新加坡和泰国领导人<span class="src">人民日报 · 央视新闻</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1SN1h5MnVwNW5weXpNcVJ5YWtiRW1wVXBtdm9fOW9yTXQtOWNGbktUMVpYZ1U2UV84VGlIZ29Na1dVVkQ3Smk2cHZqTU9lb1Q0N3FaUnM4UUNlT01ELUZ5NXI2N3ZKOUR3R2FxNkV5WQ?oc=5">人民日报</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE9oRC01NUdHUHhPRmc2eVZtLVZRUVRDMUNYenp1cS1UVjg3Q3pqbHhWZlBsUzZ4bUNKZUFNOE5FQkdVcndzZkRacW9KeVN2NmNxejkxY3JxS25Xb1dFTXU1dEdqb2V0S1YxbFgyazl1aFhZVkNiVjRyRg?oc=5">央视新闻</a> 报道，习近平分别会见马来西亚总理安瓦尔、印度尼西亚总统普拉博沃、澳大利亚总理阿尔巴尼斯、新加坡总理黄循财和泰国总理阿努廷。人民日报 还报道，全国人大常委会委员长赵乐际会见阿尔巴尼斯；王毅称，亚太经合组织「中国年」创造了纪录。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1SN1h5MnVwNW5weXpNcVJ5YWtiRW1wVXBtdm9fOW9yTXQtOWNGbktUMVpYZ1U2UV84VGlIZ29Na1dVVkQ3Smk2cHZqTU9lb1Q0N3FaUnM4UUNlT01ELUZ5NXI2N3ZKOUR3R2FxNkV5WQ?oc=5">原文 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTFBvSHZ0TEZPOEphLVk2UlBmVTE3TEVsUm5TY1B4T1VGU0k5a1BGUWtXQmZCMXBLTV9ibHlzblE2dUxORjFuX2NkbV9oUWF3Z1FrQU40S0JTdmpHMENfTFUtcHRPcDVsSE1iNUp3TQ?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE9oRC01NUdHUHhPRmc2eVZtLVZRUVRDMUNYenp1cS1UVjg3Q3pqbHhWZlBsUzZ4bUNKZUFNOE5FQkdVcndzZkRacW9KeVN2NmNxejkxY3JxS25Xb1dFTXU1dEdqb2V0S1YxbFgyazl1aFhZVkNiVjRyRg?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE92MkV1X1oybkRGTnlGbVg1S2k5ZTFtOUhwS0UtQ0Q2VnVOaFJ5b2R1RUtCTU45dXFzY0tRX3ZtU1hrV2tuQV9UZ1RaWnRLZ2h4ajBFc3Y1TFZXdktxeWFQTjl2Q0RSbW95cU0wZg?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9RSlk1LXpUOWg1QVdVV3pRUDlfVlZJZEVOLXY2TnoxYVpQTEluVHFSYnJZLVFtRm1udzFmZ250MjZsTkxyT2MydDM3NG9CZ3FYNWVZR2xiRjFaYk1DeWxqVExqWHB2ZE1YbldWbQ?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE13a2N4QzBCUDVyVzV3TmNXU2E2bDFxcTdLcTBpMkpFVUc0dl9vV3htMElGZ29leVN4a2NuNXdiMWktc2Rwd2NkQkpGaUpQbU1rN3FMc25EWjFxVjM1OWx3cGhqMkxwRWs2cmZrYmZTUQ?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE5ncnJXUmI5Z1NsdHlQdEM2dDNFQVdYYWxISVROT0Y3X2NZSFROUDJwTVRuZW8tSGh0MDU3c0dyMS1iZmpKWmtIUGVOdEEybFlLWDZRdXNkaFUxT2tpMUZvb2lyUS1rVnJJWmZ1Vw?oc=5">对照 · 人民日报</a></div>
+</article>
+
+<article class="entry" id="e-11">
+  <div class="byline">
+    <p class="name">外交部：日方应在台湾问题上尽快纠正错误言行<span class="src">新华社 · 人民日报 · 央视新闻 · 环球时报</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMie0FVX3lxTE0tejVxT3VrbllVZVMzNGF3b2JNMF8ybndPdWVnQUtMVHo0aW5sTHFmSE51SndRcmFDQkxLNTk2dzlod0pnUFhYRUhtR2Y2S0s1VnU5ZU5CREJQc09ESlVMYVZNNlRJYVU0emdqWjRLTDhXWkdUSFRxcUp3OA?oc=5">新华社</a>、<a class="kw" href="https://news.google.com/rss/articles/CBMibEFVX3lxTFBGa0tnSndVNGRQOXYxMlo5eU9Tay1wNk5pcEtpV0V4bE9UMHVPMzVhYlhscERnTV9OMEt0b24tMDRzNjIwTkw5S0FHN0FmUjdjNkRqcnFCVW1MeDc5S1ZIWW4zQkhOSzRpdUJBcQ?oc=5">人民日报</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE5HYnhUNWdIeTdZaktFWUEwLXNJdlYzZWpkWXc1M256YVpmYjV2TTBjTG9Ib0tBWmNUN3RiXzI4ZGRrSWpRZzByMUM4SWplOE5rQWp2UjYwZllpWlkxM2RuM3ZpcndONUs1RTgtazQwcjlHYTgyTFd4eg?oc=5">央视新闻</a> 均报道，外交部表示，日方应在台湾问题上尽快纠正错误言行。<a class="kw" href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE9sMXo5YmpVMlprcERoV04zLUhrSmE3QXpXYTlyOXpxaDhGdkM3ZmFUY2I5OXJsbEVXbDVlLUY5clRudFo5WF9WZXZXUkxTRnYxaUVsTTJDZHN3VWVCTmEzZHBn?oc=5">环球时报</a> 发表快评称，高市早苗是时候收回「台湾有事就是日本有事」的错误言论。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE0tejVxT3VrbllVZVMzNGF3b2JNMF8ybndPdWVnQUtMVHo0aW5sTHFmSE51SndRcmFDQkxLNTk2dzlod0pnUFhYRUhtR2Y2S0s1VnU5ZU5CREJQc09ESlVMYVZNNlRJYVU0emdqWjRLTDhXWkdUSFRxcUp3OA?oc=5">原文 · 新华社</a><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTFBGa0tnSndVNGRQOXYxMlo5eU9Tay1wNk5pcEtpV0V4bE9UMHVPMzVhYlhscERnTV9OMEt0b24tMDRzNjIwTkw5S0FHN0FmUjdjNkRqcnFCVW1MeDc5S1ZIWW4zQkhOSzRpdUJBcQ?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE5HYnhUNWdIeTdZaktFWUEwLXNJdlYzZWpkWXc1M256YVpmYjV2TTBjTG9Ib0tBWmNUN3RiXzI4ZGRrSWpRZzByMUM4SWplOE5rQWp2UjYwZllpWlkxM2RuM3ZpcndONUs1RTgtazQwcjlHYTgyTFd4eg?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE9sMXo5YmpVMlprcERoV04zLUhrSmE3QXpXYTlyOXpxaDhGdkM3ZmFUY2I5OXJsbEVXbDVlLUY5clRudFo5WF9WZXZXUkxTRnYxaUVsTTJDZHN3VWVCTmEzZHBn?oc=5">对照 · 环球时报</a></div>
+</article>
+
+<article class="entry" id="e-12">
+  <div class="byline">
+    <p class="name">中美两军举行海上军事安全磋商机制年度会晤<span class="src">人民日报 · 央视新闻</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE0wS2duNTV0a0FtQmlLb2VENGRZQ1dpVU5EWWNxZ3N2a2hrSkRYZW9lcll2SXR4QnhUcjBaNTd3cFdBQzdyREZXTGV1bHZkU2d5WnF2TVFLUUhkOTNCaTVKYlktdUR0eW9hTFJZdmd6RQ?oc=5">人民日报</a> 报道，2026 年度中美海上军事安全磋商机制会议举行。<a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE5TQmxLYzZodGFwRDFCUkpPYWlXYkxfbEhKZFIzSEZGaG9NMlVaSVMyX19wWF93TzdiNU03TkQ0NzYtdlJwYnpfcVg3TTNRbkJLeU1CblR5S1RBQXBwLTl4enBxLWpiSS1kSnpIZHFnNTJqcnNZcVVHVg?oc=5">央视新闻</a> 写，中美两军举行了该机制工作小组会议和年度会晤。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE0wS2duNTV0a0FtQmlLb2VENGRZQ1dpVU5EWWNxZ3N2a2hrSkRYZW9lcll2SXR4QnhUcjBaNTd3cFdBQzdyREZXTGV1bHZkU2d5WnF2TVFLUUhkOTNCaTVKYlktdUR0eW9hTFJZdmd6RQ?oc=5">原文 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE5TQmxLYzZodGFwRDFCUkpPYWlXYkxfbEhKZFIzSEZGaG9NMlVaSVMyX19wWF93TzdiNU03TkQ0NzYtdlJwYnpfcVg3TTNRbkJLeU1CblR5S1RBQXBwLTl4enBxLWpiSS1kSnpIZHFnNTJqcnNZcVVHVg?oc=5">对照 · 央视新闻</a></div>
+</article>
+
+<article class="entry" id="e-13">
+  <div class="byline">
+    <p class="name">丁薛祥将访问新加坡并主持中新双边合作机制会议；董军会见英国国防大臣<span class="src">人民日报 · 环球时报</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBMdjJzM0xYeW53dTdIUXBiUU00MWVMVFhpR1dJdW1aX05TOC1iTXRhTnA0ZWw3bXJiUUdtTU9rY0FxaUVKZUZyd3FrTktnOUVFWnltRkgtNUVVMmo3SUJSOFEyUlJ5VWNCR0pLeWRpMA?oc=5">人民日报</a> 报道，丁薛祥将访问新加坡，并主持中新双边合作机制会议。<a class="kw" href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE5hOTFMSmM0N2dzTFM5SGxlaWJrbEUzNUdpTE1CR041LWFHQkxadEIyUDk5aUtNblp4YVNVR2NRdEJfU3VzYTF6allKRXJNbHlnem9rUVpFdw?oc=5">环球时报</a> 报道，国防部长董军同英国国防大臣举行会谈。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBMdjJzM0xYeW53dTdIUXBiUU00MWVMVFhpR1dJdW1aX05TOC1iTXRhTnA0ZWw3bXJiUUdtTU9rY0FxaUVKZUZyd3FrTktnOUVFWnltRkgtNUVVMmo3SUJSOFEyUlJ5VWNCR0pLeWRpMA?oc=5">原文 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE5hOTFMSmM0N2dzTFM5SGxlaWJrbEUzNUdpTE1CR041LWFHQkxadEIyUDk5aUtNblp4YVNVR2NRdEJfU3VzYTF6allKRXJNbHlnem9rUVpFdw?oc=5">对照 · 环球时报</a></div>
+</article>
+
+<p class="note">说明：上述双边会见由中方官方媒体在窗口内集中刊发，归入本章。中俄美元首三方会晤与「和平宣言」已在 11-20 期刊出，本期不再作为新的头条重复。中美海上军事安全磋商以中方官方报道为主，归入本章。</p>
+<div class="sec-head" id="s-14">
+  <span class="lbl"><span class="zh-lbl">关于日本的新闻</span></span>
+  <span class="rule"></span><span class="count">2 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 日本安保政策草案寻求尽早决定是否引进核潜艇，并研究为「无核三原则」设例外，已有数万民众签名反对。高市与秘鲁、智利讨论关键矿物供应，并与沙特同意将共同原油储备扩至三倍。</p><ol><li>日本安保政策草案寻求尽早决定是否引进核潜艇，并研究为「无核三原则」设例外</li><li>高市与秘鲁、智利谈关键矿物，日沙同意将共同原油储备扩至三倍</li></ol></div>
+
+<article class="entry" id="e-15">
+  <div class="byline">
+    <p class="name">日本安保政策草案寻求尽早决定是否引进核潜艇，并研究为「无核三原则」设例外<span class="src">共同社 · 新华社 · 央视新闻</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFA1bVVpVDNEV2VvbDljY0xIc1NraVd2UTc3d0tCbVQycFEwNWNwcktoTTh2cXFBNWZiVWc0V0g5SlZpdlFQVG5vNUJxM0hVYWZ6WWpNQlNVOGx3UQ?oc=5">共同社</a> 报道，日本安保政策草案寻求「尽早」决定是否引进核潜艇。<a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1PanZWXzN3MHpxWjBRTTQxalVxOTIyVnBoaUdMd2FVemQ2czhZNlZGdXpoT1RCSTJrLU1GbnBMcjZoZFVRbjJmWElFN216ekNjQzZJVzBZMnQyZXZvLUhmVDRmT2pzOWdtczJFVDE3ckVqN3ZZUzFFWkg5YUl0czg?oc=5">新华社</a> 援引日媒称，日方还在研究为「无核三原则」设例外；新华社 和 <a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBjUFZFcnV6MVVFS1NudWVRLU16YkVCeWxSREh6Wkk4eFJWbmNOOFBiQzZjTDBFYU5nQ1U2Y0VET1hZUG4tSjRjcHAtd0xCaGJtbVk1U3VlQWdVUVFJQmFSSzF3dHY4blNhTlAyZDlidmZyZjJvRlZSWg?oc=5">央视新闻</a> 均报道，已有数万名日本民众签名反对日本拥有核潜艇。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFA1bVVpVDNEV2VvbDljY0xIc1NraVd2UTc3d0tCbVQycFEwNWNwcktoTTh2cXFBNWZiVWc0V0g5SlZpdlFQVG5vNUJxM0hVYWZ6WWpNQlNVOGx3UQ?oc=5">原文 · 共同社</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1PanZWXzN3MHpxWjBRTTQxalVxOTIyVnBoaUdMd2FVemQ2czhZNlZGdXpoT1RCSTJrLU1GbnBMcjZoZFVRbjJmWElFN216ekNjQzZJVzBZMnQyZXZvLUhmVDRmT2pzOWdtczJFVDE3ckVqN3ZZUzFFWkg5YUl0czg?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTFBpRWZ3dl9fcnBRZ3B4TFZ0Wnd0dGhOalJwTUMzUnNyeVNkNUJmWmRYVGNHS3J0S29CY0d5SW5uSHpBd094TkFPRk5NY1phNTIyYmpFVWRBYVpTb2xXR2RGMEQ3eVN4Y2l1X19XRi1TVmt6SW9rdzk2Yzg5OGUtNE0?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBjUFZFcnV6MVVFS1NudWVRLU16YkVCeWxSREh6Wkk4eFJWbmNOOFBiQzZjTDBFYU5nQ1U2Y0VET1hZUG4tSjRjcHAtd0xCaGJtbVk1U3VlQWdVUVFJQmFSSzF3dHY4blNhTlAyZDlidmZyZjJvRlZSWg?oc=5">对照 · 央视新闻</a></div>
+</article>
+
+<article class="entry" id="e-16">
+  <div class="byline">
+    <p class="name">高市与秘鲁、智利谈关键矿物，日沙同意将共同原油储备扩至三倍<span class="src">共同社 · 日经</span></p>
+    <p class="time">11-21 07:54</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE13YXIzMUFlWDdjWUNZaVNlUUVraWlpWG0xS2wyRVYyRERzVWpCdkZ0ZXZ2MHc0cWxiTnRUNVY0dkJ5dVRRY2NrQXk2U1BtVWJ3MEZrYnZLc2s4dw?oc=5">共同社</a> 报道，日本与秘鲁同意推动关键矿物供应链合作。<a class="kw" href="https://www.nikkei.com/article/DGXZQOUA198UE0Z11C26A1000000/">日经</a> 的标题写，高市还与智利举行首脑会谈，讨论铜和锂等矿产的采购多角化，并与沙特达成阁僚协议，将产油国共同原油储备扩至三倍。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE13YXIzMUFlWDdjWUNZaVNlUUVraWlpWG0xS2wyRVYyRERzVWpCdkZ0ZXZ2MHc0cWxiTnRUNVY0dkJ5dVRRY2NrQXk2U1BtVWJ3MEZrYnZLc2s4dw?oc=5">原文 · 共同社</a><a href="https://www.nikkei.com/article/DGXZQOUA198UE0Z11C26A1000000/">对照 · 日经</a><a href="https://www.nikkei.com/article/DGXZQOUA20ATW0Q6A121C2000000/">对照 · 日经</a></div>
+</article>
+
+<p class="note">说明：本期 NHK 未抓取到条目。朝日新闻在第二次抓取时已有报道，但未把国内社会新闻或与既有主题无关的次要条目补入凑数。高市与特朗普通话、结束访华等已在昨日刊出，本期不再重复。</p>
+  <footer>
+    <div>SOCIAL DIGEST · 2026-11-21 · 时间均为北京时间</div>
+    <div>来源为各媒体 RSS / 公开页面，部分经 Google News 检索回退 · 摘要为中文转述，以原文为准</div>
+  </footer>
+
+</div>
+<script>(function(){var ls=[].slice.call(document.querySelectorAll('.toc a[href^="#"]'));var ts=ls.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function f(){var k=-1;for(var j=0;j<ts.length;j++){if(ts[j]&&ts[j].getBoundingClientRect().top<120)k=j;}ls.forEach(function(a,j){a.classList.toggle('on',j===k);});
+if(k>=0){var a=ls[k],t=a.closest('.toc');var r=a.getBoundingClientRect(),q=t.getBoundingClientRect();if(r.top<q.top||r.bottom>q.bottom)t.scrollTop+=r.top-q.top-q.height/2;}}
+addEventListener('scroll',f,{passive:true});f();})();</script>
+</body>
+</html>
