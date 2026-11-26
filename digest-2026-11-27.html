@@ -1,0 +1,673 @@
+<title>Social Digest</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    /* cool blue-grey paper, slate ink, single signal-amber accent */
+    --bg: #E9ECF1;
+    --surface: #FBFCFE;
+    --ink: #191C23;
+    --ink-soft: #474E5B;
+    --ink-faint: #79818F;
+    --line: #D2D7E0;
+    --line-strong: #191C23;
+    --accent: #C98A00;
+    --accent-ink: #8A5A00;
+    --accent-wash: #FBF2DC;
+    --accent-wash-edge: #E9B84A;
+    --good: #2E7D57;
+    --shadow: 0 1px 2px rgba(24,28,35,.05), 0 12px 32px -18px rgba(24,28,35,.28);
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #101319;
+      --surface: #191D25;
+      --ink: #E9EBF0;
+      --ink-soft: #A9B1BE;
+      --ink-faint: #6E7684;
+      --line: #2A2F39;
+      --line-strong: #E9EBF0;
+      --accent: #F0B429;
+      --accent-ink: #F5C556;
+      --accent-wash: rgba(240,180,41,.08);
+      --accent-wash-edge: rgba(240,180,41,.55);
+      --good: #58C08C;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 44px -20px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #101319;
+    --surface: #191D25;
+    --ink: #E9EBF0;
+    --ink-soft: #A9B1BE;
+    --ink-faint: #6E7684;
+    --line: #2A2F39;
+    --line-strong: #E9EBF0;
+    --accent: #F0B429;
+    --accent-ink: #F5C556;
+    --accent-wash: rgba(240,180,41,.08);
+    --accent-wash-edge: rgba(240,180,41,.55);
+    --good: #58C08C;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 44px -20px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Serif SC", "Libre Franklin", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 88px; }
+
+  /* ---------- nameplate ---------- */
+  .plate { padding-top: 34px; }
+  .plate-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .signal { display: inline-flex; align-items: center; gap: 7px; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    animation: pulse 3.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    70%,100% { box-shadow: 0 0 0 7px transparent; }
+  }
+
+  .toggle {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft); background: transparent;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer; transition: border-color .18s, color .18s;
+  }
+  .toggle:hover { color: var(--ink); border-color: var(--line-strong); }
+  .toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .masthead {
+    border-top: 3px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    margin-top: 12px; padding: 18px 0 16px;
+  }
+  h1.title {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: clamp(2.9rem, 11vw, 4.4rem); line-height: .96;
+    letter-spacing: -.02em; margin: 0; text-wrap: balance;
+  }
+  .title em { font-style: italic; font-weight: 500; color: var(--accent-ink); }
+  .tagline {
+    font-family: "Noto Serif SC", "Newsreader", serif; font-size: 1.06rem;
+    color: var(--ink-soft); margin: 12px 0 0; letter-spacing: .01em;
+  }
+
+  .dateline {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); padding: 11px 0 0;
+  }
+  .dateline b { color: var(--ink-soft); font-weight: 600; }
+  .dateline .num { font-variant-numeric: tabular-nums; color: var(--accent-ink); font-weight: 600; }
+
+  /* ---------- today's signal (thesis lead) ---------- */
+  .lead {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; box-shadow: var(--shadow);
+    padding: 24px 24px 22px; margin: 28px 0 8px;
+  }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent-ink); display: flex; align-items: center; gap: 9px; margin: 0 0 12px;
+  }
+  .kicker::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--accent-wash-edge), transparent); }
+  .lead h2 {
+    font-family: "Noto Serif SC", "Newsreader", serif; font-weight: 500;
+    font-size: 1.42rem; line-height: 1.5; letter-spacing: 0; margin: 0; text-wrap: pretty;
+  }
+  .lead h2 .mark {
+    background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--accent) 42%, transparent) 62%);
+    padding: 0 1px;
+  }
+
+  /* ---------- section rule ---------- */
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 46px 0 6px; }
+  .sec-head .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink); white-space: nowrap;
+  }
+  .sec-head .lbl .zh-lbl { font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px; }
+  .sec-head .rule { flex: 1; height: 2px; background: var(--line-strong); }
+  .sec-head .count { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+  /* ---------- entry ---------- */
+  .entry { padding: 26px 0 4px; border-bottom: 1px solid var(--line); }
+  .entry:last-of-type { border-bottom: 0; }
+
+  .byline { margin-bottom: 12px; }
+  .tag {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 4px;
+  }
+  .tag .ch { color: var(--accent-ink); }
+  .name {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: 1.34rem; line-height: 1.15; letter-spacing: -.01em; margin: 0; text-wrap: balance;
+  }
+  .name span { color: var(--ink-soft); font-weight: 400; font-style: italic; font-size: .96rem; }
+
+  /* zh body is PRIMARY */
+  .zh { margin: 0; }
+  .zh + .zh { margin-top: 12px; }
+
+  /* english-original channel — key quotes only */
+  .en-quote {
+    margin: 15px 0 4px; padding: 12px 16px;
+    background: var(--accent-wash); border-left: 2px solid var(--accent-wash-edge);
+    border-radius: 0 3px 3px 0;
+    font-family: "Newsreader", Georgia, serif; font-style: italic;
+    color: var(--ink-soft); font-size: 1.02rem; line-height: 1.6;
+  }
+  .en-quote p { margin: 0; }
+  .en-quote p + p { margin-top: 8px; }
+  .en-quote .q-lbl {
+    display: block; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-style: normal; font-size: 9.5px; font-weight: 600; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent-ink); margin-bottom: 6px;
+  }
+
+  .receipts { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 2px; }
+  .receipts a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; letter-spacing: .02em; color: var(--accent-ink);
+    text-decoration: none; padding: 3px 9px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+    transition: border-color .16s, background .16s, transform .16s;
+  }
+  .receipts a::before { content: "↗"; opacity: .7; }
+  .receipts a:hover { border-color: var(--accent-wash-edge); background: var(--accent-wash); transform: translateY(-1px); }
+  .receipts a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* podcast-specific */
+  .takeaway { display: flex; gap: 10px; margin: 4px 0 16px; font-size: 1.02rem; }
+  .takeaway .k {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent-ink); white-space: nowrap; padding-top: 6px;
+  }
+  .takeaway .v { margin: 0; font-weight: 600; }
+
+  blockquote {
+    margin: 18px 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--accent);
+    font-family: "Newsreader", Georgia, serif; font-style: italic;
+    font-size: 1.24rem; line-height: 1.42; color: var(--ink); text-wrap: pretty;
+  }
+  blockquote .src {
+    display: block; margin-top: 8px; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-style: normal; font-size: 11px; letter-spacing: .04em; color: var(--ink-faint);
+  }
+
+  footer {
+    margin-top: 54px; padding-top: 20px; border-top: 3px solid var(--line-strong);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .05em; color: var(--ink-faint); line-height: 1.9;
+  }
+  footer a { color: var(--accent-ink); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .88em; background: var(--accent-wash); padding: 1px 5px; border-radius: 3px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(10px); animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+</style>
+<!-- FB_RAIL_CSS -->
+
+<style>
+  /* left sidebar rail (index only) */
+  .rail {
+    position: fixed;
+    top: 34px;
+    left: max(20px, calc((100vw - 720px) / 2 - 232px));
+    width: 200px;
+    max-height: calc(100vh - 68px);
+    overflow-y: auto;
+    z-index: 10;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  .rail-inner {
+    border-left: 2px solid var(--line-strong);
+    padding: 6px 0 6px 14px;
+  }
+  .rail-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .rail-lbl {
+    font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .rail-lbl .rail-zh {
+    font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px;
+  }
+  .rail-count {
+    font-size: 10.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums;
+    letter-spacing: .06em;
+  }
+  .rail .a-list { list-style: none; padding: 0; margin: 0; }
+  .rail .a-list li { margin: 0; }
+  .rail .a-list a {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 8px 0; text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color .16s, border-color .16s, padding-left .16s;
+  }
+  .rail .a-list a:hover {
+    color: var(--accent-ink); border-color: var(--accent-wash-edge);
+    padding-left: 4px;
+  }
+  .rail .a-list .a-date {
+    font-size: 11.5px; letter-spacing: .06em; color: var(--ink);
+    font-variant-numeric: tabular-nums; font-weight: 600;
+  }
+  .rail .a-list .a-zh {
+    font-family: "Noto Serif SC", serif; font-size: 12px; color: var(--ink-faint);
+    letter-spacing: 0;
+  }
+  .rail .a-list .a-current > a {
+    color: var(--accent-ink); border-color: var(--accent-wash-edge);
+    padding-left: 4px;
+  }
+  .rail .a-list .a-current .a-date { color: var(--accent-ink); }
+  .rail .a-list a:hover .a-date,
+  .rail .a-list a:hover .a-zh { color: var(--accent-ink); }
+
+  /* rail scrollbar: subtle */
+  .rail::-webkit-scrollbar { width: 6px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .rail::-webkit-scrollbar-thumb:hover { background: var(--line-strong); }
+
+  /* narrow viewport: rail becomes a top strip that scrolls horizontally */
+  @media (max-width: 1179px) {
+    .rail {
+      position: sticky; top: 0; left: 0; width: 100%; max-height: none;
+      background: var(--bg);
+      padding: 10px 20px 8px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto; overflow-y: hidden;
+    }
+    .rail-inner {
+      border-left: 0; padding: 0;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .rail-head {
+      margin: 0; flex-shrink: 0; flex-direction: column;
+      align-items: flex-start; gap: 1px;
+    }
+    .rail .a-list {
+      display: flex; gap: 4px; flex-wrap: nowrap;
+    }
+    .rail .a-list li { flex-shrink: 0; }
+    .rail .a-list a {
+      flex-direction: row; align-items: baseline; gap: 6px;
+      padding: 6px 10px; border-bottom: 0;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: var(--surface); white-space: nowrap;
+    }
+    .rail .a-list a:hover { padding-left: 10px; }
+    .rail .a-list .a-current > a {
+      padding-left: 10px; background: var(--accent-wash);
+      border-color: var(--accent-wash-edge);
+    }
+    .rail .a-list .a-zh { font-size: 11px; }
+  }
+</style>
+
+<!-- FB_EXTRA --><style>
+  .masthead { margin-top: 8px; }
+  .dateline { font-size: 15px; letter-spacing: .02em; text-transform: none; gap: 8px 22px; }
+  .dateline b { font-size: 17px; color: var(--ink); }
+  .dateline .num { font-size: 17px; }
+  .lead .kicker { font-size: 13px; letter-spacing: .14em; }
+  .lead .lead-p { font-size: 17px; line-height: 1.75; margin: 0; color: var(--ink); text-wrap: pretty; }
+  .lead .lead-p .mark { background: linear-gradient(transparent 62%, var(--accent-wash) 62%); color: var(--accent-ink); font-weight: 600; }
+  .sec-head .lbl .zh-lbl { font-size: 1.7rem; font-weight: 700; letter-spacing: .04em; color: var(--ink); text-transform: none; margin: 0; }
+  .sec-sum { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 3px; padding: 14px 18px; margin: 14px 0 6px; font-size: 17px; }
+  .sec-sum p { margin: 0 0 6px; }
+  .sec-sum ol { margin: 4px 0 0; padding-left: 22px; }
+  .sec-sum .k { font-family: "Noto Serif SC", serif; font-size: 17px; font-weight: 700; color: var(--accent-ink); margin-right: 4px; }
+  .name .src { font-family: "IBM Plex Mono", "Noto Serif SC", monospace; font-style: normal; font-weight: 500; font-size: 12px; letter-spacing: .04em; color: var(--ink-faint); margin-left: 8px; white-space: nowrap; }
+  .time { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); margin: 4px 0 0; }
+  .receipts { justify-content: flex-end; }
+  .lst { list-style: none; padding: 0; margin: 6px 0 0; }
+  .lst li { padding: 9px 0; border-top: 1px dashed var(--line); }
+  .lst li:first-child { border-top: 0; }
+  .lst .t { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .lst .t:hover { color: var(--accent-ink); }
+  .lst .m { display: block; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--ink-faint); }
+  .grp { font-family: "Noto Serif SC", serif; font-size: 1.2rem; font-weight: 600; color: var(--accent-ink); letter-spacing: .04em; margin: 30px 0 0; padding-bottom: 4px; border-bottom: 1px solid var(--accent-wash-edge); }
+  .note { font-family: "IBM Plex Mono", "Noto Serif SC", monospace; font-size: 12px; color: var(--ink-faint); margin: 14px 0 0; line-height: 1.7; }
+  .sec-head, .grp, .entry { scroll-margin-top: 24px; }
+  .toc { position: fixed; top: 34px; right: max(20px, calc((100vw - 720px) / 2 - 252px)); width: 220px; max-height: calc(100vh - 68px); overflow-y: auto; z-index: 10; font-family: "Noto Serif SC", serif; }
+  .toc-inner { border-left: 2px solid var(--line-strong); padding: 6px 0 6px 14px; }
+  .toc-head { font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: .2em; color: var(--ink); margin-bottom: 10px; }
+  .toc-head .rail-zh { font-family: "Noto Serif SC", serif; letter-spacing: .08em; margin-right: 6px; }
+  .toc ul { list-style: none; padding: 0; margin: 0; }
+  .toc a { text-decoration: none; color: var(--ink-faint); display: block; }
+  .toc a:hover, .toc a.on { color: var(--accent-ink); }
+  .toc .t-sec { margin: 0 0 10px; }
+  .toc .t-sec > a { font-size: 14px; font-weight: 600; color: var(--ink); padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .toc .t-sec > a .n { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: var(--ink-faint); font-weight: 400; margin-left: 6px; }
+  .toc .t-grp > a { font-size: 12.5px; font-weight: 600; color: var(--accent-ink); padding: 6px 0 2px; }
+  .toc .t-it > a { font-size: 12px; line-height: 1.45; padding: 3px 0 3px 8px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .toc::-webkit-scrollbar { width: 6px; } .toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .toc-m { display: none; }
+  @media (max-width: 1179px) {
+    .toc { display: none; }
+    .toc-m { display: block; margin: 18px 0 0; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); padding: 10px 14px; font-family: "Noto Serif SC", serif; }
+    .toc-m summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--ink); }
+    .toc-m ul { list-style: none; padding: 0; margin: 8px 0 0; }
+    .toc-m a { text-decoration: none; color: var(--ink-faint); display: block; padding: 3px 0; }
+    .toc-m .t-sec > a { color: var(--ink); font-weight: 600; } .toc-m .t-grp > a { color: var(--accent-ink); padding-left: 8px; }
+    .toc-m .t-it { display: none; }
+    .sec-head, .grp, .entry { scroll-margin-top: 72px; }
+  }
+</style><!-- /FB_EXTRA -->
+<!-- YOHAKU --><style>
+:root{--bg:#f4f1ea;--surface:#f4f1ea;--ink:#23211d;--ink-soft:#23211d;--ink-faint:#8a8478;--line:transparent;--line-strong:transparent;--accent:#23211d;--accent-ink:#23211d;--accent-wash:transparent;--accent-wash-edge:transparent;--shadow:none}
+@media (prefers-color-scheme:dark){:root{--bg:#f4f1ea;--surface:#f4f1ea;--ink:#23211d;--ink-faint:#8a8478}}
+html,body{background:#f4f1ea!important}
+body,body *{font-family:"Noto Serif SC","Noto Serif CJK SC","Songti SC",serif!important;border-color:transparent!important;box-shadow:none!important}
+body{color:#23211d!important;font-size:16px!important;line-height:1.85!important;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px!important}
+/* title: one quiet line */
+.masthead{border:0!important;padding:0!important;margin:56px 0 0!important}
+h1.title{font-family:"Noto Serif SC","Noto Serif CJK SC",serif!important;font-size:30px!important;font-weight:600!important;letter-spacing:.01em!important;line-height:1.2!important}
+h1.title br{display:none}
+h1.title em{font-style:normal!important;color:#23211d!important;font-weight:600!important;margin-left:.25em;font-family:inherit!important}
+.dateline{font-size:13px!important;text-transform:none!important;letter-spacing:.02em!important;color:#8a8478!important;gap:4px 18px!important;padding-top:14px!important}
+.dateline b,.dateline .num{color:#8a8478!important;font-weight:400!important;font-size:13px!important}
+/* summary */
+.lead{background:none!important;border:0!important;padding:0!important;margin:72px 0 0!important}
+.kicker{display:none!important}
+.lead .lead-p,.lead p,.lead h2{font-size:19px!important;line-height:1.95!important;color:#23211d!important;font-weight:400!important}
+.lead .mark{background:none!important;color:#b03a2e!important;font-weight:500!important}
+.lead *{color:#23211d!important;opacity:1!important}.lead .mark{color:#b03a2e!important}
+/* sections */
+.sec-head{margin:120px 0 0!important;display:block!important}
+.sec-head .rule,.sec-head .count{display:none!important}
+.sec-head .lbl .zh-lbl,.sec-head .lbl{font-family:"Noto Serif SC","Noto Serif CJK SC",serif!important;font-size:34px!important;font-weight:600!important;letter-spacing:.12em!important;color:#23211d!important}
+.sec-sum{background:none!important;border:0!important;padding:0!important;margin:24px 0 64px!important;font-size:17px!important;color:#23211d!important}
+.sec-sum .k{display:none!important}
+.sec-sum ol{padding-left:1.2em!important}
+/* entries */
+.entry{padding:0 0 56px!important;border:0!important}
+.name{font-size:17px!important;font-weight:600!important;line-height:1.6!important}
+.name .src{font-size:13px!important;font-weight:400!important;color:#8a8478!important;margin-left:10px!important;letter-spacing:0!important}
+.time{font-size:12px!important;color:#a8a194!important;margin:2px 0 12px!important;font-variant-numeric:tabular-nums}
+.entry p{color:#33302a!important}
+.receipts{gap:14px!important;margin-top:8px!important}
+.receipts a{background:none!important;border:0!important;padding:0!important;color:#23211d!important;font-size:12px!important;text-decoration:none!important}
+.receipts a::before{content:""!important}
+/* rails: lighter, Chinese only */
+.rail-lbl,.toc-head{font-size:0!important}
+.rail-lbl .rail-zh,.toc-head .rail-zh{font-size:12px!important;color:#23211d!important;letter-spacing:.1em!important;font-weight:500!important}
+.rail-count{display:none!important}
+.rail,.toc{font-size:12px!important}
+.a-zh{display:none!important}
+.a-date{color:#8a8478!important;font-size:12px!important;font-weight:400!important;letter-spacing:.02em!important}
+.a-current .a-date{color:#23211d!important}
+.toc-inner{border:0!important;padding:0!important}
+.toc .t-sec>a{font-size:13px!important;font-weight:500!important;border:0!important;color:#23211d!important}
+.toc .t-sec>a .n{display:none!important}
+.toc .t-it>a{color:#8a8478!important;padding-left:0!important}
+.toc a.on{color:#23211d!important}
+a.kw,.zh a.kw{color:inherit!important;text-decoration:none!important;border:0!important;background-image:linear-gradient(rgba(35,33,29,.35),rgba(35,33,29,.35))!important;background-size:100% 1px!important;background-repeat:no-repeat!important;background-position:0 95%!important}a.kw:hover{color:#23211d!important}
+.receipts a:not(:first-child){display:none!important}
+.receipts a:first-child{font-size:0!important}.receipts a:first-child::after{content:"原文";font-size:12px}
+.lead .mark,a.kw:hover{font-weight:600!important}.a-current .a-date{font-weight:600!important}
+.name{font-size:20px!important;font-weight:700!important;color:#1a1814!important;letter-spacing:.02em!important;line-height:1.5!important}
+.name .src{font-size:13px!important;font-weight:400!important}
+.entry p:not(.name):not(.time){font-size:15.5px!important;color:#4a463e!important;font-weight:400!important;line-height:2!important}
+.time{margin:4px 0 16px!important}
+.sec-sum,.sec-sum *{color:#33302a!important}
+.sec-head .lbl .zh-lbl,.sec-head .lbl{font-size:38px!important;font-weight:700!important;color:#1a1814!important}
+h1.title{font-weight:700!important;color:#1a1814!important}
+.mark,.lead .mark{color:#b03a2e!important;background:none!important}
+</style><!-- /YOHAKU -->
+<!-- /FB_RAIL_CSS -->
+
+
+
+<aside class="rail" aria-label="往期归档">
+  <div class="rail-inner">
+    <div class="rail-head">
+      <span class="rail-lbl"><span class="rail-zh">往期</span>Archive</span>
+      <span class="rail-count">32 期</span>
+    </div>
+    <ul class="a-list">
+      <li class="a-current"><a href="digest-2026-11-27.html"><span class="a-date">2026-11-27</span><span class="a-zh">周五 · 2026年11月27日</span></a></li>
+      <li><a href="digest-2026-11-26.html"><span class="a-date">2026-11-26</span><span class="a-zh">周四 · 2026年11月26日</span></a></li>
+      <li><a href="digest-2026-11-25.html"><span class="a-date">2026-11-25</span><span class="a-zh">周三 · 2026年11月25日</span></a></li>
+      <li><a href="digest-2026-11-24.html"><span class="a-date">2026-11-24</span><span class="a-zh">周二 · 2026年11月24日</span></a></li>
+      <li><a href="digest-2026-11-23.html"><span class="a-date">2026-11-23</span><span class="a-zh">周一 · 2026年11月23日</span></a></li>
+      <li><a href="digest-2026-11-22.html"><span class="a-date">2026-11-22</span><span class="a-zh">周日 · 2026年11月22日</span></a></li>
+      <li><a href="digest-2026-11-21.html"><span class="a-date">2026-11-21</span><span class="a-zh">周六 · 2026年11月21日</span></a></li>
+      <li><a href="digest-2026-11-20.html"><span class="a-date">2026-11-20</span><span class="a-zh">周五 · 2026年11月20日</span></a></li>
+      <li><a href="digest-2026-11-19.html"><span class="a-date">2026-11-19</span><span class="a-zh">周四 · 2026年11月19日</span></a></li>
+      <li><a href="digest-2026-11-18.html"><span class="a-date">2026-11-18</span><span class="a-zh">周三 · 2026年11月18日</span></a></li>
+      <li><a href="digest-2026-11-17.html"><span class="a-date">2026-11-17</span><span class="a-zh">周二 · 2026年11月17日</span></a></li>
+      <li><a href="digest-2026-11-16.html"><span class="a-date">2026-11-16</span><span class="a-zh">周一 · 2026年11月16日</span></a></li>
+      <li><a href="digest-2026-11-15.html"><span class="a-date">2026-11-15</span><span class="a-zh">周日 · 2026年11月15日</span></a></li>
+      <li><a href="digest-2026-11-14.html"><span class="a-date">2026-11-14</span><span class="a-zh">周六 · 2026年11月14日</span></a></li>
+      <li><a href="digest-2026-11-13.html"><span class="a-date">2026-11-13</span><span class="a-zh">周五 · 2026年11月13日</span></a></li>
+      <li><a href="digest-2026-11-12.html"><span class="a-date">2026-11-12</span><span class="a-zh">周四 · 2026年11月12日</span></a></li>
+      <li><a href="digest-2026-11-11.html"><span class="a-date">2026-11-11</span><span class="a-zh">周三 · 2026年11月11日</span></a></li>
+      <li><a href="digest-2026-11-10.html"><span class="a-date">2026-11-10</span><span class="a-zh">周二 · 2026年11月10日</span></a></li>
+      <li><a href="digest-2026-11-09.html"><span class="a-date">2026-11-09</span><span class="a-zh">周一 · 2026年11月9日</span></a></li>
+      <li><a href="digest-2026-11-08.html"><span class="a-date">2026-11-08</span><span class="a-zh">周日 · 2026年11月8日</span></a></li>
+      <li><a href="digest-2026-11-07.html"><span class="a-date">2026-11-07</span><span class="a-zh">周六 · 2026年11月7日</span></a></li>
+      <li><a href="digest-2026-11-06.html"><span class="a-date">2026-11-06</span><span class="a-zh">周五 · 2026年11月6日</span></a></li>
+      <li><a href="digest-2026-11-05.html"><span class="a-date">2026-11-05</span><span class="a-zh">周四 · 2026年11月5日</span></a></li>
+      <li><a href="digest-2026-11-04.html"><span class="a-date">2026-11-04</span><span class="a-zh">周三 · 2026年11月4日</span></a></li>
+      <li><a href="digest-2026-11-03.html"><span class="a-date">2026-11-03</span><span class="a-zh">周二 · 2026年11月3日</span></a></li>
+      <li><a href="digest-2026-11-02.html"><span class="a-date">2026-11-02</span><span class="a-zh">周一 · 2026年11月2日</span></a></li>
+      <li><a href="digest-2026-11-01.html"><span class="a-date">2026-11-01</span><span class="a-zh">周日 · 2026年11月1日</span></a></li>
+      <li><a href="digest-2026-10-31.html"><span class="a-date">2026-10-31</span><span class="a-zh">周六 · 2026年10月31日</span></a></li>
+      <li><a href="digest-2026-10-30.html"><span class="a-date">2026-10-30</span><span class="a-zh">周五 · 2026年10月30日</span></a></li>
+      <li><a href="digest-2026-10-29.html"><span class="a-date">2026-10-29</span><span class="a-zh">周四 · 2026年10月29日</span></a></li>
+      <li><a href="digest-2026-10-28.html"><span class="a-date">2026-10-28</span><span class="a-zh">周三 · 2026年10月28日</span></a></li>
+      <li><a href="digest-2026-10-27.html"><span class="a-date">2026-10-27</span><span class="a-zh">周二 · 2026年10月27日</span></a></li>
+    </ul>
+  </div>
+</aside>
+<script src="archive.js"></script>
+<nav class="toc" aria-label="本期目录"><div class="toc-inner"><div class="toc-head"><span class="rail-zh">本期目录</span>Contents</div><ul><li class="t-sec"><a href="#s-1">关于美国的新闻<span class="n">4</span></a><ul><li class="t-it"><a href="#e-2">科威特遇袭致两名意大利技术人员身亡，伊朗否认责任</a></li><li class="t-it"><a href="#e-3">特朗普称中期选举前 GDP 数据为「虚假」，要求调查商务部</a></li><li class="t-it"><a href="#e-4">法官阻止联邦通信委员会针对 ABC 进行提前牌照审查</a></li><li class="t-it"><a href="#e-5">特朗普与北约秘书长吕特会面，喊话俄罗斯避免扩大乌克兰战事</a></li></ul></li><li class="t-sec"><a href="#s-6">关于欧洲的新闻<span class="n">2</span></a><ul><li class="t-it"><a href="#e-7">欧盟领导人在预算与对乌约 490 亿美元贷款上出现分歧，梅洛尼警告战争不得蔓延到地中海</a></li><li class="t-it"><a href="#e-8">西班牙的德科斯将接替拉加德出任欧洲央行行长</a></li></ul></li><li class="t-sec"><a href="#s-9">关于中国的新闻<span class="n">4</span></a><ul><li class="t-it"><a href="#e-10">商务部坚决反对美对中国等经济体加征 301 关税</a></li><li class="t-it"><a href="#e-11">中央宣传部原副部长蔡赴朝被开除党籍</a></li><li class="t-it"><a href="#e-12">中方就日船侵闯钓鱼岛领海提出严正交涉，并督促加快处理日遗化武</a></li><li class="t-it"><a href="#e-13">商务部欢迎欧方解除相关中国企业制裁，并将关注欧方混动汽车保障调查</a></li></ul></li><li class="t-sec"><a href="#s-14">关于日本的新闻<span class="n">2</span></a><ul><li class="t-it"><a href="#e-15">日本政府拟将五年防卫费上调至 56.3 兆日元，并规划新型远程反舰导弹</a></li><li class="t-it"><a href="#e-16">被俄方扣押的日本记者 Yuki Imai 的妻子呼吁尽快释放丈夫</a></li></ul></li></ul></div></nav>
+<div class="wrap">
+  <p class="disclaimer">以下内容均为 Grok AI 生成，不代表个人政治立场。</p>
+  <header class="plate">
+    <style>.site-switch{display:flex;gap:28px;justify-content:flex-end;margin:0 0 28px}.site-switch a{font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif!important;letter-spacing:.06em!important;text-decoration:none!important;padding:6px 0!important;color:#9a9a9a!important;border-bottom:1.5px solid transparent!important}.site-switch a.on{color:#111!important;border-bottom-color:#111!important}.site-switch a:hover{color:#111!important}.zh a.kw{color:inherit;text-decoration:underline;text-decoration-color:#c0392b;text-underline-offset:3px}p.disclaimer{margin:24px 0 0!important;font-size:13px!important;line-height:1.7!important;letter-spacing:.04em!important;font-weight:400!important;color:#6f695e!important;background:none!important;border:0!important;padding:0!important}</style><nav class="site-switch"><a href="../ai-builders-digest/">AI Digest</a><a href="../social-digest/" class="on">Social Digest</a><a href="https://summerxia.com/reading-digest/">Reading Digest</a><a href="../pm-digest/">PM Digest</a><a href="../fde-digest/">FDE Digest</a></nav>
+    <div class="masthead">
+      <h1 class="title">Social<br><em>Digest</em></h1>
+    </div>
+
+    <div class="dateline">
+      <span><b>周五 · 2026年11月27日</b></span>
+      <span>收录 2026年11月26日 内容</span>
+      <span><span class="num">12</span> 条新闻</span>
+      <span><span class="num">12</span> 家媒体</span>
+      <span><span class="num">12</span> 条多国对照</span>
+    </div>
+  </header>
+
+<section class="lead reveal">
+  <p class="kicker">Executive Summary</p>
+  <p class="lead-p">11 月 26 日，科威特重要设施遇袭，<span class="mark">两名意大利技术人员身亡</span>，科威特指认伊朗无人机、德黑兰否认；FT 称这是美伊本月重启交火以来海湾地区首批报告的死亡。特朗普指责中期选举前公布的 <span class="mark">GDP 数据为「虚假」</span>，要求调查商务部。中国商务部 <span class="mark">坚决反对美对中国等经济体加征 301 关税</span>。欧盟峰会上，领导人在预算开支和向乌克兰提供约 490 亿美元贷款上出现分歧。</p>
+</section>
+<details class="toc-m"><summary>本期目录</summary><ul><li class="t-sec"><a href="#s-1">关于美国的新闻<span class="n">4</span></a><ul></ul></li><li class="t-sec"><a href="#s-6">关于欧洲的新闻<span class="n">2</span></a><ul></ul></li><li class="t-sec"><a href="#s-9">关于中国的新闻<span class="n">4</span></a><ul></ul></li><li class="t-sec"><a href="#s-14">关于日本的新闻<span class="n">2</span></a><ul></ul></li></ul></details>
+<div class="sec-head" id="s-1">
+  <span class="lbl"><span class="zh-lbl">关于美国的新闻</span></span>
+  <span class="rule"></span><span class="count">4 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 科威特重要设施遇袭，两名意大利技术人员身亡，科威特指认伊朗、德黑兰否认；FT 称这是美伊本月重启交火以来海湾地区首批报告的死亡。特朗普称中期选举前的 GDP 数据为「虚假」，要求调查商务部。一名法官阻止联邦通信委员会针对 ABC 电视台进行提前牌照审查。特朗普与北约秘书长吕特在海湖庄园会面，喊话俄罗斯避免扩大乌克兰战事。</p><ol><li>科威特遇袭致两名意大利技术人员身亡，伊朗否认责任</li><li>特朗普称中期选举前 GDP 数据为「虚假」，要求调查商务部</li><li>法官阻止联邦通信委员会针对 ABC 进行提前牌照审查</li></ol></div>
+
+<article class="entry" id="e-2">
+  <div class="byline">
+    <p class="name">科威特遇袭致两名意大利技术人员身亡，伊朗否认责任<span class="src">BBC · FT · NYT · 新华社 · Reuters · CNN · WSJ</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://www.bbc.co.uk/news/articles/c39w9y5dx4k5o?at_medium=RSS&amp;at_campaign=rss">BBC</a> 报道，两名意大利人在科威特遇袭身亡，意大利外交部称他们是德国莱茵金属公司（Rheinmetall）的技术人员；伊朗否认责任。<a class="kw" href="https://www.ft.com/content/e5f3128d-5f8b-416c-90d1-2549175cb091?syn-25a6b1a6=1">FT</a> 称，这是美伊本月重启交火以来海湾地区首批报告的死亡。<a class="kw" href="https://www.nytimes.com/2026/11/26/world/middleeast/italians-killed-iran-drone-attack-kuwait.html">NYT</a> 写道，遇难发生在海湾阿拉伯国家近几周接连遭遇袭击之后，这些国家设有美国军事设施，而结束战争的谈判仍陷入停滞。</p>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE9saWM0akFQRERSZWRsMzYyMWpxV2lWcmVBZHBpcldyc3VUYXpLTFJUWUVZZVR3bE5fQlRFVnRndVlIVkhXR2h1X3AxS2NiX09oRmFOTHZIbjYycFVJd2lCRjZkazA0cWFXMkhXekFNRWFHZUhUemptZU05UnowYlE?oc=5">新华社</a> 报道，科威特称伊朗袭击该国重要设施导致两名意大利人身亡，两人当时在为科威特军方维护雷达天线；新华社 另报道，伊朗武装部队否认袭击科威特重要设施。<a class="kw" href="https://news.google.com/rss/articles/CBMiswFBVV95cUxPeE9DZXQ0VUMxV052eWlmWWlKM3R0LTFiMS1ITm93Ty1NOWpta1ZVNU5MeWVVMHRlcmdXd0NpZmxJeGlGZEhCeklaaEs2VWlSWnR0RVRLUHhCNm9MeFNTMmNUZFEyWWdoUVVBWUZTcVc0LVNFY0gxN050ZHNtS3psSVRHQWtBVEM5N3dPYVl6T1Flb0tBb1BlUGVxQ3ZaNURWVU9vTHYtTGxFRDJSQVhaMU1Tbw?oc=5">Reuters</a> 称，两人在对科威特一处地点的袭击中身亡，伊朗否认介入。<a class="kw" href="https://news.google.com/rss/articles/CBMijAFBVV95cUxQNUdlenhjamNKTzFaUG9EMVdzb0wwbmlNd1dYLU15Q2xDWDVuYVN6cWtrZlUyRTMxeGdKbVMzaXh0SXNRS1RGUUd1bnhIS3dtYXpLTi1BQkJjSm5SaUhWcENBTlRyZ2dlNEFnbUFOWkdxYlBYUC1sN2NUR0pDc2hDNjR3SF91ODVpOHRCUw?oc=5">CNN</a> 亦报道了意大利外长的确认以及德黑兰的否认。<a class="kw" href="https://news.google.com/rss/articles/CBMinAFBVV95cUxPR0JXYTAzOTNnajlLczdFM0FKUXdjbHlSLUFPRlhHQWpXaV9JRnQzNGRETWR6c1pWM3hQZnptczZaQVZqeExWa1JqdFRDWlJDcUItNEVra09WVEFfSDlSUm1nT3B3SUVZRGZHMTdieHlaSDhBWDdvMUhTVjJ0eTZmbFlfWHM2MUYyYnpHNWtFcTg3Q2JndEw4LTl3MHg?oc=5">WSJ</a> 标题写，伊朗无人机袭击在科威特造成两名意大利人死亡。</p>
+  <div class="receipts"><a href="https://www.bbc.co.uk/news/articles/c39w9y5dx4k5o?at_medium=RSS&amp;at_campaign=rss">原文 · BBC</a><a href="https://www.ft.com/content/e5f3128d-5f8b-416c-90d1-2549175cb091?syn-25a6b1a6=1">对照 · FT</a><a href="https://www.nytimes.com/2026/11/26/world/middleeast/italians-killed-iran-drone-attack-kuwait.html">对照 · NYT</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE9saWM0akFQRERSZWRsMzYyMWpxV2lWcmVBZHBpcldyc3VUYXpLTFJUWUVZZVR3bE5fQlRFVnRndVlIVkhXR2h1X3AxS2NiX09oRmFOTHZIbjYycFVJd2lCRjZkazA0cWFXMkhXekFNRWFHZUhUemptZU05UnowYlE?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5pYzIzZXZ2bDdyY1NWN0JocnVoOWEyS3F6QjU0UmdFMFBFTE15ejVHOXNNeVQ2SUIwWHNUOFluQnBtZnlBNTZKQjNHWVJZM3NyS1hEY1BFZkNTM0Vsb1JGX0Rock1OQ2ZLc0pCbmlvWnJrRTRaWW1V?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTFB0RXVEa0tNRjduY2JnaEdPWjI3OTlueWpMdHVETHJzQlVNZXBhUE5hXzdiNEctWk1nNDFoUkNWWlhIcVJvajQtN0l3S0F3eVpRYjRDUWQtS2U3eDAxWjdzV0FSOHh2OWhUYlNmaU9GVjhGbkRSRW13?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxPeE9DZXQ0VUMxV052eWlmWWlKM3R0LTFiMS1ITm93Ty1NOWpta1ZVNU5MeWVVMHRlcmdXd0NpZmxJeGlGZEhCeklaaEs2VWlSWnR0RVRLUHhCNm9MeFNTMmNUZFEyWWdoUVVBWUZTcVc0LVNFY0gxN050ZHNtS3psSVRHQWtBVEM5N3dPYVl6T1Flb0tBb1BlUGVxQ3ZaNURWVU9vTHYtTGxFRDJSQVhaMU1Tbw?oc=5">对照 · Reuters</a><a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxQNUdlenhjamNKTzFaUG9EMVdzb0wwbmlNd1dYLU15Q2xDWDVuYVN6cWtrZlUyRTMxeGdKbVMzaXh0SXNRS1RGUUd1bnhIS3dtYXpLTi1BQkJjSm5SaUhWcENBTlRyZ2dlNEFnbUFOWkdxYlBYUC1sN2NUR0pDc2hDNjR3SF91ODVpOHRCUw?oc=5">对照 · CNN</a><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxPR0JXYTAzOTNnajlLczdFM0FKUXdjbHlSLUFPRlhHQWpXaV9JRnQzNGRETWR6c1pWM3hQZnptczZaQVZqeExWa1JqdFRDWlJDcUItNEVra09WVEFfSDlSUm1nT3B3SUVZRGZHMTdieHlaSDhBWDdvMUhTVjJ0eTZmbFlfWHM2MUYyYnpHNWtFcTg3Q2JndEw4LTl3MHg?oc=5">对照 · WSJ</a></div>
+</article>
+
+<article class="entry" id="e-3">
+  <div class="byline">
+    <p class="name">特朗普称中期选举前 GDP 数据为「虚假」，要求调查商务部<span class="src">ABC News · 南华早报 · AP · Reuters</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://abcnews.com/Politics/wireStory/trump-calls-gdp-figures-fake-demands-investigation-commerce-138469221">ABC News</a> 报道，特朗普在没有拿出证据的情况下，暗示政府内部存在阴谋，在对共和党造成沉重打击的中期选举之后，才公布上修的经济增长数据；他称选举前的 GDP 数据为「虚假」，并要求调查商务部。<a class="kw" href="https://www.scmp.com/news/world/united-states-canada/article/3375962/trump-calls-gdp-figures-fake-demands-probe-his-own-commerce-department">南华早报</a> 写道，特朗普周四指责商务部在中期选举前故意发布不正确的经济增长数字，并表示希望展开调查。<a class="kw" href="https://news.google.com/rss/articles/CBMijwFBVV95cUxPSWs0NUw0T1MxU0FFajZoSzUzQ2tCblZyZGhDc25mSVpXV0NpczlfWHpwaWdaUEE0T3lFSXdhYl9oUVZ3cTV1ei01aXprNTBoYUJCbG02THdJeGVISENOWjdrVzJpb2pxZEI5aU94VmFCTWU4ckR5MjFjZ2JDMzFibl9WVGZ2Q09PeVo5LXc1WQ?oc=5">AP</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMinwFBVV95cUxPdjAtVm85ZE55RGw0MXhaM3NVV1NlaHdlazNjODRQQjRPOGh2eDQ5aWYzcmxNSHpVWHNacEhhMDFaRDZ3YWIxalJzY3JCTXdjLVE4RXpmbktlZXNZTUc3RlE0LVhtTlo5Rl8xMm9nOXVPZmZ1eEd2XzJjcXQxX2otajdiUHN6djBScGpldmJvUXBIaG9UeUJxeW5kSWtnTTQ?oc=5">Reuters</a> 亦报道了他要求调查中期选举前公布的 GDP 数据。</p>
+  <div class="receipts"><a href="https://abcnews.com/Politics/wireStory/trump-calls-gdp-figures-fake-demands-investigation-commerce-138469221">原文 · ABC News</a><a href="https://www.scmp.com/news/world/united-states-canada/article/3375962/trump-calls-gdp-figures-fake-demands-probe-his-own-commerce-department">对照 · 南华早报</a><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxPSWs0NUw0T1MxU0FFajZoSzUzQ2tCblZyZGhDc25mSVpXV0NpczlfWHpwaWdaUEE0T3lFSXdhYl9oUVZ3cTV1ei01aXprNTBoYUJCbG02THdJeGVISENOWjdrVzJpb2pxZEI5aU94VmFCTWU4ckR5MjFjZ2JDMzFibl9WVGZ2Q09PeVo5LXc1WQ?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxPdjAtVm85ZE55RGw0MXhaM3NVV1NlaHdlazNjODRQQjRPOGh2eDQ5aWYzcmxNSHpVWHNacEhhMDFaRDZ3YWIxalJzY3JCTXdjLVE4RXpmbktlZXNZTUc3RlE0LVhtTlo5Rl8xMm9nOXVPZmZ1eEd2XzJjcXQxX2otajdiUHN6djBScGpldmJvUXBIaG9UeUJxeW5kSWtnTTQ?oc=5">对照 · Reuters</a></div>
+</article>
+
+<article class="entry" id="e-4">
+  <div class="byline">
+    <p class="name">法官阻止联邦通信委员会针对 ABC 进行提前牌照审查<span class="src">CNN · AP · Reuters · WSJ</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMijgFBVV95cUxQOVd6SmZMLUpRRjdUcmpPeWVwRGRIbV85M3lxREZ4cmtwMzFKSy12RWVHcWFHQ1Q0Y2Y5aG1fME9kbkZ6eFRMdE0yUm1QMWEwZEJ1VExhWS1kVlRPakU0Q1F4dlh6WE81MnUyQnpUd1pweGFOZ25RMDgzMkRFUC02Vkk3aVlKTV9jdXNBd3Rn?oc=5">CNN</a> 报道，一名法官阻止特朗普任下的联邦通信委员会（FCC）针对 ABC 各台，并称「这不是一个接近的案件」。<a class="kw" href="https://news.google.com/rss/articles/CBMilwFBVV95cUxQbGg0cWJHckhVdmhyb3U0YXNWLTFhdmw5OHdYM2t2bVVMSzdENnNtaU94MlZfYkZ0R0htTVU2czd6LTQ2Z2tfREVyOEZLeWhaMmY0OXl5RldKREVraWtxc0ducXJNc1NuNzc4WWtKZjM3X0F5cGlvSGVBZlUza1JxTS1pNDRHaVJObE9YdTZNellnRjJjV3hN?oc=5">AP</a> 报道，法官阻止 FCC 对 ABC 进行提前牌照审查，该网络称这已产生寒蝉效应。<a class="kw" href="https://news.google.com/rss/articles/CBMipwFBVV95cUxNa3U4SjN4dnBlQUVGemRWMkxMdndfMXJjMHBmNUtvRDMtVmJhRWhZVS1kZzd0UHVUend5T3NJRlV2elRaTW1jQ3Y1QjNpVEtWRlltZ0x2WE5kSVNQbWdUZ1BpWmtyZHFQYjVmTUphNk1wWlRlbU8wTUpuUjdHa0ZXc19tV3hFUEFMY3Q3WVphZDdTeGRKUGRDWTU1YmxoRWl0anJCUTc2NA?oc=5">Reuters</a> 称，美国法官阻止 FCC 针对迪士尼旗下 ABC 电视台。<a class="kw" href="https://news.google.com/rss/articles/CBMikAFBVV95cUxNT045d0wyaTNWV1ZIRi0yeEdaOWJ5VTEwSUtqMGhuXzNmdi1kemJoR2NOa0FoWG1tM3luNmVZWFMxbzRZMDV5bWdJdVJGeHprNmQyZDU4M2dpM2pmbVdrWnN4THFkdC1nbWh5Ti1wSnUyODFkd3FEaUhCVjhoaENQVlVzaHpsSi1aakliY3JnV20?oc=5">WSJ</a> 标题写，法官要求 FCC 停止对 ABC 的牌照审查。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxQOVd6SmZMLUpRRjdUcmpPeWVwRGRIbV85M3lxREZ4cmtwMzFKSy12RWVHcWFHQ1Q0Y2Y5aG1fME9kbkZ6eFRMdE0yUm1QMWEwZEJ1VExhWS1kVlRPakU0Q1F4dlh6WE81MnUyQnpUd1pweGFOZ25RMDgzMkRFUC02Vkk3aVlKTV9jdXNBd3Rn?oc=5">原文 · CNN</a><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxQbGg0cWJHckhVdmhyb3U0YXNWLTFhdmw5OHdYM2t2bVVMSzdENnNtaU94MlZfYkZ0R0htTVU2czd6LTQ2Z2tfREVyOEZLeWhaMmY0OXl5RldKREVraWtxc0ducXJNc1NuNzc4WWtKZjM3X0F5cGlvSGVBZlUza1JxTS1pNDRHaVJObE9YdTZNellnRjJjV3hN?oc=5">对照 · AP</a><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxNa3U4SjN4dnBlQUVGemRWMkxMdndfMXJjMHBmNUtvRDMtVmJhRWhZVS1kZzd0UHVUend5T3NJRlV2elRaTW1jQ3Y1QjNpVEtWRlltZ0x2WE5kSVNQbWdUZ1BpWmtyZHFQYjVmTUphNk1wWlRlbU8wTUpuUjdHa0ZXc19tV3hFUEFMY3Q3WVphZDdTeGRKUGRDWTU1YmxoRWl0anJCUTc2NA?oc=5">对照 · Reuters</a><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxNT045d0wyaTNWV1ZIRi0yeEdaOWJ5VTEwSUtqMGhuXzNmdi1kemJoR2NOa0FoWG1tM3luNmVZWFMxbzRZMDV5bWdJdVJGeHprNmQyZDU4M2dpM2pmbVdrWnN4THFkdC1nbWh5Ti1wSnUyODFkd3FEaUhCVjhoaENQVlVzaHpsSi1aakliY3JnV20?oc=5">对照 · WSJ</a></div>
+</article>
+
+<article class="entry" id="e-5">
+  <div class="byline">
+    <p class="name">特朗普与北约秘书长吕特会面，喊话俄罗斯避免扩大乌克兰战事<span class="src">Fox News · Reuters · 人民日报 · 新华社 · 央视新闻 · 环球时报</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://www.foxnews.com/politics/trump-nato-chief-push-russia-avoid-actions-expand-war-ukraine">Fox News</a> 报道，特朗普与北约秘书长吕特周三晚在海湖庄园会面，两人敦促俄罗斯避免任何可能扩大乌克兰战事的行动。<a class="kw" href="https://news.google.com/rss/articles/CBMiswFBVV95cUxOcVE1ZllSR0xRNHFVUjR0WWJjQXF2MllxbUV3WUQ2Vno2WFFCbzkyODBvWjE1WmtscC1rdkVLdVJXUDhUUXFiMDZQbS01akV2UjhQQUFwMWp2aWdrdm5ZQy11b0tvX3BkSVU1WmdUV2J4N2l0UF9tcHVqRzBuWkxhRUVsU1FtMTl1aEhRWkx3RFI2VDlraEhKemFOV0ZEX0todDFpTTBsTndhZk0zclNaWk5lNA?oc=5">Reuters</a> 作了同样报道。<a class="kw" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE01MHVlRVZPS2dSWGZWUVo3OUZnc3BvOFJHVEY1TEEtLWZJam9DUFlyYXBLdzFITm54N0lPTk80eEEyVVhfN2tpb0RldEJDbndrMVlqSkVUR3p3YUlmNDUyZnhSVGsyTGgtRm93?oc=5">人民日报</a>、<a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5oWXlsZ2NMNnlBQUNQbGl3MmhLRE5IVk83UFhWelVjUV9PZko5b184R2JETG9wY0VPaHRtWm5aN1Q5SnZlT3phN2Q5RzdvU1d2SVEyOGs2bGloTmYweWctWGpFdl9ZOVJjZXNRSmhZcXFnT1JhcWpvcTBPbFEtRzg?oc=5">新华社</a>、<a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE8tb0xOcWR2OHlHZVVXWUNsZDZmUkpQNTlUb0hPYWRjTUFnTFpLd0FPV1MwTmEwNEVxcWhUaG1NQ0dLNnI2M0V4VGp0aWJlVUpYZUhJbFJXWi1UVXp0Z01zY3pFSmY2ck5BSDkzaGUxNTl0ejJmcl9nNw?oc=5">央视新闻</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMiX0FVX3lxTFBweFU1aml6UmxHcFIxM1JiQkhLa1RGQkw5Rlp5SWIxYzZiQmRINXdIY2tRdHBSZmVqdlhYX1NiWkNqckM5MnFVNnRNN1UxbXE4VVpGQ2ZleE40WGJ3QlJr?oc=5">环球时报</a> 均报道，特朗普与吕特会晤，喊话俄方「避免扩大战事」。新华社 和 央视新闻 另报道，特朗普称在与普京会谈中敦促其尽快与乌克兰达成协议。</p>
+  <div class="receipts"><a href="https://www.foxnews.com/politics/trump-nato-chief-push-russia-avoid-actions-expand-war-ukraine">原文 · Fox News</a><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxOcVE1ZllSR0xRNHFVUjR0WWJjQXF2MllxbUV3WUQ2Vno2WFFCbzkyODBvWjE1WmtscC1rdkVLdVJXUDhUUXFiMDZQbS01akV2UjhQQUFwMWp2aWdrdm5ZQy11b0tvX3BkSVU1WmdUV2J4N2l0UF9tcHVqRzBuWkxhRUVsU1FtMTl1aEhRWkx3RFI2VDlraEhKemFOV0ZEX0todDFpTTBsTndhZk0zclNaWk5lNA?oc=5">对照 · Reuters</a><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTE01MHVlRVZPS2dSWGZWUVo3OUZnc3BvOFJHVEY1TEEtLWZJam9DUFlyYXBLdzFITm54N0lPTk80eEEyVVhfN2tpb0RldEJDbndrMVlqSkVUR3p3YUlmNDUyZnhSVGsyTGgtRm93?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5oWXlsZ2NMNnlBQUNQbGl3MmhLRE5IVk83UFhWelVjUV9PZko5b184R2JETG9wY0VPaHRtWm5aN1Q5SnZlT3phN2Q5RzdvU1d2SVEyOGs2bGloTmYweWctWGpFdl9ZOVJjZXNRSmhZcXFnT1JhcWpvcTBPbFEtRzg?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE8tb0xOcWR2OHlHZVVXWUNsZDZmUkpQNTlUb0hPYWRjTUFnTFpLd0FPV1MwTmEwNEVxcWhUaG1NQ0dLNnI2M0V4VGp0aWJlVUpYZUhJbFJXWi1UVXp0Z01zY3pFSmY2ck5BSDkzaGUxNTl0ejJmcl9nNw?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTFBweFU1aml6UmxHcFIxM1JiQkhLa1RGQkw5Rlp5SWIxYzZiQmRINXdIY2tRdHBSZmVqdlhYX1NiWkNqckM5MnFVNnRNN1UxbXE4VVpGQ2ZleE40WGJ3QlJr?oc=5">对照 · 环球时报</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE5jQW96ZzFxR29Xcmd5WTkyUUM0Q3lPZjhveEZEX18zbUtzdUI5SzV6aWNJQUNXd1A3X3YxdGstTVFCNVRJVk40bnFwOVlOYTRPamd4VERwRThXUVdvdnZ5ZTRXZnpDVWg0ZFlxUUsyVjIxSDkybWR5amZRSG5ERUU?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxQVktBNEI1TkZweTNGWV93RTZfNUc3UmVzZTJHSzRScW1IOUY0UzlVT3ZWVU1qbGtYU0Z0eUNmVHROT2QzMmM1QU5mamk4MU9JMU5Da284ZVVDTVNjWFpfZUF1TXVfNXdQbmJZdFpnSFJoSmZLeTNGM2RHb1Z1YWhkSmJsTUZOc3N5YWpmQjNjbDFrY1FoZW0zVDZramxmR2RuV1B4RGpXMDNTRDBlblE?oc=5">对照 · 央视新闻</a></div>
+</article>
+
+<p class="note">说明：科威特遇袭因事关美伊本月重启交火后的海湾安全、且相关国家设有美国军事设施，按「美国政策与战事牵动最深」归入本章。本期 Guardian 窗口内无条目。ABC News 仅见特朗普要求调查 GDP 一条。特朗普政府新关税的后续分析是昨期头条的延续，本期不作为新头条；卢克石油海外资产出售、出生公民权行政令被叫停已在昨期刊出，本期不重复。第二巡回法院为特朗普封口费案上诉打开空间仅见 Fox News，未单列。FCC 批准 SpaceX 部署至多 100 万颗卫星用于太空数据中心见 CNN、BBC、AP、Le Monde，未列入头条。</p>
+<div class="sec-head" id="s-6">
+  <span class="lbl"><span class="zh-lbl">关于欧洲的新闻</span></span>
+  <span class="rule"></span><span class="count">2 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 欧盟峰会上，领导人在预算开支和向乌克兰提供约 490 亿美元贷款上出现分歧；意大利总理梅洛尼警告战争不得蔓延到地中海。西班牙的德科斯将接替拉加德出任欧洲央行行长。</p><ol><li>欧盟领导人在预算与对乌约 490 亿美元贷款上出现分歧，梅洛尼警告战争不得蔓延到地中海</li><li>西班牙的德科斯将接替拉加德出任欧洲央行行长</li></ol></div>
+
+<article class="entry" id="e-7">
+  <div class="byline">
+    <p class="name">欧盟领导人在预算与对乌约 490 亿美元贷款上出现分歧，梅洛尼警告战争不得蔓延到地中海<span class="src">AP · Reuters · FT</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMinwFBVV95cUxObUt5bnNUdEVaVjhETTRjWFI5cnZYaUtyV0R1VE50ZGFPcnJyVmppY2xxeVFpOEtPWURRSFpKUGFXcDVkZGVtZnF2Ykg5aEk2NXY4VTVBVHZQWEstSk9CRGp6cHZLUWhyQkdDQ2ktQjl6WldZSlFRdzhfVUQ0dGNkNlZJaFZKMkFYeWdFUmNQSXdSTDJscjlEcXBZdVdhZWs?oc=5">AP</a> 报道，欧盟领导人在预算开支和向乌克兰提供约 490 亿美元贷款上出现分歧。<a class="kw" href="https://www.ft.com/content/7461793f-6983-45ea-8ba2-8b1824df9379?syn-25a6b1a6=1">FT</a> 引述出席峰会的意大利总理梅洛尼的话说，「这场战争不得、也不能蔓延到地中海」；<a class="kw" href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNT1MybVpBY2F5czNzeEJodWk4Mk5PMnB4Q3FJaFpnTGNLM0hDVXBkRUw1ellSVTZPeDZzalo2UGNFbEhBYUdhWTRIZ1Y3NThpcFdEWjRIeGRyc1VCNVhaM3ZjSWxJc2hNcVlFUV9QMkVPN01JRzl5OHpRMDZ0NUlaclBuZXlVQ3JxdFlxRnZBR1hONmppczZNYktQUVFmTnlCSmhKZ1hlU1F6Tnk2OHprbTlYcWg1amRYZkR1cjFn?oc=5">Reuters</a> 称她同时对欧盟预算态度强硬，并就地中海袭击警告乌克兰。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxObUt5bnNUdEVaVjhETTRjWFI5cnZYaUtyV0R1VE50ZGFPcnJyVmppY2xxeVFpOEtPWURRSFpKUGFXcDVkZGVtZnF2Ykg5aEk2NXY4VTVBVHZQWEstSk9CRGp6cHZLUWhyQkdDQ2ktQjl6WldZSlFRdzhfVUQ0dGNkNlZJaFZKMkFYeWdFUmNQSXdSTDJscjlEcXBZdVdhZWs?oc=5">原文 · AP</a><a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNT1MybVpBY2F5czNzeEJodWk4Mk5PMnB4Q3FJaFpnTGNLM0hDVXBkRUw1ellSVTZPeDZzalo2UGNFbEhBYUdhWTRIZ1Y3NThpcFdEWjRIeGRyc1VCNVhaM3ZjSWxJc2hNcVlFUV9QMkVPN01JRzl5OHpRMDZ0NUlaclBuZXlVQ3JxdFlxRnZBR1hONmppczZNYktQUVFmTnlCSmhKZ1hlU1F6Tnk2OHprbTlYcWg1amRYZkR1cjFn?oc=5">对照 · Reuters</a><a href="https://www.ft.com/content/7461793f-6983-45ea-8ba2-8b1824df9379?syn-25a6b1a6=1">对照 · FT</a></div>
+</article>
+
+<article class="entry" id="e-8">
+  <div class="byline">
+    <p class="name">西班牙的德科斯将接替拉加德出任欧洲央行行长<span class="src">Reuters · 南华早报 · Le Monde · FT</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxOOV8wZkxRVTY5U0ZQeVZwSGtCMVZJTjV2d2t5TlhsSVoxQmpLRXI4OTV1R0QwQkV1QmZma3BDN0lrOEJTNGFVeloyeE5HbnhmWDZfR1VrbzN5TzZrck5WTTlKNTBaeFhVbDd4RldhY0hZMnFsczlsTURLY0FpWWgzeE5YVVc2NUZqMy1KbldQVDJfcUtsVEhINHF2emJ5SEFrMXozWUdTM3BFQQ?oc=5">Reuters</a> 和 <a class="kw" href="https://www.scmp.com/news/world/europe/article/3375963/spains-pablo-hernandez-de-cos-succeed-lagarde-european-central-bank-chief">南华早报</a> 报道，西班牙的巴勃罗·埃尔南德斯·德科斯（Pablo Hernández de Cos）将接替拉加德出任欧洲央行行长。<a class="kw" href="https://www.lemonde.fr/en/economy/article/2026/11/26/ecb-the-new-trio-tasked-with-protecting-europe-from-inflation_6789598_19.html">Le Monde</a> 称，欧元区 21 国领导人同时任命法国的劳伦斯·布恩负责金融市场、德国的马库斯·布伦纳迈尔担任首席经济学家；<a class="kw" href="https://www.ft.com/content/88a0691a-6ce8-4c97-abf4-7aee0351fd51?syn-25a6b1a6=1">FT</a> 写道，荷兰政府不再支持竞争者克拉斯·诺特后，德科斯赢得这场竞逐。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxOOV8wZkxRVTY5U0ZQeVZwSGtCMVZJTjV2d2t5TlhsSVoxQmpLRXI4OTV1R0QwQkV1QmZma3BDN0lrOEJTNGFVeloyeE5HbnhmWDZfR1VrbzN5TzZrck5WTTlKNTBaeFhVbDd4RldhY0hZMnFsczlsTURLY0FpWWgzeE5YVVc2NUZqMy1KbldQVDJfcUtsVEhINHF2emJ5SEFrMXozWUdTM3BFQQ?oc=5">原文 · Reuters</a><a href="https://www.scmp.com/news/world/europe/article/3375963/spains-pablo-hernandez-de-cos-succeed-lagarde-european-central-bank-chief">对照 · 南华早报</a><a href="https://www.lemonde.fr/en/economy/article/2026/11/26/ecb-the-new-trio-tasked-with-protecting-europe-from-inflation_6789598_19.html">对照 · Le Monde</a><a href="https://www.ft.com/content/88a0691a-6ce8-4c97-abf4-7aee0351fd51?syn-25a6b1a6=1">对照 · FT</a></div>
+</article>
+
+<p class="note">说明：本期保留欧盟峰会预算与对乌贷款分歧、以及欧洲央行候任行长两则。英国净移民降至约 7.7 万、为新冠疫情除外 1997 年以来最低，见 NYT 与南华早报，未单列。本期 Guardian 窗口内无条目。</p>
+<div class="sec-head" id="s-9">
+  <span class="lbl"><span class="zh-lbl">关于中国的新闻</span></span>
+  <span class="rule"></span><span class="count">4 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 商务部表示坚决反对美对中国等经济体加征 301 关税，财新称中方拒绝再加征 20% 的提议。中央宣传部原副部长、原国家新闻出版广电总局局长蔡赴朝被开除党籍。中方就日本船只非法侵闯钓鱼岛领海提出严正交涉，并督促日方加快处理在华遗弃化学武器。商务部对欧方解除相关中国企业制裁表示欢迎。</p><ol><li>商务部坚决反对美对中国等经济体加征 301 关税</li><li>中央宣传部原副部长蔡赴朝被开除党籍</li><li>中方就日船侵闯钓鱼岛领海提出严正交涉，并督促加快处理日遗化武</li></ol></div>
+
+<article class="entry" id="e-10">
+  <div class="byline">
+    <p class="name">商务部坚决反对美对中国等经济体加征 301 关税<span class="src">人民日报 · 新华社 · 财新 · AP</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE00Y2lESWRnX09laHl6bUZqRnlDamFrUHRYYmxxNkl3ZVpZd0RUb1Z3MzNTUTIwWjFKVE9uV2otZnpURDVnaTI3aU9CZlJUWkU5WXZ2VHNfaUV5VExtUUxDQlMtM1BIZ0NzUDJQdw?oc=5">人民日报</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE95V085VXRsWHVFcjRjQUEySjAyVXBfYThYODc4aThtd3BDeDF5c1FQczAxank0Yl9yRVF5TVYwaHExeEtmMEEzTWx0RW1UY1RxbWxRQnZMalQwOEtzcmpSN2J4TFpOYklhRmNIN0hFalUwOUNES2dkU3JMdUtfdEU?oc=5">新华社</a> 报道，商务部表示坚决反对美对中国等经济体加征 301 关税。<a class="kw" href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdGdaRXBTOFB0S2FoZ0VVRkM0RzJyTjY1bnR1US1fZGF3ZE1lMnVBMmdhU0s2eXE3dGt5U3U3QkNxank2ZmJyNHdYSGFuQ01hNUs1bWpiMkpZU0YzUmtXT2xFNlhuVTNMbjFVY09Hb0k2VFpqTXNhM2puYlRYYmhkREQ2NDdIVFlXRUhUd2lqYTJqWWxSNGFmNHlHS1dtZTNRbXZ2VWVEU0Q?oc=5">财新</a> 标题写，中国拒绝美方再加征 20% 关税的提议。<a class="kw" href="https://news.google.com/rss/articles/CBMilwFBVV95cUxQVWQ3MnMzTlQ5Y2lUTW9RTzloTmp3MmtycjBUbmZUOTExYWNsVmlXX1JmLVJGYUYyRjNHSGV1b2hzLWhWclNBRDRZb2hyQ2UxSE9tYktjUTBKR2VDU2w1YlZlU0xaZ0JSMlQ1ZzhwMEJpSVk5N05XbHhnNi1ESktvTVNGNlZpMkNjX0dUNHdvLWJ2YTVqeDFv?oc=5">AP</a> 报道，中国和其他美国贸易伙伴回击特朗普的新关税计划。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE00Y2lESWRnX09laHl6bUZqRnlDamFrUHRYYmxxNkl3ZVpZd0RUb1Z3MzNTUTIwWjFKVE9uV2otZnpURDVnaTI3aU9CZlJUWkU5WXZ2VHNfaUV5VExtUUxDQlMtM1BIZ0NzUDJQdw?oc=5">原文 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE95V085VXRsWHVFcjRjQUEySjAyVXBfYThYODc4aThtd3BDeDF5c1FQczAxank0Yl9yRVF5TVYwaHExeEtmMEEzTWx0RW1UY1RxbWxRQnZMalQwOEtzcmpSN2J4TFpOYklhRmNIN0hFalUwOUNES2dkU3JMdUtfdEU?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdGdaRXBTOFB0S2FoZ0VVRkM0RzJyTjY1bnR1US1fZGF3ZE1lMnVBMmdhU0s2eXE3dGt5U3U3QkNxank2ZmJyNHdYSGFuQ01hNUs1bWpiMkpZU0YzUmtXT2xFNlhuVTNMbjFVY09Hb0k2VFpqTXNhM2puYlRYYmhkREQ2NDdIVFlXRUhUd2lqYTJqWWxSNGFmNHlHS1dtZTNRbXZ2VWVEU0Q?oc=5">对照 · 财新</a><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxQVWQ3MnMzTlQ5Y2lUTW9RTzloTmp3MmtycjBUbmZUOTExYWNsVmlXX1JmLVJGYUYyRjNHSGV1b2hzLWhWclNBRDRZb2hyQ2UxSE9tYktjUTBKR2VDU2w1YlZlU0xaZ0JSMlQ1ZzhwMEJpSVk5N05XbHhnNi1ESktvTVNGNlZpMkNjX0dUNHdvLWJ2YTVqeDFv?oc=5">对照 · AP</a></div>
+</article>
+
+<article class="entry" id="e-11">
+  <div class="byline">
+    <p class="name">中央宣传部原副部长蔡赴朝被开除党籍<span class="src">新华社 · 央视新闻</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1IZV9qMEJGNUZzTnpLeVNhZThUUWYzU1RfX3FLcFhBNGpibXdFazB5OHVzd215T0pjMGNldXlCYS1qSEd5d05tTnBRRlZtWGE3eEZzYzh2NldlQkFTVHpYblpGV1RJM3lMVlFTOWwzM29MR3FMSW9qU1hBbjhLc2s?oc=5">新华社</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1mc0ZtSzdpSzVuU1k3Z1Q3UmlEMFFmZHZ4VEFYMExKZDR4aDhtQ3ZmbzdhWGNZQmxRUVM1RjZ2Wi16VlJPUnE0RVNDZmJ1M0ZOS2JQVURJeEZ1aWx1Tl9rcWNRWGQ3b040NF9NM3M3Rk9nX3ZJM3ZyZA?oc=5">央视新闻</a> 均报道，中央宣传部原副部长，原国家新闻出版广电总局党组书记、局长蔡赴朝严重违纪违法，已被开除党籍。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE1IZV9qMEJGNUZzTnpLeVNhZThUUWYzU1RfX3FLcFhBNGpibXdFazB5OHVzd215T0pjMGNldXlCYS1qSEd5d05tTnBRRlZtWGE3eEZzYzh2NldlQkFTVHpYblpGV1RJM3lMVlFTOWwzM29MR3FMSW9qU1hBbjhLc2s?oc=5">原文 · 新华社</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1mc0ZtSzdpSzVuU1k3Z1Q3UmlEMFFmZHZ4VEFYMExKZDR4aDhtQ3ZmbzdhWGNZQmxRUVM1RjZ2Wi16VlJPUnE0RVNDZmJ1M0ZOS2JQVURJeEZ1aWx1Tl9rcWNRWGQ3b040NF9NM3M3Rk9nX3ZJM3ZyZA?oc=5">对照 · 央视新闻</a></div>
+</article>
+
+<article class="entry" id="e-12">
+  <div class="byline">
+    <p class="name">中方就日船侵闯钓鱼岛领海提出严正交涉，并督促加快处理日遗化武<span class="src">人民日报 · 新华社 · 央视新闻 · 环球时报</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9vSlFEckZGYWJ6a1FjWWY5Qi1iWFNHRFhxQjJCbmVHZkdJdkpOYlZTWjhQQm44RVh4SGg2YWgzbldINC1sX3JjVjY0SjRrRnlzSkluYUhDQzhXMW1fekVyOHN5UEdxS1I2eTRONQ?oc=5">人民日报</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMif0FVX3lxTFB0Z2NYWF9SZHdBbXhoV0k0WU9IZXN1a0h4NGs4dGtsa2k1bm4wczMzTWlCT3NtdmtyMVVYMmlPV3Q0SE1jZEdENS12TkdfS1Z6OTBySE8xbmNZeDY4czVhUFBHRGdLX01tNTFsNHJTNUpSVzVtV0ItbzZ2X2sxbms?oc=5">新华社</a> 均报道，中方就日本船只非法侵闯钓鱼岛领海向日方提出严正交涉。<a class="kw" href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNSjVaTmpBZHpvMkJxTkZaYjlTMDRkZmVGakxBTTIwWllqbTJxMFJnUjVHNWt0UUthaVBMRmk0T05OZGVYbnFUR0k2cmZ1VXplakNJay1nejF5WTNkVTdMYURwMUJGNlBiYnNsWmowcEs3YVZocmZsY3E2SDZRNFhJam5yb1J5UlI4MUJRZFVLQ2h2bFVmRDNnN1ZTODBiaWFJbTN6dlBHYUppOVU?oc=5">央视新闻</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE55YUcyUFpIWW8zakhtVHNKRkt2UDZWRDlaRlN5dE1Va1lIQ08ya01WdkJXTDFlUnpONHJRTE90eUg5c2h5R2RETkV0RFUwV1BMSTRPdGdFVWRmN2lzOF9B?oc=5">环球时报</a> 另报道，国防部督促日方全面加快日遗化武处置进程；央视新闻 还称，中方敦促日本尽快销毁在华遗弃化学武器。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9vSlFEckZGYWJ6a1FjWWY5Qi1iWFNHRFhxQjJCbmVHZkdJdkpOYlZTWjhQQm44RVh4SGg2YWgzbldINC1sX3JjVjY0SjRrRnlzSkluYUhDQzhXMW1fekVyOHN5UEdxS1I2eTRONQ?oc=5">原文 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMif0FVX3lxTFB0Z2NYWF9SZHdBbXhoV0k0WU9IZXN1a0h4NGs4dGtsa2k1bm4wczMzTWlCT3NtdmtyMVVYMmlPV3Q0SE1jZEdENS12TkdfS1Z6OTBySE8xbmNZeDY4czVhUFBHRGdLX01tNTFsNHJTNUpSVzVtV0ItbzZ2X2sxbms?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxNSjVaTmpBZHpvMkJxTkZaYjlTMDRkZmVGakxBTTIwWllqbTJxMFJnUjVHNWt0UUthaVBMRmk0T05OZGVYbnFUR0k2cmZ1VXplakNJay1nejF5WTNkVTdMYURwMUJGNlBiYnNsWmowcEs3YVZocmZsY3E2SDZRNFhJam5yb1J5UlI4MUJRZFVLQ2h2bFVmRDNnN1ZTODBiaWFJbTN6dlBHYUppOVU?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE55YUcyUFpIWW8zakhtVHNKRkt2UDZWRDlaRlN5dE1Va1lIQ08ya01WdkJXTDFlUnpONHJRTE90eUg5c2h5R2RETkV0RFUwV1BMSTRPdGdFVWRmN2lzOF9B?oc=5">对照 · 环球时报</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE1YWm1sZU1uXzJqQUlfTGdQUjZTNUZiZ19qb29wS3dBMHo0RzRDdUFKTG4wZlp1dmctWTlodlpoMWItaWdNM0lHQjkwc3h2b2lkSzBfdWRaUkpnRWpxbkV3SjhfMGhJeUpqWjRybTV2QlJZZ0FRVEJBaA?oc=5">对照 · 央视新闻</a></div>
+</article>
+
+<article class="entry" id="e-13">
+  <div class="byline">
+    <p class="name">商务部欢迎欧方解除相关中国企业制裁，并将关注欧方混动汽车保障调查<span class="src">人民日报 · 新华社 · 央视新闻</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9WYS1pSHFtUG1fSklDWDZKWmt4N3FwZXBJenlhbUp2U25HczFhUjR3TjRab1BkLTQtblVRYjZSRjVrUTBJQ1NhX0Raek9LRk5uSnBxS0ktUFNYU3hpcEZxZzVraHZyWEdRakR5Ng?oc=5">人民日报</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1NT1ZJRm9vcFNDX0tBRjZrcTltUzFManh0LUVaM1VkcV90al9KWmFKcXRzX05sQ0IyLUJQbHFuYkNsLTk3ZXVaUlNqc0c5b0dwSVB1dTltRlV3TDMtNmJlODhVUHJwcEdpN1lEaWg5OWxsTjlzQ1RF?oc=5">新华社</a> 报道，商务部对欧方解除制裁相关中国企业表示欢迎。<a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE92SGlvYk1EV2lQamM5UkJtR0hkOXVWc3R4SVUtTFlrMGlXOWltXy0yRWZIVGZhUVNmN2stX1VyRzVEVEtCMUxwTUtKaFZsRjFVWGZaWm1iaktxLWZLWWU1dzh0NTk4TENJMWZhZ0hDN0p5MW03M01jdA?oc=5">央视新闻</a> 称，商务部新闻发言人就欧方将玉沙集团有限公司移出欧盟涉俄出口管制制裁清单事答记者问。人民日报 和 新华社 还报道，中方将密切关注欧方混动汽车保障措施后续调查进展。</p>
+  <div class="receipts"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9WYS1pSHFtUG1fSklDWDZKWmt4N3FwZXBJenlhbUp2U25HczFhUjR3TjRab1BkLTQtblVRYjZSRjVrUTBJQ1NhX0Raek9LRk5uSnBxS0ktUFNYU3hpcEZxZzVraHZyWEdRakR5Ng?oc=5">原文 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1NT1ZJRm9vcFNDX0tBRjZrcTltUzFManh0LUVaM1VkcV90al9KWmFKcXRzX05sQ0IyLUJQbHFuYkNsLTk3ZXVaUlNqc0c5b0dwSVB1dTltRlV3TDMtNmJlODhVUHJwcEdpN1lEaWg5OWxsTjlzQ1RF?oc=5">对照 · 新华社</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE92SGlvYk1EV2lQamM5UkJtR0hkOXVWc3R4SVUtTFlrMGlXOWltXy0yRWZIVGZhUVNmN2stX1VyRzVEVEtCMUxwTUtKaFZsRjFVWGZaWm1iaktxLWZLWWU1dzh0NTk4TENJMWZhZ0hDN0p5MW03M01jdA?oc=5">对照 · 央视新闻</a><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBHSGE0cnNfRGpFTGlVenVRWHp4eWRNelZUa29QT2Y3eU5HcDZMWW40SEYtX0c1WUNOQWlCY3EzcFg3d1kzb3BDelFsa29pajZ6WjRiSUxicG54V1NQeWxMXzhscXFlc0IzWjZ3?oc=5">对照 · 人民日报</a><a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxQdjgtaW1fVTUzZVV2bnd1T1lMb0l2cVRnZmFlc19kMTZ6NUtyN0pMYVNYOUNuVWc3ZFpqZGdvRUlsR0p5Nkd6Z1ZVbGNNRE15aktBLUxtS1JLSFBLNW5EUC03S091NVB6RXNySmoySmVCM1BjUlc2Nks0U0RyUWdlazlB?oc=5">对照 · 新华社</a></div>
+</article>
+
+<p class="note">说明：商务部反对美方 301 关税是对昨期美方加税宣布的中方正式回应，作为本期新条。神舟二十四号、丁薛祥与王毅会见荷兰外长已在昨期刊出，本期不重复。李强会见亚洲开发银行行长神田真人见人民日报与日经，未单列。台湾地方选举将于周六举行的预告见南华早报与 AP，未作为头条。</p>
+<div class="sec-head" id="s-14">
+  <span class="lbl"><span class="zh-lbl">关于日本的新闻</span></span>
+  <span class="rule"></span><span class="count">2 条</span>
+</div>
+<div class="sec-sum"><p><span class="k">本章小结</span> 朝日新闻报道，日本政府正调整未来五年防卫费至 56.3 兆日元，较原先的 43 兆日元上调，并规划新型远程反舰导弹。被俄方扣押的日本记者 Yuki Imai 的妻子呼吁尽快释放丈夫。</p><ol><li>日本政府拟将五年防卫费上调至 56.3 兆日元，并规划新型远程反舰导弹</li><li>被俄方扣押的日本记者 Yuki Imai 的妻子呼吁尽快释放丈夫</li></ol></div>
+
+<article class="entry" id="e-15">
+  <div class="byline">
+    <p class="name">日本政府拟将五年防卫费上调至 56.3 兆日元，并规划新型远程反舰导弹<span class="src">朝日新闻 · 南华早报 · 共同社</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="http://www.asahi.com/articles/ASVCV3F7YVCVUTFK01KM.html?ref=rss">朝日新闻</a> 报道，日本政府正调整未来五年防卫费至 56.3 兆日元，较原先的 43 兆日元上调。<a class="kw" href="https://www.scmp.com/news/china/military/article/3375933/japan-plans-new-long-range-anti-ship-missile-bolster-naval-build">南华早报</a> 称，东京计划引进可由更多舰艇发射的新型远程反舰导弹；<a class="kw" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE9rdjBsZjFvMkFaN2pjbEhLckFBWmVjX3M1RFFWQV9ZSnF3dHhIZkNLcERncEdFME5BaUdoTW1oN2YxN2p2U1lYSDM5aFk4eGdOMVNXS0hYa1pXQQ?oc=5">共同社</a> 标题写，日本拟在更新后的防卫整备计划中获取新型反舰导弹。</p>
+  <div class="receipts"><a href="http://www.asahi.com/articles/ASVCV3F7YVCVUTFK01KM.html?ref=rss">原文 · 朝日新闻</a><a href="https://www.scmp.com/news/china/military/article/3375933/japan-plans-new-long-range-anti-ship-missile-bolster-naval-build">对照 · 南华早报</a><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE9rdjBsZjFvMkFaN2pjbEhLckFBWmVjX3M1RFFWQV9ZSnF3dHhIZkNLcERncEdFME5BaUdoTW1oN2YxN2p2U1lYSDM5aFk4eGdOMVNXS0hYa1pXQQ?oc=5">对照 · 共同社</a></div>
+</article>
+
+<article class="entry" id="e-16">
+  <div class="byline">
+    <p class="name">被俄方扣押的日本记者 Yuki Imai 的妻子呼吁尽快释放丈夫<span class="src">南华早报 · 读卖新闻 · 共同社 · WSJ</span></p>
+    <p class="time">11-27 07:44</p>
+  </div>
+  <p class="zh"><a class="kw" href="https://www.scmp.com/news/asia/east-asia/article/3375882/wife-detained-japanese-reporter-yuki-imai-pleads-his-release-russia">南华早报</a> 报道，被俄方扣押一个多月的日本记者 Yuki Imai 的妻子 Nozomi 周四发表书面声明，呼吁尽快释放丈夫，称包括幼女和年迈父母在内的家人「陷于悲痛」。<a class="kw" href="https://news.google.com/rss/articles/CBMieEFVX3lxTE9DR0JkeElWQl9UZUpYTzl1ZUVkbzJSVGQ0MjhDUjFtdnNLdzJCMk1Ob1dKX3dKSE42WHU4NzBTR2xxWDVVS0M5Yl9XRl9fRk1meWRfbXNiQTUxaU55SkN2SzVEZEZDMDhJYlFURjZfMGFqaDNJamYySQ?oc=5">读卖新闻</a>、<a class="kw" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Jb3hhQUVLOUZPaWlSaHNwUnYxc2s0LWdNYzB1bEplZkZMTUQ2WVNnUjZnQ1lBazdwaVdCblEyaE55ZmlpVFZDQWRXLWZMV19JaFY5NFR0TngxUQ?oc=5">共同社</a> 和 <a class="kw" href="https://news.google.com/rss/articles/CBMioAFBVV95cUxQZVZMZ2xKdFBCQndaRGlSbTJUWGxCak9nVVBDRUlNckpPOVlBemlYalJ3NWI3UmY2MHZlUGc3QkhxRk1zNXp5QnVJQzA1U0pkWnV5NnN4dE0tQTRDVTd5V0hKbnJnVEZ3UWZ1Yi1KdkJFOEFuWV9LeHpKVlJpbFJNNF9JLWJjaEJ5U0RQNnFrWlNLY20xTzVXYm1INTFscjZJ?oc=5">WSJ</a> 均报道了这一呼吁；读卖新闻 称他自 10 月起被关押在莫斯科相关设施。</p>
+  <div class="receipts"><a href="https://www.scmp.com/news/asia/east-asia/article/3375882/wife-detained-japanese-reporter-yuki-imai-pleads-his-release-russia">原文 · 南华早报</a><a href="https://news.google.com/rss/articles/CBMieEFVX3lxTE9DR0JkeElWQl9UZUpYTzl1ZUVkbzJSVGQ0MjhDUjFtdnNLdzJCMk1Ob1dKX3dKSE42WHU4NzBTR2xxWDVVS0M5Yl9XRl9fRk1meWRfbXNiQTUxaU55SkN2SzVEZEZDMDhJYlFURjZfMGFqaDNJamYySQ?oc=5">对照 · 读卖新闻</a><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Jb3hhQUVLOUZPaWlSaHNwUnYxc2s0LWdNYzB1bEplZkZMTUQ2WVNnUjZnQ1lBazdwaVdCblEyaE55ZmlpVFZDQWRXLWZMV19JaFY5NFR0TngxUQ?oc=5">对照 · 共同社</a><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxQZVZMZ2xKdFBCQndaRGlSbTJUWGxCak9nVVBDRUlNckpPOVlBemlYalJ3NWI3UmY2MHZlUGc3QkhxRk1zNXp5QnVJQzA1U0pkWnV5NnN4dE0tQTRDVTd5V0hKbnJnVEZ3UWZ1Yi1KdkJFOEFuWV9LeHpKVlJpbFJNNF9JLWJjaEJ5U0RQNnFrWlNLY20xTzVXYm1INTFscjZJ?oc=5">对照 · WSJ</a></div>
+</article>
+
+<p class="note">说明：本期 NHK 未抓取到窗口内条目。共同社部分条目标题缺失，未予采用。高市会见国际刑事法院院长并承诺提前出资已在昨期刊出，本期不重复。美军在冲绳常态部署新型战斗机已在昨期刊出。日经称俄方承认可与高市举行首脑对话、并考虑对马绍尔群岛提供首笔安保支援，均仅见标题，未另作头条。对美关税涉及日本的报道为昨期延续，本期不重复。</p>
+  <footer>
+    <div>SOCIAL DIGEST · 2026-11-27 · 时间均为北京时间</div>
+    <div>来源为各媒体 RSS / 公开页面，部分经 Google News 检索回退 · 摘要为中文转述，以原文为准</div>
+  </footer>
+
+</div>
+<script>(function(){var ls=[].slice.call(document.querySelectorAll('.toc a[href^="#"]'));var ts=ls.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function f(){var k=-1;for(var j=0;j<ts.length;j++){if(ts[j]&&ts[j].getBoundingClientRect().top<120)k=j;}ls.forEach(function(a,j){a.classList.toggle('on',j===k);});
+if(k>=0){var a=ls[k],t=a.closest('.toc');var r=a.getBoundingClientRect(),q=t.getBoundingClientRect();if(r.top<q.top||r.bottom>q.bottom)t.scrollTop+=r.top-q.top-q.height/2;}}
+addEventListener('scroll',f,{passive:true});f();})();</script>
+</body>
+</html>
